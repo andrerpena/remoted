@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+/build
+/build-server
 
 # testing
 /coverage

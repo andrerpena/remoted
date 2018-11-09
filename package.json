@@ -7,14 +7,18 @@
     "@types/node": "10.12.3",
     "@types/react": "16.4.18",
     "@types/react-dom": "16.0.9",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "node-sass": "^4.10.0",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
-    "react-scripts": "2.1.1",
-    "typescript": "3.1.6"
+    "react-scripts": "2.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
+    "start-server": "ts-node ./src/server/index.ts",
     "build": "react-scripts build",
+    "build-server": "tsc --p tsconfig.server.json",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -26,5 +30,10 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@types/body-parser": "^1.17.0",
+    "@types/express": "^4.16.0",
+    "typescript": "^3.1.6"
+  }
 }
