@@ -1,5 +1,6 @@
 import express from 'express'
 import * as path from 'path'
+import colors from 'colors'
 import sum from '../common/dep'
 
 const app: express.Application = express()
@@ -15,4 +16,8 @@ app.get('/', function (req: express.Request, res: express.Response) {
 
 sum()
 
-app.listen(process.env.PORT || 8080)
+const port = process.env.PORT || 8080
+
+app.listen(port, () => {
+  console.log(colors.green(`DevJobList is listening on port ${port}`))
+})
