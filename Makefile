@@ -19,5 +19,3 @@ build-server:
 prod: clean build build-server
 	npm run start:server
 
-debug:
-	/usr/local/bin/node --inspect --require ./src/server/tshook.js /Users/apena/Git/djl/./src/server/index.ts
