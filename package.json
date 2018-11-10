@@ -11,15 +11,18 @@
     "colors": "^1.3.2",
     "express": "^4.16.4",
     "node-sass": "^4.10.0",
+    "node-static": "^0.7.11",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
     "react-scripts": "2.1.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "start-server": "node ./build-server/server/index.js",
+    "start": "static ./build",
+    "start:server": "node ./build-server/server/index.js",
+    "start:dev": "react-scripts start",
+    "start:dev:server": "ts-node --project ./tsconfig.server.json ./src/server/index.ts",
     "build": "react-scripts build",
-    "build-server": "tsc --p tsconfig.server.json",
+    "build:server": "tsc --project ./tsconfig.server.json",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -36,6 +39,7 @@
     "@types/body-parser": "^1.17.0",
     "@types/colors": "^1.2.1",
     "@types/express": "^4.16.0",
+    "ts-node": "^7.0.1",
     "typescript": "^3.1.6"
   }
 }

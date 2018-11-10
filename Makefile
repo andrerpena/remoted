@@ -5,13 +5,16 @@ clean:
 	rm -rf ./build-server
 
 dev:
-	npm start
+	npm rum start:dev
+
+dev-server:
+	npm run start:dev:server
 
 build:
 	npm run build
 
 build-server:
-	npm run build-server
+	npm run build:server
 
 prod: clean build build-server
-	npm run start-server
+	npm run start:server

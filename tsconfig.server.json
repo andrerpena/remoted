@@ -4,7 +4,8 @@
     "module": "commonjs",
     "outDir": "build-server",
     "noEmit": false,
-    "sourceMap": true
+    "sourceMap": true,
+    "isolatedModules": false
   },
   "include": [
     "./src/server/*"
