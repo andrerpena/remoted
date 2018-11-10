@@ -20,7 +20,7 @@
     "start": "static ./build",
     "start:server": "node ./build-server/server/index.js",
     "start:dev": "react-scripts start",
-    "start:dev:server": "ts-node --project ./tsconfig.server.json ./src/server/index.ts",
+    "start:dev:server": "node  --require ./src/server/tshook.js --inspect ./src/server/index.ts",
     "build": "react-scripts build",
     "build:server": "tsc --project ./tsconfig.server.json",
     "test": "react-scripts test",
