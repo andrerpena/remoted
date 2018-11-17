@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-. scripts/common.sh
+. ./scripts/common.sh
 
 # Expects PGDATABASE, PGUSER and PGPASSWORD to be set
-dropdb
+dropdb --if-exists ${PGDATABASE}
+dropdb --if-exists ${PGDATABASE_TEST}

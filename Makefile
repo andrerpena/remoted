@@ -20,7 +20,10 @@ prod: clean build build-server
 	npm run start:server
 
 pg-dump:
-	bash ./scripts/pg_dump.sh
+	./scripts/pg_dump.sh
 
 dropdb:
-	bash ./scripts/dropdb.sh
+	./scripts/dropdb.sh
+
+createdb:
+	./scripts/createdb.sh
