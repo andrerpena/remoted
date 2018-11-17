@@ -19,3 +19,5 @@ build-server:
 prod: clean build build-server
 	npm run start:server
 
+pg-dump:
+	bash ./scripts/pg_dump.sh
