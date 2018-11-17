@@ -21,3 +21,6 @@ prod: clean build build-server
 
 pg-dump:
 	bash ./scripts/pg_dump.sh
+
+dropdb:
+	bash ./scripts/dropdb.sh
