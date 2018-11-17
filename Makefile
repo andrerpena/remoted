@@ -19,8 +19,8 @@ build-server:
 prod: clean build build-server
 	npm run start:server
 
-pg-dump:
-	./scripts/pg_dump.sh
+dumpdb:
+	./scripts/dumpdb.sh
 
 dropdb:
 	./scripts/dropdb.sh
