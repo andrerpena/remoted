@@ -20,7 +20,40 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: jobs; Type: TABLE; Schema: public; Owner: postgres
+-- Name: companies; Type: TABLE; Schema: public; Owner: devjoblist
+--
+
+CREATE TABLE public.companies (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.companies OWNER TO devjoblist;
+
+--
+-- Name: companies_id_seq; Type: SEQUENCE; Schema: public; Owner: devjoblist
+--
+
+CREATE SEQUENCE public.companies_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.companies_id_seq OWNER TO devjoblist;
+
+--
+-- Name: companies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: devjoblist
+--
+
+ALTER SEQUENCE public.companies_id_seq OWNED BY public.companies.id;
+
+
+--
+-- Name: jobs; Type: TABLE; Schema: public; Owner: devjoblist
 --
 
 CREATE TABLE public.jobs (
@@ -28,10 +61,10 @@ CREATE TABLE public.jobs (
 );
 
 
-ALTER TABLE public.jobs OWNER TO postgres;
+ALTER TABLE public.jobs OWNER TO devjoblist;
 
 --
--- Name: jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: devjoblist
 --
 
 CREATE SEQUENCE public.jobs_id_seq
@@ -43,24 +76,39 @@ CREATE SEQUENCE public.jobs_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.jobs_id_seq OWNER TO postgres;
+ALTER TABLE public.jobs_id_seq OWNER TO devjoblist;
 
 --
--- Name: jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: devjoblist
 --
 
 ALTER SEQUENCE public.jobs_id_seq OWNED BY public.jobs.id;
 
 
 --
--- Name: jobs id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: companies id; Type: DEFAULT; Schema: public; Owner: devjoblist
+--
+
+ALTER TABLE ONLY public.companies ALTER COLUMN id SET DEFAULT nextval('public.companies_id_seq'::regclass);
+
+
+--
+-- Name: jobs id; Type: DEFAULT; Schema: public; Owner: devjoblist
 --
 
 ALTER TABLE ONLY public.jobs ALTER COLUMN id SET DEFAULT nextval('public.jobs_id_seq'::regclass);
 
 
 --
--- Name: jobs jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: companies companies_pkey; Type: CONSTRAINT; Schema: public; Owner: devjoblist
+--
+
+ALTER TABLE ONLY public.companies
+    ADD CONSTRAINT companies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: jobs jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: devjoblist
 --
 
 ALTER TABLE ONLY public.jobs
