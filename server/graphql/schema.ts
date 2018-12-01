@@ -1,15 +1,22 @@
-import { GraphQLSchema, GraphQLObjectType, GraphQLString } from "graphql";
+import { importSchema } from "graphql-import";
+import { makeExecutableSchema } from "graphql-tools";
 
-export const schema = new GraphQLSchema({
-  query: new GraphQLObjectType({
-    name: "RootQueryType",
-    fields: {
-      hello: {
-        type: GraphQLString,
-        resolve() {
-          return "world";
-        }
-      }
+// Construct a schema, using GraphQL schema language
+// const schema = buildSchema(`
+//   type Query {
+//     hello: String
+//   }
+// `);
+
+const typeDefs = importSchema("server/graphql/schema.graphql");
+
+// The root provides a resolver function for each API endpoint
+const resolvers = {
+  Query: {
+    hello() {
+      return "world";
     }
-  })
-});
+  }
+};
+
+export const schema = makeExecutableSchema({ typeDefs, resolvers });
