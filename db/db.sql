@@ -98,10 +98,10 @@ ALTER SEQUENCE public.companies_id_seq OWNED BY public.companies.id;
 
 
 --
--- Name: google_place_id_seq; Type: SEQUENCE; Schema: public; Owner: devjoblist
+-- Name: google_places_id_seq; Type: SEQUENCE; Schema: public; Owner: devjoblist
 --
 
-CREATE SEQUENCE public.google_place_id_seq
+CREATE SEQUENCE public.google_places_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -109,14 +109,14 @@ CREATE SEQUENCE public.google_place_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.google_place_id_seq OWNER TO devjoblist;
+ALTER TABLE public.google_places_id_seq OWNER TO devjoblist;
 
 --
--- Name: google_place; Type: TABLE; Schema: public; Owner: devjoblist
+-- Name: google_places; Type: TABLE; Schema: public; Owner: devjoblist
 --
 
-CREATE TABLE public.google_place (
-    id integer DEFAULT nextval('public.google_place_id_seq'::regclass) NOT NULL,
+CREATE TABLE public.google_places (
+    id integer DEFAULT nextval('public.google_places_id_seq'::regclass) NOT NULL,
     formatted_address character varying(255) NOT NULL,
     geometry public.geometry,
     longitude double precision,
@@ -127,7 +127,34 @@ CREATE TABLE public.google_place (
 );
 
 
-ALTER TABLE public.google_place OWNER TO devjoblist;
+ALTER TABLE public.google_places OWNER TO devjoblist;
+
+--
+-- Name: google_places_textsearch_cache_id_seq; Type: SEQUENCE; Schema: public; Owner: devjoblist
+--
+
+CREATE SEQUENCE public.google_places_textsearch_cache_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.google_places_textsearch_cache_id_seq OWNER TO devjoblist;
+
+--
+-- Name: google_places_textsearch_cache; Type: TABLE; Schema: public; Owner: devjoblist
+--
+
+CREATE TABLE public.google_places_textsearch_cache (
+    id integer DEFAULT nextval('public.google_places_textsearch_cache_id_seq'::regclass) NOT NULL,
+    search character varying(200) NOT NULL,
+    cache json NOT NULL
+);
+
+
+ALTER TABLE public.google_places_textsearch_cache OWNER TO devjoblist;
 
 --
 -- Name: jobs; Type: TABLE; Schema: public; Owner: devjoblist
@@ -185,10 +212,10 @@ ALTER TABLE ONLY public.companies
 
 
 --
--- Name: google_place geo_location_pkey; Type: CONSTRAINT; Schema: public; Owner: devjoblist
+-- Name: google_places geo_location_pkey; Type: CONSTRAINT; Schema: public; Owner: devjoblist
 --
 
-ALTER TABLE ONLY public.google_place
+ALTER TABLE ONLY public.google_places
     ADD CONSTRAINT geo_location_pkey PRIMARY KEY (id);
 
 
@@ -198,6 +225,14 @@ ALTER TABLE ONLY public.google_place
 
 ALTER TABLE ONLY public.jobs
     ADD CONSTRAINT jobs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: google_places_textsearch_cache location_cache_pkey; Type: CONSTRAINT; Schema: public; Owner: devjoblist
+--
+
+ALTER TABLE ONLY public.google_places_textsearch_cache
+    ADD CONSTRAINT location_cache_pkey PRIMARY KEY (id);
 
 
 --
@@ -211,35 +246,49 @@ CREATE UNIQUE INDEX companies_name_uindex ON public.companies USING btree (name)
 -- Name: geo_location_formatted_address_uindex; Type: INDEX; Schema: public; Owner: devjoblist
 --
 
-CREATE UNIQUE INDEX geo_location_formatted_address_uindex ON public.google_place USING btree (formatted_address);
+CREATE UNIQUE INDEX geo_location_formatted_address_uindex ON public.google_places USING btree (formatted_address);
 
 
 --
 -- Name: geo_location_gpx; Type: INDEX; Schema: public; Owner: devjoblist
 --
 
-CREATE INDEX geo_location_gpx ON public.google_place USING btree (public.geography(geometry));
+CREATE INDEX geo_location_gpx ON public.google_places USING btree (public.geography(geometry));
 
 
 --
 -- Name: geo_location_id_uindex; Type: INDEX; Schema: public; Owner: devjoblist
 --
 
-CREATE UNIQUE INDEX geo_location_id_uindex ON public.google_place USING btree (id);
+CREATE UNIQUE INDEX geo_location_id_uindex ON public.google_places USING btree (id);
 
 
 --
 -- Name: geo_location_spx; Type: INDEX; Schema: public; Owner: devjoblist
 --
 
-CREATE INDEX geo_location_spx ON public.google_place USING btree (geometry);
+CREATE INDEX geo_location_spx ON public.google_places USING btree (geometry);
 
 
 --
 -- Name: google_place_google_place_id_uindex; Type: INDEX; Schema: public; Owner: devjoblist
 --
 
-CREATE UNIQUE INDEX google_place_google_place_id_uindex ON public.google_place USING btree (google_place_id);
+CREATE UNIQUE INDEX google_place_google_place_id_uindex ON public.google_places USING btree (google_place_id);
+
+
+--
+-- Name: location_cache_id_uindex; Type: INDEX; Schema: public; Owner: devjoblist
+--
+
+CREATE UNIQUE INDEX location_cache_id_uindex ON public.google_places_textsearch_cache USING btree (id);
+
+
+--
+-- Name: location_cache_search_uindex; Type: INDEX; Schema: public; Owner: devjoblist
+--
+
+CREATE UNIQUE INDEX location_cache_search_uindex ON public.google_places_textsearch_cache USING btree (search);
 
 
 --
