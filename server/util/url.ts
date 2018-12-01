@@ -1,6 +1,6 @@
-import { Request } from 'express'
+import { Request } from "express";
 
-type UrlWithQuery = URL & { query: Record<string, any> }
+type UrlWithQuery = URL & { query: Record<string, any> };
 
 export function fromExpressRequest(request: Request) {
   // TODO: Make this to look better and add some tests
@@ -8,7 +8,7 @@ export function fromExpressRequest(request: Request) {
     protocol: request.protocol,
     host: request.hostname,
     pathname: request.path,
-    query: request.query,
-  }
-  return url
+    query: request.query
+  };
+  return url;
 }
