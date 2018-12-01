@@ -1,4 +1,4 @@
-.PHONY: clean dev prod
+.PHONY: clean dev prod dumpdb dropdb createdb
 
 clean:
 	rm -rf ./build
