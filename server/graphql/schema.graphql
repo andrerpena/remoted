@@ -2,6 +2,14 @@ type Query {
   hello: String
 }
 
+type Company {
+  name: String
+}
+
+type Mutation {
+  addCompany(name: String): Company
+}
+
 schema {
   query: Query
 }

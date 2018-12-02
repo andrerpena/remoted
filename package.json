@@ -5,6 +5,8 @@
   "dependencies": {
     "@zeit/next-sass": "^1.0.1",
     "@zeit/next-typescript": "^1.1.1",
+    "apollo-server": "^2.2.5",
+    "apollo-server-express": "^2.2.5",
     "express": "^4.16.4",
     "express-graphql": "^0.7.1",
     "graphql": "^14.0.2",

@@ -1,7 +1,7 @@
 import * as next from "next";
 import * as express from "express";
 import { fromExpressRequest } from "./util/url";
-import { middleware } from "./graphql/middleware";
+import { apolloServer } from "./graphql/apollo-server";
 
 const port = parseInt(process.env.PORT || "3000", 10);
 const dev = process.env.NODE_ENV !== "production";
@@ -15,14 +15,19 @@ nextServer.prepare().then(() => {
     nextServer.render(req, res, "/about", req.query);
   });
 
-  app.use("/graphql", middleware);
+  apolloServer.applyMiddleware({ app });
 
   app.get("*", (req, res) => {
-    nextRequestHandler(req, res, fromExpressRequest(req));
+    return nextRequestHandler(req, res, fromExpressRequest(req));
   });
 
   app.listen(port, (err: Error) => {
     if (err) throw err;
-    console.log(`> Ready on http://localhost:${port}`);
+    console.log(`🚀 Ready on http://localhost:${port}`);
+    console.log(
+      `🚀 Apollo server ready at http://localhost:${port}${
+        apolloServer.graphqlPath
+      }`
+    );
   });
 });
