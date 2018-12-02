@@ -1,0 +1,8 @@
+language: typescript
+
+schema: ./server/graphql/schema.graphql
+models:
+  files:
+    - ./server/graphql/models.ts
+
+output: ./server/graphql/resolver-types.ts
