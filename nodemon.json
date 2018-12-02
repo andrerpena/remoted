@@ -1,6 +1,4 @@
 {
   "watch": ["server/**/*.ts"],
-  "execMap": {
-    "ts": "ts-node --typeCheck --compilerOptions '{\"module\":\"commonjs\"}'"
-  }
+  "exec": "node --inspect  -r ./server/typescript-hook.js server/index.ts"
 }
