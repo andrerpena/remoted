@@ -2,7 +2,7 @@
 
 import { GraphQLResolveInfo } from "graphql";
 import { Company } from "./models";
-type Context = any;
+import { Context } from "./context";
 
 export namespace QueryResolvers {
   export const defaultResolvers = {};
