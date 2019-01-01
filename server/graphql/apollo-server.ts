@@ -1,6 +1,6 @@
 import { importSchema } from "graphql-import";
 import { ApolloServer, gql } from "apollo-server-express";
-import { Resolvers } from "./types/resolver-types";
+import { CompanyResolvers, Resolvers } from "./types/resolver-types";
 import { Request } from "express";
 import { Context } from "./types/context";
 
@@ -12,22 +12,16 @@ type ResolversType = Resolvers & {
 
 const resolvers: ResolversType = {
   Query: {
-    hello(_, _args, context) {
-      return context.authScope.name;
+    getCompanies() {
+      return [
+        {
+          name: "company 1",
+          id: "1"
+        }
+      ];
     }
   },
-  Company: {
-    name: () => {
-      return "this is a company name";
-    }
-  },
-  Mutation: {
-    addCompany: () => {
-      return {
-        name: "something"
-      };
-    }
-  }
+  Company: CompanyResolvers.defaultResolvers
 };
 
 // @ts-ignore

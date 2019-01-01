@@ -7,53 +7,37 @@ import { Context } from "./context";
 export namespace QueryResolvers {
   export const defaultResolvers = {};
 
-  export type HelloResolver = (
+  export type GetCompaniesResolver = (
     parent: undefined,
     args: {},
     ctx: Context,
     info: GraphQLResolveInfo
-  ) => string | null | Promise<string | null>;
+  ) => Company[] | null | Promise<Company[] | null>;
 
   export interface Type {
-    hello: (
+    getCompanies: (
       parent: undefined,
       args: {},
       ctx: Context,
       info: GraphQLResolveInfo
-    ) => string | null | Promise<string | null>;
-  }
-}
-
-export namespace MutationResolvers {
-  export const defaultResolvers = {};
-
-  export interface ArgsAddCompany {
-    name: string | null;
-  }
-
-  export type AddCompanyResolver = (
-    parent: undefined,
-    args: ArgsAddCompany,
-    ctx: Context,
-    info: GraphQLResolveInfo
-  ) => Company | null | Promise<Company | null>;
-
-  export interface Type {
-    addCompany: (
-      parent: undefined,
-      args: ArgsAddCompany,
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => Company | null | Promise<Company | null>;
+    ) => Company[] | null | Promise<Company[] | null>;
   }
 }
 
 export namespace CompanyResolvers {
   export const defaultResolvers = {
-    name: (parent: Company) => parent.name
+    name: (parent: Company) => parent.name,
+    id: (parent: Company) => parent.id
   };
 
   export type NameResolver = (
+    parent: Company,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => string | null | Promise<string | null>;
+
+  export type IdResolver = (
     parent: Company,
     args: {},
     ctx: Context,
@@ -67,11 +51,17 @@ export namespace CompanyResolvers {
       ctx: Context,
       info: GraphQLResolveInfo
     ) => string | null | Promise<string | null>;
+
+    id: (
+      parent: Company,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => string | null | Promise<string | null>;
   }
 }
 
 export interface Resolvers {
   Query: QueryResolvers.Type;
-  Mutation: MutationResolvers.Type;
   Company: CompanyResolvers.Type;
 }

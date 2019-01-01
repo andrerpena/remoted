@@ -1,16 +1,12 @@
 type Query {
-  hello: String
+  getCompanies: [Company]
 }
 
 type Company {
   name: String
-}
-
-type Mutation {
-  addCompany(name: String): Company
+  id: String
 }
 
 schema {
   query: Query
-  mutation: Mutation
 }

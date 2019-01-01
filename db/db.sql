@@ -16,51 +16,49 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: topology; Type: SCHEMA; Schema: -; Owner: devjoblist
+-- Name: topology; Type: SCHEMA; Schema: -; Owner: -
 --
 
 CREATE SCHEMA topology;
 
 
-ALTER SCHEMA topology OWNER TO devjoblist;
-
 --
--- Name: SCHEMA topology; Type: COMMENT; Schema: -; Owner: devjoblist
+-- Name: SCHEMA topology; Type: COMMENT; Schema: -; Owner: -
 --
 
 COMMENT ON SCHEMA topology IS 'PostGIS Topology schema';
 
 
 --
--- Name: postgis; Type: EXTENSION; Schema: -; Owner: 
+-- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
 --
 
 CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 
 
 --
--- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
 --
 
 COMMENT ON EXTENSION postgis IS 'PostGIS geometry, geography, and raster spatial types and functions';
 
 
 --
--- Name: postgis_topology; Type: EXTENSION; Schema: -; Owner: 
+-- Name: postgis_topology; Type: EXTENSION; Schema: -; Owner: -
 --
 
 CREATE EXTENSION IF NOT EXISTS postgis_topology WITH SCHEMA topology;
 
 
 --
--- Name: EXTENSION postgis_topology; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION postgis_topology; Type: COMMENT; Schema: -; Owner: -
 --
 
 COMMENT ON EXTENSION postgis_topology IS 'PostGIS topology spatial types and functions';
 
 
 --
--- Name: google_places_id_seq; Type: SEQUENCE; Schema: public; Owner: devjoblist
+-- Name: google_places_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.google_places_id_seq
@@ -71,17 +69,15 @@ CREATE SEQUENCE public.google_places_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.google_places_id_seq OWNER TO devjoblist;
-
 SET default_tablespace = '';
 
 SET default_with_oids = false;
 
 --
--- Name: addresses; Type: TABLE; Schema: public; Owner: devjoblist
+-- Name: address; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.addresses (
+CREATE TABLE public.address (
     id integer DEFAULT nextval('public.google_places_id_seq'::regclass) NOT NULL,
     formatted_address character varying(255) NOT NULL,
     geometry public.geometry,
@@ -93,23 +89,19 @@ CREATE TABLE public.addresses (
 );
 
 
-ALTER TABLE public.addresses OWNER TO devjoblist;
-
 --
--- Name: companies; Type: TABLE; Schema: public; Owner: devjoblist
+-- Name: company; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.companies (
+CREATE TABLE public.company (
     id integer NOT NULL,
     name character varying(50) NOT NULL,
     primary_address integer
 );
 
 
-ALTER TABLE public.companies OWNER TO devjoblist;
-
 --
--- Name: companies_id_seq; Type: SEQUENCE; Schema: public; Owner: devjoblist
+-- Name: companies_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.companies_id_seq
@@ -121,17 +113,15 @@ CREATE SEQUENCE public.companies_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.companies_id_seq OWNER TO devjoblist;
-
 --
--- Name: companies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: devjoblist
+-- Name: companies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.companies_id_seq OWNED BY public.companies.id;
+ALTER SEQUENCE public.companies_id_seq OWNED BY public.company.id;
 
 
 --
--- Name: company_addresses; Type: TABLE; Schema: public; Owner: devjoblist
+-- Name: company_addresses; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.company_addresses (
@@ -141,10 +131,8 @@ CREATE TABLE public.company_addresses (
 );
 
 
-ALTER TABLE public.company_addresses OWNER TO devjoblist;
-
 --
--- Name: company_google_places_id_seq; Type: SEQUENCE; Schema: public; Owner: devjoblist
+-- Name: company_google_places_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.company_google_places_id_seq
@@ -156,17 +144,15 @@ CREATE SEQUENCE public.company_google_places_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.company_google_places_id_seq OWNER TO devjoblist;
-
 --
--- Name: company_google_places_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: devjoblist
+-- Name: company_google_places_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.company_google_places_id_seq OWNED BY public.company_addresses.id;
 
 
 --
--- Name: google_places_textsearch_cache_id_seq; Type: SEQUENCE; Schema: public; Owner: devjoblist
+-- Name: google_places_textsearch_cache_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.google_places_textsearch_cache_id_seq
@@ -177,10 +163,8 @@ CREATE SEQUENCE public.google_places_textsearch_cache_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.google_places_textsearch_cache_id_seq OWNER TO devjoblist;
-
 --
--- Name: google_places_textsearch_cache; Type: TABLE; Schema: public; Owner: devjoblist
+-- Name: google_places_textsearch_cache; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.google_places_textsearch_cache (
@@ -190,21 +174,17 @@ CREATE TABLE public.google_places_textsearch_cache (
 );
 
 
-ALTER TABLE public.google_places_textsearch_cache OWNER TO devjoblist;
-
 --
--- Name: jobs; Type: TABLE; Schema: public; Owner: devjoblist
+-- Name: job; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.jobs (
+CREATE TABLE public.job (
     id integer NOT NULL
 );
 
 
-ALTER TABLE public.jobs OWNER TO devjoblist;
-
 --
--- Name: jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: devjoblist
+-- Name: jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.jobs_id_seq
@@ -216,17 +196,15 @@ CREATE SEQUENCE public.jobs_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.jobs_id_seq OWNER TO devjoblist;
-
 --
--- Name: jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: devjoblist
+-- Name: jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.jobs_id_seq OWNED BY public.jobs.id;
+ALTER SEQUENCE public.jobs_id_seq OWNED BY public.job.id;
 
 
 --
--- Name: stackoverflow_tags_cache_id_seq; Type: SEQUENCE; Schema: public; Owner: devjoblist
+-- Name: stackoverflow_tags_cache_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.stackoverflow_tags_cache_id_seq
@@ -237,10 +215,8 @@ CREATE SEQUENCE public.stackoverflow_tags_cache_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.stackoverflow_tags_cache_id_seq OWNER TO devjoblist;
-
 --
--- Name: stackoverflow_tags_cache; Type: TABLE; Schema: public; Owner: devjoblist
+-- Name: stackoverflow_tags_cache; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.stackoverflow_tags_cache (
@@ -251,10 +227,8 @@ CREATE TABLE public.stackoverflow_tags_cache (
 );
 
 
-ALTER TABLE public.stackoverflow_tags_cache OWNER TO devjoblist;
-
 --
--- Name: tag_id_seq; Type: SEQUENCE; Schema: public; Owner: devjoblist
+-- Name: tag_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.tag_id_seq
@@ -265,10 +239,8 @@ CREATE SEQUENCE public.tag_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.tag_id_seq OWNER TO devjoblist;
-
 --
--- Name: tag; Type: TABLE; Schema: public; Owner: devjoblist
+-- Name: tag; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.tag (
@@ -279,47 +251,174 @@ CREATE TABLE public.tag (
 );
 
 
-ALTER TABLE public.tag OWNER TO devjoblist;
-
 --
--- Name: companies id; Type: DEFAULT; Schema: public; Owner: devjoblist
+-- Name: company id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.companies ALTER COLUMN id SET DEFAULT nextval('public.companies_id_seq'::regclass);
+ALTER TABLE ONLY public.company ALTER COLUMN id SET DEFAULT nextval('public.companies_id_seq'::regclass);
 
 
 --
--- Name: company_addresses id; Type: DEFAULT; Schema: public; Owner: devjoblist
+-- Name: company_addresses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.company_addresses ALTER COLUMN id SET DEFAULT nextval('public.company_google_places_id_seq'::regclass);
 
 
 --
--- Name: jobs id; Type: DEFAULT; Schema: public; Owner: devjoblist
+-- Name: job id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.jobs ALTER COLUMN id SET DEFAULT nextval('public.jobs_id_seq'::regclass);
-
-
---
--- Name: addresses addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: devjoblist
---
-
-ALTER TABLE ONLY public.addresses
-    ADD CONSTRAINT addresses_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.job ALTER COLUMN id SET DEFAULT nextval('public.jobs_id_seq'::regclass);
 
 
 --
--- Name: companies companies_pkey; Type: CONSTRAINT; Schema: public; Owner: devjoblist
+-- Data for Name: address; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.companies
+COPY public.address (id, formatted_address, geometry, longitude, latitude, google_place_id, google_place_details) FROM stdin;
+\.
+
+
+--
+-- Data for Name: company; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.company (id, name, primary_address) FROM stdin;
+\.
+
+
+--
+-- Data for Name: company_addresses; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.company_addresses (id, company_id, google_place_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: google_places_textsearch_cache; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.google_places_textsearch_cache (id, search, cache) FROM stdin;
+\.
+
+
+--
+-- Data for Name: job; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.job (id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: spatial_ref_sys; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.spatial_ref_sys (srid, auth_name, auth_srid, srtext, proj4text) FROM stdin;
+\.
+
+
+--
+-- Data for Name: stackoverflow_tags_cache; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.stackoverflow_tags_cache (search, cache, last_updated_at, id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: tag; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.tag (id, name, relevance, last_updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: topology; Type: TABLE DATA; Schema: topology; Owner: -
+--
+
+COPY topology.topology (id, name, srid, "precision", hasz) FROM stdin;
+\.
+
+
+--
+-- Data for Name: layer; Type: TABLE DATA; Schema: topology; Owner: -
+--
+
+COPY topology.layer (topology_id, layer_id, schema_name, table_name, feature_column, feature_type, level, child_id) FROM stdin;
+\.
+
+
+--
+-- Name: companies_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.companies_id_seq', 1, false);
+
+
+--
+-- Name: company_google_places_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.company_google_places_id_seq', 1, false);
+
+
+--
+-- Name: google_places_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.google_places_id_seq', 1, false);
+
+
+--
+-- Name: google_places_textsearch_cache_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.google_places_textsearch_cache_id_seq', 1, false);
+
+
+--
+-- Name: jobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.jobs_id_seq', 1, false);
+
+
+--
+-- Name: stackoverflow_tags_cache_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.stackoverflow_tags_cache_id_seq', 1, false);
+
+
+--
+-- Name: tag_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.tag_id_seq', 1, false);
+
+
+--
+-- Name: address address_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.address
+    ADD CONSTRAINT address_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: company companies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.company
     ADD CONSTRAINT companies_pkey PRIMARY KEY (id);
 
 
 --
--- Name: company_addresses company_google_places_pk; Type: CONSTRAINT; Schema: public; Owner: devjoblist
+-- Name: company_addresses company_google_places_pk; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.company_addresses
@@ -327,15 +426,15 @@ ALTER TABLE ONLY public.company_addresses
 
 
 --
--- Name: jobs jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: devjoblist
+-- Name: job jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.jobs
+ALTER TABLE ONLY public.job
     ADD CONSTRAINT jobs_pkey PRIMARY KEY (id);
 
 
 --
--- Name: google_places_textsearch_cache location_cache_pkey; Type: CONSTRAINT; Schema: public; Owner: devjoblist
+-- Name: google_places_textsearch_cache location_cache_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.google_places_textsearch_cache
@@ -343,7 +442,7 @@ ALTER TABLE ONLY public.google_places_textsearch_cache
 
 
 --
--- Name: stackoverflow_tags_cache stackoverflow_tags_cache_id_pk; Type: CONSTRAINT; Schema: public; Owner: devjoblist
+-- Name: stackoverflow_tags_cache stackoverflow_tags_cache_id_pk; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.stackoverflow_tags_cache
@@ -351,7 +450,7 @@ ALTER TABLE ONLY public.stackoverflow_tags_cache
 
 
 --
--- Name: tag tag_pkey; Type: CONSTRAINT; Schema: public; Owner: devjoblist
+-- Name: tag tag_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.tag
@@ -359,118 +458,118 @@ ALTER TABLE ONLY public.tag
 
 
 --
--- Name: addresses_formatted_address_uindex; Type: INDEX; Schema: public; Owner: devjoblist
+-- Name: address_formatted_address_uindex; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX addresses_formatted_address_uindex ON public.addresses USING btree (formatted_address);
-
-
---
--- Name: addresses_google_place_id_uindex; Type: INDEX; Schema: public; Owner: devjoblist
---
-
-CREATE UNIQUE INDEX addresses_google_place_id_uindex ON public.addresses USING btree (google_place_id);
+CREATE UNIQUE INDEX address_formatted_address_uindex ON public.address USING btree (formatted_address);
 
 
 --
--- Name: addresses_gpx; Type: INDEX; Schema: public; Owner: devjoblist
+-- Name: address_google_place_id_uindex; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX addresses_gpx ON public.addresses USING btree (public.geography(geometry));
-
-
---
--- Name: addresses_id_uindex; Type: INDEX; Schema: public; Owner: devjoblist
---
-
-CREATE UNIQUE INDEX addresses_id_uindex ON public.addresses USING btree (id);
+CREATE UNIQUE INDEX address_google_place_id_uindex ON public.address USING btree (google_place_id);
 
 
 --
--- Name: addresses_spx; Type: INDEX; Schema: public; Owner: devjoblist
+-- Name: address_gpx; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX addresses_spx ON public.addresses USING btree (geometry);
-
-
---
--- Name: companies_name_uindex; Type: INDEX; Schema: public; Owner: devjoblist
---
-
-CREATE UNIQUE INDEX companies_name_uindex ON public.companies USING btree (name);
+CREATE INDEX address_gpx ON public.address USING btree (public.geography(geometry));
 
 
 --
--- Name: company_google_places_id_uindex; Type: INDEX; Schema: public; Owner: devjoblist
+-- Name: address_id_uindex; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX address_id_uindex ON public.address USING btree (id);
+
+
+--
+-- Name: address_spx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX address_spx ON public.address USING btree (geometry);
+
+
+--
+-- Name: companies_name_uindex; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX companies_name_uindex ON public.company USING btree (name);
+
+
+--
+-- Name: company_google_places_id_uindex; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX company_google_places_id_uindex ON public.company_addresses USING btree (id);
 
 
 --
--- Name: location_cache_id_uindex; Type: INDEX; Schema: public; Owner: devjoblist
+-- Name: location_cache_id_uindex; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX location_cache_id_uindex ON public.google_places_textsearch_cache USING btree (id);
 
 
 --
--- Name: location_cache_search_uindex; Type: INDEX; Schema: public; Owner: devjoblist
+-- Name: location_cache_search_uindex; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX location_cache_search_uindex ON public.google_places_textsearch_cache USING btree (search);
 
 
 --
--- Name: stackoverflow_tags_cache_id_uindex; Type: INDEX; Schema: public; Owner: devjoblist
+-- Name: stackoverflow_tags_cache_id_uindex; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX stackoverflow_tags_cache_id_uindex ON public.stackoverflow_tags_cache USING btree (id);
 
 
 --
--- Name: stackoverflow_tags_cache_search_uindex; Type: INDEX; Schema: public; Owner: devjoblist
+-- Name: stackoverflow_tags_cache_search_uindex; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX stackoverflow_tags_cache_search_uindex ON public.stackoverflow_tags_cache USING btree (search);
 
 
 --
--- Name: tag_id_uindex; Type: INDEX; Schema: public; Owner: devjoblist
+-- Name: tag_id_uindex; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX tag_id_uindex ON public.tag USING btree (id);
 
 
 --
--- Name: tag_name_uindex; Type: INDEX; Schema: public; Owner: devjoblist
+-- Name: tag_name_uindex; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX tag_name_uindex ON public.tag USING btree (name);
 
 
 --
--- Name: companies companies_primary_address_fk; Type: FK CONSTRAINT; Schema: public; Owner: devjoblist
+-- Name: company companies_primary_address_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.companies
-    ADD CONSTRAINT companies_primary_address_fk FOREIGN KEY (primary_address) REFERENCES public.addresses(id);
-
-
---
--- Name: company_addresses company_google_places_company_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: devjoblist
---
-
-ALTER TABLE ONLY public.company_addresses
-    ADD CONSTRAINT company_google_places_company_id_fk FOREIGN KEY (company_id) REFERENCES public.companies(id);
+ALTER TABLE ONLY public.company
+    ADD CONSTRAINT companies_primary_address_fk FOREIGN KEY (primary_address) REFERENCES public.address(id);
 
 
 --
--- Name: company_addresses company_google_places_google_place_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: devjoblist
+-- Name: company_addresses company_google_places_company_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.company_addresses
-    ADD CONSTRAINT company_google_places_google_place_id_fk FOREIGN KEY (google_place_id) REFERENCES public.addresses(id);
+    ADD CONSTRAINT company_google_places_company_id_fk FOREIGN KEY (company_id) REFERENCES public.company(id);
+
+
+--
+-- Name: company_addresses company_google_places_google_place_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.company_addresses
+    ADD CONSTRAINT company_google_places_google_place_id_fk FOREIGN KEY (google_place_id) REFERENCES public.address(id);
 
 
 --
