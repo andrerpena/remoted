@@ -2,22 +2,9 @@ import * as childProcess from "child_process";
 import * as colors from "colors";
 
 import { config } from "dotenv";
+import { readEnvVariable } from "../server/util/env";
 
 config();
-
-/**
- * Returns an environment variable. If the variable does not exist, returns the
- * default value. If the default value is not set, throws an exception
- * @param name
- * @param defaultValue
- * @throws aaa
- */
-function readEnvVariable(name: string, defaultValue?: string) {
-  const result = process.env[name] || defaultValue;
-  if (!result)
-    throw new Error(`Cannot read environment variable. Variable name: ${name}`);
-  return result;
-}
 
 const selectedCommand = process.env.COMMAND;
 const dbName = readEnvVariable("PGDATABASE");

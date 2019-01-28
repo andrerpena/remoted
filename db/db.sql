@@ -179,7 +179,8 @@ CREATE TABLE public.google_places_textsearch_cache (
 --
 
 CREATE TABLE public.job (
-    id integer NOT NULL
+    id integer NOT NULL,
+    title character varying(100) NOT NULL
 );
 
 
@@ -308,7 +309,7 @@ COPY public.google_places_textsearch_cache (id, search, cache) FROM stdin;
 -- Data for Name: job; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.job (id) FROM stdin;
+COPY public.job (id, title) FROM stdin;
 \.
 
 

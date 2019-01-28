@@ -14,6 +14,7 @@
     "graphql": "^14.0.2",
     "graphql-import": "^0.7.1",
     "graphql-tools": "^4.0.3",
+    "jest": "^23.6.0",
     "massive": "^5.6.0",
     "next": "^7.0.2",
     "node-sass": "^4.10.0",
@@ -31,7 +32,8 @@
     "db:drop": "cross-env COMMAND=drop_dev_dbs ts-node --project tsconfig.server.json ./tools/db-manager.ts",
     "db:generate": "cross-env COMMAND=generate_scripts ts-node --project tsconfig.server.json ./tools/db-manager.ts",
     "db:install": "cross-env COMMAND=create_dev_dbs ts-node --project tsconfig.server.json ./tools/db-manager.ts",
-    "db:reinstall": "npm run db:drop && npm run db:install"
+    "db:reinstall": "npm run db:drop && npm run db:install",
+    "test": "jest"
   },
   "devDependencies": {
     "@types/colors": "^1.2.1",
@@ -39,6 +41,7 @@
     "@types/express": "^4.16.0",
     "@types/express-graphql": "^0.6.2",
     "@types/graphql": "^14.0.3",
+    "@types/jest": "^23.3.11",
     "@types/massive": "^5.4.0",
     "@types/next": "^7.0.5",
     "@types/react": "^16.7.6",
@@ -48,6 +51,7 @@
     "nodemon": "^1.18.7",
     "prettier": "1.15.3",
     "pretty-quick": "^1.8.0",
+    "ts-jest": "^23.10.5",
     "ts-node": "^7.0.1",
     "typescript": "^3.2.1"
   },
