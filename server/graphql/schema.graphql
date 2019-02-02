@@ -1,10 +1,10 @@
 type Query {
-  getCompanies: [Company]
+  jobs: [Job]
 }
 
-type Company {
-  name: String
-  id: String
+type Job {
+  id: String!
+  title: String!
 }
 
 schema {

@@ -1,6 +1,6 @@
 import { importSchema } from "graphql-import";
 import { ApolloServer, gql } from "apollo-server-express";
-import { CompanyResolvers, Resolvers } from "./types/resolver-types";
+import { JobResolvers, Resolvers } from "./types/resolver-types";
 import { Request } from "express";
 import { Context } from "./types/context";
 
@@ -12,16 +12,16 @@ type ResolversType = Resolvers & {
 
 const resolvers: ResolversType = {
   Query: {
-    getCompanies() {
+    jobs: () => {
       return [
         {
-          name: "company 1",
-          id: "1"
+          id: "abc",
+          title: "hey hey mom"
         }
       ];
     }
   },
-  Company: CompanyResolvers.defaultResolvers
+  Job: JobResolvers.defaultResolvers
 };
 
 // @ts-ignore

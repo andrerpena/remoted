@@ -5,7 +5,8 @@ import { RetrievalOptions } from "massive";
 import { ResultProcessingOptions } from "massive";
 import { PersistenceInsertOptions } from "massive";
 
-export interface TypedEntity<T> extends massive.Writable {
+export interface TypedEntity<T extends AnyObject<any>>
+  extends massive.Writable {
   find(
     criteria?: AnyObject | number | UUID,
     options?: RetrievalOptions & ResultProcessingOptions
@@ -13,13 +14,13 @@ export interface TypedEntity<T> extends massive.Writable {
   insert(
     data: AnyObject,
     options?: PersistenceInsertOptions & ResultProcessingOptions
-  ): Promise<T>;
+  ): Promise<T[]>;
 }
 
-export interface Job {
+export interface Job extends AnyObject<any> {
   id: string;
 }
 
-export interface DevjoblistDatabase extends massive.Database {
+export interface RemotedDatabase extends massive.Database {
   job: TypedEntity<Job>;
 }
