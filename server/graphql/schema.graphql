@@ -1,9 +1,9 @@
 type Query {
-  jobs: [Job]
+  jobs(offset: Int, limit: Int): [Job]
 }
 
 type Job {
-  id: String!
+  id: String
   title: String!
 }
 

@@ -4,9 +4,9 @@ import "./index.scss";
 import { Query } from "react-apollo";
 import { gql } from "apollo-boost";
 
-export const allPostsQuery = gql`
-  query allJobs {
-    jobs {
+export const getJobsQuery = gql`
+  query getJobs($offset: Int, $limit: Int) {
+    jobs(offset: $offset, limit: $limit) {
       id
       title
     }
@@ -15,9 +15,8 @@ export const allPostsQuery = gql`
 
 export default () => (
   <div>
-    <Query query={allPostsQuery} variables={undefined}>
-      {result => {
-        console.log(result);
+    <Query query={getJobsQuery} variables={undefined}>
+      {() => {
         return <div>Hello</div>;
       }}
     </Query>

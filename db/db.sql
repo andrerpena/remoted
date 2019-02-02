@@ -58,6 +58,38 @@ COMMENT ON EXTENSION postgis_topology IS 'PostGIS topology spatial types and fun
 
 
 --
+-- Name: uuid-ossp; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
+
+
+--
+-- Name: _remoted_get_jobs(integer, integer); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public._remoted_get_jobs(_limit integer, _offset integer) RETURNS TABLE(public_id uuid, title character varying, created_at timestamp without time zone, published_at timestamp without time zone)
+    LANGUAGE sql
+    AS $$
+select u.public_id, u.title, u.created_at, u.published_at
+
+from job u
+
+order by created_at desc
+
+limit _limit offset _offset
+
+$$;
+
+
+--
 -- Name: google_places_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -95,6 +127,7 @@ CREATE TABLE public.address (
 
 CREATE TABLE public.company (
     id integer NOT NULL,
+    public_id uuid DEFAULT public.uuid_generate_v4(),
     name character varying(50) NOT NULL,
     primary_address integer
 );
@@ -180,7 +213,10 @@ CREATE TABLE public.google_places_textsearch_cache (
 
 CREATE TABLE public.job (
     id integer NOT NULL,
-    title character varying(100) NOT NULL
+    public_id uuid DEFAULT public.uuid_generate_v4(),
+    title character varying(100) NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    published_at timestamp without time zone NOT NULL
 );
 
 
@@ -285,7 +321,7 @@ COPY public.address (id, formatted_address, geometry, longitude, latitude, googl
 -- Data for Name: company; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.company (id, name, primary_address) FROM stdin;
+COPY public.company (id, public_id, name, primary_address) FROM stdin;
 \.
 
 
@@ -309,7 +345,7 @@ COPY public.google_places_textsearch_cache (id, search, cache) FROM stdin;
 -- Data for Name: job; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.job (id, title) FROM stdin;
+COPY public.job (id, public_id, title, created_at, published_at) FROM stdin;
 \.
 
 
@@ -505,6 +541,20 @@ CREATE UNIQUE INDEX companies_name_uindex ON public.company USING btree (name);
 --
 
 CREATE UNIQUE INDEX company_google_places_id_uindex ON public.company_addresses USING btree (id);
+
+
+--
+-- Name: company_public_id_uindex; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX company_public_id_uindex ON public.company USING btree (public_id);
+
+
+--
+-- Name: job_public_id_uindex; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX job_public_id_uindex ON public.job USING btree (public_id);
 
 
 --

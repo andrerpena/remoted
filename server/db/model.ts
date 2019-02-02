@@ -11,16 +11,31 @@ export interface TypedEntity<T extends AnyObject<any>>
     criteria?: AnyObject | number | UUID,
     options?: RetrievalOptions & ResultProcessingOptions
   ): Promise<Array<T>>;
+
   insert(
-    data: AnyObject,
+    data: T[],
     options?: PersistenceInsertOptions & ResultProcessingOptions
   ): Promise<T[]>;
 }
 
-export interface Job extends AnyObject<any> {
-  id: string;
+export interface DbJob extends AnyObject<any> {
+  id?: number;
+  public_id?: string;
+  title: string;
+  created_at: Date;
+  published_at: Date;
+}
+
+export interface DbGetJobsReturnType {
+  id: number;
+  public_id: string;
+  title: string;
 }
 
 export interface RemotedDatabase extends massive.Database {
-  job: TypedEntity<Job>;
+  _remoted_get_jobs: (
+    limit: number,
+    offset: number
+  ) => Promise<DbGetJobsReturnType[]>;
+  job: TypedEntity<DbJob>;
 }

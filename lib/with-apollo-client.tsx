@@ -3,7 +3,6 @@ import initApollo from "./init-apollo";
 import Head from "next/head";
 import { getDataFromTree } from "react-apollo";
 import { ApolloClient } from "apollo-boost";
-import App from "next/app";
 
 declare var process: {
   browser: boolean;
