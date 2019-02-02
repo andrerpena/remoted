@@ -4,10 +4,11 @@ import * as colors from "colors";
 import { config } from "dotenv";
 import { readEnvVariable } from "../server/util/env";
 
-config();
+config({ path: __dirname + "/../.env" });
 
-const selectedCommand = process.env.COMMAND;
+const selectedCommand = readEnvVariable("COMMAND");
 const dbName = readEnvVariable("PGDATABASE");
+
 const dbTestsName = `${dbName}_tests`;
 const userName = readEnvVariable("PGUSER");
 const dbFile = "db/db.sql";
