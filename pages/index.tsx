@@ -16,7 +16,8 @@ export const getJobsQuery = gql`
 export default () => (
   <div>
     <Query query={getJobsQuery} variables={undefined}>
-      {() => {
+      {data => {
+        console.log(data);
         return <div>Hello</div>;
       }}
     </Query>

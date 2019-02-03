@@ -5,7 +5,7 @@ import { RemotedDatabase } from "../../server/db/model";
 import { getJobs, insertJob } from "../../server/db/services/job-service";
 import { insertCompany } from "../../server/db/services/company-service";
 import { DbGetJobsReturnType } from "../../server/db/model/job";
-import { clearDb } from "../db-ci-helpers";
+import { clearDb } from "../../lib/db-ci-helpers";
 
 let db: RemotedDatabase;
 

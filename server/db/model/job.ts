@@ -1,7 +1,6 @@
-import { AnyObject } from "massive";
 import { PartialBy } from "../../../lib/type-helpers";
 
-export interface DbJob extends AnyObject<any> {
+export interface DbJob {
   id: number;
   public_id: string;
   title: string;

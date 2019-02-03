@@ -3,7 +3,7 @@ import { buildTestDb } from "../../server/db/build-db";
 import { config } from "dotenv";
 import { RemotedDatabase } from "../../server/db/model";
 import { insertCompany } from "../../server/db/services/company-service";
-import { clearDb } from "../db-ci-helpers";
+import { clearDb } from "../../lib/db-ci-helpers";
 
 let db: RemotedDatabase;
 
