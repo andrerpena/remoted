@@ -77,15 +77,15 @@ COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UU
 
 CREATE FUNCTION public._remoted_get_jobs(_limit integer, _offset integer) RETURNS TABLE(public_id uuid, title character varying, created_at timestamp without time zone, published_at timestamp without time zone)
     LANGUAGE sql
-    AS $$
-select u.public_id, u.title, u.created_at, u.published_at
-
-from job u
-
-order by created_at desc
-
-limit _limit offset _offset
-
+    AS $$
+select u.public_id, u.title, u.created_at, u.published_at
+
+from job u
+
+order by published_at desc
+
+limit _limit offset _offset
+
 $$;
 
 
@@ -129,7 +129,8 @@ CREATE TABLE public.company (
     id integer NOT NULL,
     public_id uuid DEFAULT public.uuid_generate_v4(),
     name character varying(50) NOT NULL,
-    primary_address integer
+    primary_address integer,
+    display_name character varying(50) NOT NULL
 );
 
 
@@ -197,17 +198,6 @@ CREATE SEQUENCE public.google_places_textsearch_cache_id_seq
 
 
 --
--- Name: google_places_textsearch_cache; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.google_places_textsearch_cache (
-    id integer DEFAULT nextval('public.google_places_textsearch_cache_id_seq'::regclass) NOT NULL,
-    search character varying(200) NOT NULL,
-    cache json NOT NULL
-);
-
-
---
 -- Name: job; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -216,8 +206,39 @@ CREATE TABLE public.job (
     public_id uuid DEFAULT public.uuid_generate_v4(),
     title character varying(100) NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    published_at timestamp without time zone NOT NULL
+    published_at timestamp without time zone NOT NULL,
+    company_id integer NOT NULL
 );
+
+
+--
+-- Name: job_tags; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.job_tags (
+    id integer NOT NULL,
+    job_id integer,
+    tag_id integer
+);
+
+
+--
+-- Name: job_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.job_tags_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: job_tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.job_tags_id_seq OWNED BY public.job_tags.id;
 
 
 --
@@ -253,18 +274,6 @@ CREATE SEQUENCE public.stackoverflow_tags_cache_id_seq
 
 
 --
--- Name: stackoverflow_tags_cache; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.stackoverflow_tags_cache (
-    search character varying(50) NOT NULL,
-    cache json NOT NULL,
-    last_updated_at timestamp without time zone DEFAULT (now())::timestamp without time zone NOT NULL,
-    id integer DEFAULT nextval('public.stackoverflow_tags_cache_id_seq'::regclass) NOT NULL
-);
-
-
---
 -- Name: tag_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -283,8 +292,7 @@ CREATE SEQUENCE public.tag_id_seq
 CREATE TABLE public.tag (
     id integer DEFAULT nextval('public.tag_id_seq'::regclass) NOT NULL,
     name character varying(50) NOT NULL,
-    relevance integer NOT NULL,
-    last_updated_at timestamp without time zone DEFAULT (now())::timestamp without time zone NOT NULL
+    relevance integer NOT NULL
 );
 
 
@@ -310,6 +318,13 @@ ALTER TABLE ONLY public.job ALTER COLUMN id SET DEFAULT nextval('public.jobs_id_
 
 
 --
+-- Name: job_tags id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.job_tags ALTER COLUMN id SET DEFAULT nextval('public.job_tags_id_seq'::regclass);
+
+
+--
 -- Data for Name: address; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -321,7 +336,7 @@ COPY public.address (id, formatted_address, geometry, longitude, latitude, googl
 -- Data for Name: company; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.company (id, public_id, name, primary_address) FROM stdin;
+COPY public.company (id, public_id, name, primary_address, display_name) FROM stdin;
 \.
 
 
@@ -334,18 +349,18 @@ COPY public.company_addresses (id, company_id, google_place_id) FROM stdin;
 
 
 --
--- Data for Name: google_places_textsearch_cache; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: job; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.google_places_textsearch_cache (id, search, cache) FROM stdin;
+COPY public.job (id, public_id, title, created_at, published_at, company_id) FROM stdin;
 \.
 
 
 --
--- Data for Name: job; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: job_tags; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.job (id, public_id, title, created_at, published_at) FROM stdin;
+COPY public.job_tags (id, job_id, tag_id) FROM stdin;
 \.
 
 
@@ -358,18 +373,10 @@ COPY public.spatial_ref_sys (srid, auth_name, auth_srid, srtext, proj4text) FROM
 
 
 --
--- Data for Name: stackoverflow_tags_cache; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY public.stackoverflow_tags_cache (search, cache, last_updated_at, id) FROM stdin;
-\.
-
-
---
 -- Data for Name: tag; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.tag (id, name, relevance, last_updated_at) FROM stdin;
+COPY public.tag (id, name, relevance) FROM stdin;
 \.
 
 
@@ -418,6 +425,13 @@ SELECT pg_catalog.setval('public.google_places_textsearch_cache_id_seq', 1, fals
 
 
 --
+-- Name: job_tags_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.job_tags_id_seq', 1, false);
+
+
+--
 -- Name: jobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -463,27 +477,19 @@ ALTER TABLE ONLY public.company_addresses
 
 
 --
+-- Name: job_tags job_tags_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.job_tags
+    ADD CONSTRAINT job_tags_pk PRIMARY KEY (id);
+
+
+--
 -- Name: job jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.job
     ADD CONSTRAINT jobs_pkey PRIMARY KEY (id);
-
-
---
--- Name: google_places_textsearch_cache location_cache_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.google_places_textsearch_cache
-    ADD CONSTRAINT location_cache_pkey PRIMARY KEY (id);
-
-
---
--- Name: stackoverflow_tags_cache stackoverflow_tags_cache_id_pk; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.stackoverflow_tags_cache
-    ADD CONSTRAINT stackoverflow_tags_cache_id_pk PRIMARY KEY (id);
 
 
 --
@@ -558,34 +564,6 @@ CREATE UNIQUE INDEX job_public_id_uindex ON public.job USING btree (public_id);
 
 
 --
--- Name: location_cache_id_uindex; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX location_cache_id_uindex ON public.google_places_textsearch_cache USING btree (id);
-
-
---
--- Name: location_cache_search_uindex; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX location_cache_search_uindex ON public.google_places_textsearch_cache USING btree (search);
-
-
---
--- Name: stackoverflow_tags_cache_id_uindex; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX stackoverflow_tags_cache_id_uindex ON public.stackoverflow_tags_cache USING btree (id);
-
-
---
--- Name: stackoverflow_tags_cache_search_uindex; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX stackoverflow_tags_cache_search_uindex ON public.stackoverflow_tags_cache USING btree (search);
-
-
---
 -- Name: tag_id_uindex; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -621,6 +599,30 @@ ALTER TABLE ONLY public.company_addresses
 
 ALTER TABLE ONLY public.company_addresses
     ADD CONSTRAINT company_google_places_google_place_id_fk FOREIGN KEY (google_place_id) REFERENCES public.address(id);
+
+
+--
+-- Name: job job_company_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.job
+    ADD CONSTRAINT job_company_id_fk FOREIGN KEY (company_id) REFERENCES public.company(id);
+
+
+--
+-- Name: job_tags job_tags_job_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.job_tags
+    ADD CONSTRAINT job_tags_job_id_fk FOREIGN KEY (job_id) REFERENCES public.job(id);
+
+
+--
+-- Name: job_tags job_tags_tag_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.job_tags
+    ADD CONSTRAINT job_tags_tag_id_fk FOREIGN KEY (tag_id) REFERENCES public.tag(id);
 
 
 --

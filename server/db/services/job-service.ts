@@ -1,14 +1,25 @@
-import { DbGetJobsReturnType, DbJob, RemotedDatabase } from "../model";
-import { Job } from "../../model";
+import { RemotedDatabase } from "../model";
+import { insertOne } from "./db-helpers";
+import { DbGetJobsReturnType, DbJob, DbJobInsert } from "../model/job";
+import { getTag, insertTag } from "./tag-service";
+import { insertJobTags } from "./job-tags-service";
 
-export function insertJob(db: RemotedDatabase, job: Job): Promise<DbJob[]> {
-  const date = new Date();
-  const dbJobs: DbJob = {
-    title: job.title,
-    created_at: date,
-    published_at: date
-  };
-  return db.job.insert([dbJobs]);
+export async function insertJob(
+  db: RemotedDatabase,
+  job: DbJobInsert
+): Promise<DbJob> {
+  const dbJob = await (insertOne(db.job, job) as Promise<DbJob>);
+  for (let i = 0; i < job.tags.length; i++) {
+    let tag = await getTag(db, job.tags[i]);
+    if (!tag) {
+      tag = await insertTag(db, {
+        name: job.tags[i],
+        relevance: 1
+      });
+    }
+    await insertJobTags(db, dbJob.id, tag.id);
+  }
+  return dbJob;
 }
 
 export function getJobs(

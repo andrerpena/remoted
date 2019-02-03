@@ -1,8 +1,11 @@
 import { buildTestDb } from "../../server/db/build-db";
 
 import { config } from "dotenv";
-import { DbGetJobsReturnType, RemotedDatabase } from "../../server/db/model";
+import { RemotedDatabase } from "../../server/db/model";
 import { getJobs, insertJob } from "../../server/db/services/job-service";
+import { insertCompany } from "../../server/db/services/company-service";
+import { DbGetJobsReturnType } from "../../server/db/model/job";
+import { clearDb } from "../db-ci-helpers";
 
 let db: RemotedDatabase;
 
@@ -11,15 +14,26 @@ beforeAll(async () => {
   db = await buildTestDb();
 });
 
+beforeEach(async () => {
+  return clearDb(db);
+});
+
 describe("job-service", () => {
   describe("insertJob", () => {
     it("default behavior", async () => {
-      const jobs = await insertJob(db, {
-        title: "developer"
+      const company = await insertCompany(db, {
+        name: "c-1",
+        display_name: "c-1"
       });
-      expect(Array.isArray(jobs)).toBe(true);
-      expect(jobs.length).toBe(1);
-      expect(jobs[0]).toEqual(
+      const jobCreationDate = new Date();
+      const job = await insertJob(db, {
+        title: "developer",
+        created_at: jobCreationDate,
+        published_at: jobCreationDate,
+        company_id: company.id,
+        tags: ["react"]
+      });
+      expect(job).toEqual(
         expect.objectContaining({
           id: expect.any(Number),
           public_id: expect.any(String),
@@ -30,10 +44,18 @@ describe("job-service", () => {
   });
   describe("getJobs", () => {
     beforeEach(async () => {
-      await db.job.destroy({});
+      const company = await insertCompany(db, {
+        name: "c-1",
+        display_name: "c-1"
+      });
       for (let i = 0; i < 10; i++) {
+        const jobCreationDate = new Date();
         await insertJob(db, {
-          title: `dev job ${i}`
+          title: `dev job ${i}`,
+          created_at: jobCreationDate,
+          published_at: jobCreationDate,
+          company_id: company.id,
+          tags: ["react"]
         });
       }
     });
