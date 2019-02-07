@@ -1,0 +1,22 @@
+@import "./bulma-theme";
+
+$border-default: 1px solid $border;
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background-color: $white-ter;
+}
+
+.box-default {
+  background-color: $white;
+  border-radius: $radius;
+  margin-top: $size-5;
+}
+
+.box-default-header {
+  padding: $size-6 $size-7;
+}

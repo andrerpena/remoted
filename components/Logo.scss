@@ -1,0 +1,16 @@
+@import "../styles/common";
+
+.text {
+  padding-left: $size-7;
+  font-family: "Fredoka One", cursive;
+  font-size: 22px;
+}
+
+.logo-icon-wrapper {
+  background-color: $primary;
+  color: white;
+  padding: 4px 8px;
+  border-radius: $radius;
+  width: 20px;
+  height: 20px;
+}

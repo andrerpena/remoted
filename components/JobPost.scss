@@ -1,0 +1,64 @@
+@import "../styles/common";
+
+.job-post {
+  border-top: $border-default;
+  padding: $size-7;
+  display: flex;
+
+  &:hover {
+    background-color: $white-bis;
+    cursor: pointer;
+    .tag.save {
+    }
+
+    .tag.apply {
+      @extend .is-primary;
+    }
+  }
+}
+
+.job-post-image {
+  width: 80px;
+  height: 80px;
+}
+
+.job-post-image img {
+  border-radius: $radius;
+  width: 80px;
+  height: 80px;
+}
+
+.job-post-body {
+  margin-left: $size-7;
+  flex-grow: 1;
+}
+
+.job-post-body-more-info {
+  margin: 4px 0 5px 0;
+}
+
+.job-post-tags {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  .tags {
+    margin: 0;
+    .tag {
+      margin-bottom: 0;
+      text-transform: uppercase;
+      .fas,
+      .far {
+        margin-left: 5px;
+      }
+      &.is-white {
+        border: 1px solid $grey-light;
+      }
+    }
+  }
+}
+
+.job-post-tags .left {
+}
+
+.job-post-tags .right {
+}
