@@ -1,0 +1,9 @@
+@import "../styles/bulma-theme";
+
+.category-bar {
+  background-color: $white;
+  border-bottom: 1px solid $grey-lighter;
+  .tabs {
+    margin-bottom: -1px;
+  }
+}

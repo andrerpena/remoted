@@ -6,6 +6,7 @@ import { Meta } from "../components/Meta";
 import { NavBar } from "../components/NavBar";
 import { Job } from "../server/model";
 import { JobBoard } from "../components/JobList";
+import { MiniHero } from "../components/MiniHero";
 
 export const getJobsQuery = gql`
   query getJobs($offset: Int, $limit: Int) {
@@ -33,16 +34,7 @@ export default () => (
           </div>
         </div>
         <div className="column">
-          <div>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.{" "}
-            <strong>Pellentesque risus mi</strong>, tempus quis placerat ut,
-            porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam
-            gravida purus diam, et dictum <a>felis venenatis</a> efficitur.
-            Aenean ac <em>eleifend lacus</em>, in mollis lectus. Donec sodales,
-            arcu et sollicitudin porttitor, tortor urna tempor ligula, id
-            porttitor mi magna a neque. Donec dui urna, vehicula et sem eget,
-            facilisis sodales sem.
-          </div>
+          <MiniHero />
           <div className="box-default">Subscribe</div>
           <div className="box-default">My favorite tags</div>
           <div className="box-default">Top tags</div>

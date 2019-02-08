@@ -11,10 +11,14 @@ body {
   background-color: $white-ter;
 }
 
+.box-transparent {
+  margin-bottom: $column-gap * 2;
+}
+
 .box-default {
+  @extend .box-transparent;
   background-color: $white;
   border-radius: $radius;
-  margin-top: $size-5;
 }
 
 .box-default-header {
