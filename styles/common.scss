@@ -15,12 +15,16 @@ body {
   margin-bottom: $column-gap * 2;
 }
 
-.box-default {
+.box-white {
   @extend .box-transparent;
   background-color: $white;
   border-radius: $radius;
 }
 
-.box-default-header {
+.box-white-header {
   padding: $size-6 $size-7;
+}
+
+.box-white-content {
+  padding: $size-7;
 }

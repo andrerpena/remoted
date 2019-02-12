@@ -16,6 +16,7 @@
     "express": "^4.16.4",
     "express-graphql": "^0.7.1",
     "faker": "^4.1.0",
+    "final-form": "^4.11.1",
     "graphql": "^14.0.2",
     "graphql-import": "^0.7.1",
     "graphql-tools": "^4.0.3",
@@ -27,6 +28,8 @@
     "react": "^16.6.3",
     "react-apollo": "^2.4.1",
     "react-dom": "^16.6.3",
+    "react-final-form": "^4.0.2",
+    "react-mde": "^7.0.0",
     "showdown": "^1.9.0"
   },
   "scripts": {
