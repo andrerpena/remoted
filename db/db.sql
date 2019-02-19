@@ -71,21 +71,49 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
 COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
 
 
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
 --
--- Name: _remoted_get_jobs(integer, integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: job; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE FUNCTION public._remoted_get_jobs(_limit integer, _offset integer) RETURNS TABLE(public_id uuid, title character varying, created_at timestamp without time zone, published_at timestamp without time zone)
+CREATE TABLE public.job (
+    id integer NOT NULL,
+    public_id uuid DEFAULT public.uuid_generate_v4(),
+    title character varying(100) NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    published_at timestamp without time zone NOT NULL,
+    company_id integer NOT NULL,
+    location_required character varying(100),
+    location_preferred character varying(100),
+    location_preferred_timezone smallint,
+    location_preferred_timezone_tolerance smallint,
+    company_name character varying(100),
+    company_display_name character varying(100),
+    salary_exact integer,
+    salary_min integer,
+    salary_max integer,
+    salary_equity boolean,
+    description text,
+    description_html integer,
+    tags character varying(200)
+);
+
+
+--
+-- Name: __remoted_get_jobs(integer, integer); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.__remoted_get_jobs(_limit integer, _offset integer) RETURNS SETOF public.job
     LANGUAGE sql
-    AS $$
-select u.public_id, u.title, u.created_at, u.published_at
-
-from job u
-
-order by published_at desc
-
-limit _limit offset _offset
-
+    AS $$
+select *
+from job u
+order by published_at desc
+limit _limit offset _offset
+
 $$;
 
 
@@ -100,10 +128,6 @@ CREATE SEQUENCE public.google_places_id_seq
     NO MAXVALUE
     CACHE 1;
 
-
-SET default_tablespace = '';
-
-SET default_with_oids = false;
 
 --
 -- Name: address; Type: TABLE; Schema: public; Owner: -
@@ -195,30 +219,6 @@ CREATE SEQUENCE public.google_places_textsearch_cache_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-
-
---
--- Name: job; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.job (
-    id integer NOT NULL,
-    public_id uuid DEFAULT public.uuid_generate_v4(),
-    title character varying(100) NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    published_at timestamp without time zone NOT NULL,
-    company_id integer NOT NULL,
-    location_required character varying(100),
-    location_preferred character varying(100),
-    location_preferred_timezone smallint,
-    location_preferred_timezone_tolerance smallint,
-    company_name character varying(100),
-    company_display_name character varying(100),
-    salary_exact integer,
-    salary_min integer,
-    salary_max integer,
-    salary_equity boolean
-);
 
 
 --
@@ -362,7 +362,7 @@ COPY public.company_addresses (id, company_id, google_place_id) FROM stdin;
 -- Data for Name: job; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.job (id, public_id, title, created_at, published_at, company_id, location_required, location_preferred, location_preferred_timezone, location_preferred_timezone_tolerance, company_name, company_display_name, salary_exact, salary_min, salary_max, salary_equity) FROM stdin;
+COPY public.job (id, public_id, title, created_at, published_at, company_id, location_required, location_preferred, location_preferred_timezone, location_preferred_timezone_tolerance, company_name, company_display_name, salary_exact, salary_min, salary_max, salary_equity, description, description_html, tags) FROM stdin;
 \.
 
 
