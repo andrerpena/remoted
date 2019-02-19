@@ -77,15 +77,15 @@ COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UU
 
 CREATE FUNCTION public._remoted_get_jobs(_limit integer, _offset integer) RETURNS TABLE(public_id uuid, title character varying, created_at timestamp without time zone, published_at timestamp without time zone)
     LANGUAGE sql
-    AS $$
-select u.public_id, u.title, u.created_at, u.published_at
-
-from job u
-
-order by published_at desc
-
-limit _limit offset _offset
-
+    AS $$
+select u.public_id, u.title, u.created_at, u.published_at
+
+from job u
+
+order by published_at desc
+
+limit _limit offset _offset
+
 $$;
 
 
@@ -207,7 +207,17 @@ CREATE TABLE public.job (
     title character varying(100) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     published_at timestamp without time zone NOT NULL,
-    company_id integer NOT NULL
+    company_id integer NOT NULL,
+    location_required character varying(100),
+    location_preferred character varying(100),
+    location_preferred_timezone smallint,
+    location_preferred_timezone_tolerance smallint,
+    company_name character varying(100),
+    company_display_name character varying(100),
+    salary_exact integer,
+    salary_min integer,
+    salary_max integer,
+    salary_equity boolean
 );
 
 
@@ -352,7 +362,7 @@ COPY public.company_addresses (id, company_id, google_place_id) FROM stdin;
 -- Data for Name: job; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.job (id, public_id, title, created_at, published_at, company_id) FROM stdin;
+COPY public.job (id, public_id, title, created_at, published_at, company_id, location_required, location_preferred, location_preferred_timezone, location_preferred_timezone_tolerance, company_name, company_display_name, salary_exact, salary_min, salary_max, salary_equity) FROM stdin;
 \.
 
 
