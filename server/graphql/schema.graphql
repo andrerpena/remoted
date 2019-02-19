@@ -2,11 +2,76 @@ type Query {
   jobs(offset: Int, limit: Int): [Job]
 }
 
+type SalaryDetails {
+  exact: Int
+  min: Int
+  max: Int
+  currency: String
+  equity: Boolean
+}
+
+type LocationDetails {
+  requiredLocation: String
+  preferredLocation: String
+  preferredTimeZone: Int
+  preferredTimeZoneTolerance: Int
+}
+
 type Job {
   id: String
   title: String!
+  description: String!
+  tags: [String!]!
+  relativeUrl: String
+  location: LocationDetails
+  salary: SalaryDetails
+  company: Company
+  createdAt: String!
+  publishedAt: String!
+}
+
+type Company {
+  id: String
+  name: String
+  displayName: String
+  relativeUrl: String
+}
+
+type Mutation {
+  addJob(input: JobInput!): [Job]
+  addCompany(input: CompanyInput!): [Company]
+}
+
+input SalaryDetailsInput {
+  exact: Int
+  min: Int
+  max: Int
+  currency: String
+  equity: Boolean
+}
+
+input LocationDetailsInput {
+  requiredLocation: String
+  preferredLocation: String
+  preferredTimeZone: Int
+  preferredTimeZoneTolerance: Int
+}
+
+input JobInput {
+  title: String!
+  description: String!
+  tags: [String!]!
+  publishedAt: String!
+  companyId: Int!
+  location: LocationDetailsInput
+  salary: SalaryDetailsInput
+}
+
+input CompanyInput {
+  displayName: String!
 }
 
 schema {
   query: Query
+  mutation: Mutation
 }

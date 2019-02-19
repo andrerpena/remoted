@@ -4,17 +4,17 @@ export interface DbJob {
   id: number;
   public_id: string;
   title: string;
+  description: string;
   company_id: number;
   created_at: Date;
   published_at: Date;
 }
 
-export type DbJobInsert = PartialBy<DbJob, "id" | "public_id"> & {
-  tags: string[];
-};
+export type DbJobInsert = PartialBy<DbJob, "id" | "public_id">;
 
 export interface DbGetJobsReturnType {
   id: number;
   public_id: string;
   title: string;
+  description: string;
 }

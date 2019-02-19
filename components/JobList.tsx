@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Job } from "../server/model";
+import { Job } from "../server/graphql/model";
 import "./JobList.scss";
 import { JobPost } from "./JobPost";
 

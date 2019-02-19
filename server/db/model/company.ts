@@ -3,6 +3,7 @@ import { PartialBy } from "../../../lib/type-helpers";
 
 export interface DbCompany extends AnyObject<any> {
   id: number;
+  public_id: string;
   name: string;
   display_name: string;
 }

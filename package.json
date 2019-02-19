@@ -18,10 +18,10 @@
     "faker": "^4.1.0",
     "final-form": "^4.11.1",
     "graphql": "^14.0.2",
+    "graphql-code-generator": "^0.16.1",
     "graphql-import": "^0.7.1",
     "graphql-tools": "^4.0.3",
     "isomorphic-unfetch": "^3.0.0",
-    "jest": "^23.6.0",
     "massive": "^5.6.0",
     "next": "^7.0.2",
     "node-sass": "^4.10.0",
@@ -29,8 +29,9 @@
     "react-apollo": "^2.4.1",
     "react-dom": "^16.6.3",
     "react-final-form": "^4.0.2",
-    "react-mde": "^7.0.0",
-    "showdown": "^1.9.0"
+    "react-mde": "^7.0.2",
+    "showdown": "^1.9.0",
+    "slugify": "^1.3.4"
   },
   "scripts": {
     "dev": "nodemon",
@@ -48,6 +49,7 @@
     "test": "jest"
   },
   "devDependencies": {
+    "jest": "^23.6.0",
     "@types/classnames": "^2.2.7",
     "@types/colors": "^1.2.1",
     "@types/dotenv": "^6.1.0",
@@ -61,7 +63,7 @@
     "@types/react": "^16.7.6",
     "@types/showdown": "^1.9.2",
     "cross-env": "^5.2.0",
-    "graphqlgen": "^0.4.0",
+    "graphqlgen": "^0.5.1",
     "husky": "^1.2.0",
     "nodemon": "^1.18.7",
     "prettier": "1.15.3",

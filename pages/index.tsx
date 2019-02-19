@@ -4,10 +4,9 @@ import { Query } from "react-apollo";
 import { gql } from "apollo-boost";
 import { Meta } from "../components/Meta";
 import { NavBar } from "../components/NavBar";
-import { Job } from "../server/model";
+import { Job } from "../server/graphql/model";
 import { JobBoard } from "../components/JobList";
 import { MiniHero } from "../components/MiniHero";
-import { BoxDefault } from "../components/BoxDefault";
 
 export const getJobsQuery = gql`
   query getJobs($offset: Int, $limit: Int) {

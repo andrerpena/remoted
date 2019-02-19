@@ -1,9 +1,9 @@
 import { buildDb } from "../server/db/build-db";
-import { insertCompany } from "../server/db/services/company-service";
+import { insertCompany } from "../server/db/services/db-company-service";
 import { RemotedDatabase } from "../server/db/model";
 import { DbCompany } from "../server/db/model/company";
 import { clearDb } from "../lib/db-ci-helpers";
-import { insertJob } from "../server/db/services/job-service";
+import { dbInsertJob } from "../server/db/services/db-job-service";
 import * as colors from "colors";
 import { config } from "dotenv";
 
@@ -63,7 +63,7 @@ buildDb()
       try {
         console.log(colors.green(`Inserting job ${i}`));
         const date = new Date();
-        await insertJob(db, {
+        await dbInsertJob(db, {
           title: "Software developer",
           company_id: companies[0].id,
           tags: [getRandomArrayItem(randomTags)],

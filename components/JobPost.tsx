@@ -1,4 +1,4 @@
-import { Job } from "../server/model";
+import { Job } from "../server/graphql/model";
 import * as React from "react";
 import "./JobPost.scss";
 import { getSampleMarkdown } from "../lib/markdown-helpers";

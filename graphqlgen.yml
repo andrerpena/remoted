@@ -3,7 +3,7 @@ language: typescript
 schema: ./server/graphql/schema.graphql
 models:
   files:
-    - ./server/model.ts
-context: ./server/graphql/types/context.ts:Context
+    - ./server/graphql/model.ts
+context: ./server/graphql/context.ts:Context
 
-output: ./server/graphql/types/resolver-types.ts
+output: ./server/graphql/resolver-types.ts

@@ -1,6 +1,6 @@
 import { AnyObject, Writable } from "massive";
 
-export async function insertOne(
+export async function insertDbRecord(
   writable: Writable,
   object: AnyObject
 ): Promise<AnyObject> {
