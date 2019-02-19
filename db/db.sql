@@ -90,15 +90,15 @@ CREATE TABLE public.job (
     location_preferred character varying(100),
     location_preferred_timezone smallint,
     location_preferred_timezone_tolerance smallint,
-    company_name character varying(100),
-    company_display_name character varying(100),
+    company_name character varying(100) NOT NULL,
+    company_display_name character varying(100) NOT NULL,
     salary_exact integer,
     salary_min integer,
     salary_max integer,
     salary_equity boolean,
-    description text,
-    description_html integer,
-    tags character varying(200)
+    description text NOT NULL,
+    description_html text NOT NULL,
+    tags character varying(200) NOT NULL
 );
 
 
