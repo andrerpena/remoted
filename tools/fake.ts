@@ -2,7 +2,7 @@ import { buildDb } from "../server/db/build-db";
 import { insertCompany } from "../server/db/services/db-company-service";
 import { RemotedDatabase } from "../server/db/model";
 import { DbCompany } from "../server/db/model/company";
-import { clearDb } from "../lib/db-ci-helpers";
+import { clearDb } from "../server/lib/db-ci-helpers";
 import { dbInsertJob } from "../server/db/services/db-job-service";
 import * as colors from "colors";
 import { config } from "dotenv";

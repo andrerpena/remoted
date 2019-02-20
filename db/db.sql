@@ -98,7 +98,10 @@ CREATE TABLE public.job (
     salary_equity boolean,
     description text NOT NULL,
     description_html text NOT NULL,
-    tags character varying(200) NOT NULL
+    tags character varying(200) NOT NULL,
+    location_raw character varying(200),
+    salary_raw character varying(200),
+    salary_currency character varying(10)
 );
 
 
@@ -362,7 +365,7 @@ COPY public.company_addresses (id, company_id, google_place_id) FROM stdin;
 -- Data for Name: job; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.job (id, public_id, title, created_at, published_at, company_id, location_required, location_preferred, location_preferred_timezone, location_preferred_timezone_tolerance, company_name, company_display_name, salary_exact, salary_min, salary_max, salary_equity, description, description_html, tags) FROM stdin;
+COPY public.job (id, public_id, title, created_at, published_at, company_id, location_required, location_preferred, location_preferred_timezone, location_preferred_timezone_tolerance, company_name, company_display_name, salary_exact, salary_min, salary_max, salary_equity, description, description_html, tags, location_raw, salary_raw, salary_currency) FROM stdin;
 \.
 
 

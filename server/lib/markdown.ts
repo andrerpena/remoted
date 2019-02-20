@@ -1,3 +1,12 @@
+import * as Showdown from "showdown";
+
+const converter = new Showdown.Converter({
+  tables: true,
+  simplifiedAutoLink: true,
+  strikethrough: true,
+  tasklists: true
+});
+
 export function getSampleMarkdown() {
   return `
 __Advertisement :)__
@@ -245,4 +254,8 @@ It converts "HTML", but keep intact partial entries like "xxxHTMLyyy" and so on.
 *here be dragons*
 :::
 `;
+}
+
+export function convertToHtml(markdown: string) {
+  return converter.makeHtml(markdown);
 }

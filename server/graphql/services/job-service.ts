@@ -1,45 +1,53 @@
-import { RemotedDatabase } from "../../db/model";
-import { DbJob, DbJobInsert } from "../../db/model/job";
+import {
+  DbCompany,
+  DbCompanyInput,
+  DbJob,
+  DbJobInput,
+  DbJobTags,
+  DbTag,
+  RemotedDatabase
+} from "../../db/model";
 import { Job } from "../model";
 import { MutationResolvers } from "../resolver-types";
 import { insertDbRecord } from "../../db/services/db-helpers";
-import { DbJobTags } from "../../db/model/job-tags";
-import { DbTag } from "../../db/model/tag";
 import JobInput = MutationResolvers.JobInput;
+import { convertToHtml } from "../../lib/markdown";
 
 export async function insertJob(
   db: RemotedDatabase,
   jobInput: JobInput
-): Promise<Job> {
-  const job: DbJobInsert = {
-    title: jobInput.title,
-    description: jobInput.description,
-    published_at: new Date(jobInput.publishedAt),
-    created_at: new Date(),
-    company_id: jobInput.companyId
-  };
+): Promise<Job | null> {
+  // Get the company so that it can be denormalized
+  const dbCompany = (await db.company.findOne({
+    id: jobInput.companyId
+  } as DbCompanyInput)) as DbCompany;
+  if (!dbCompany) {
+    // TODO: log error here
+    return null;
+  }
 
-  const dbJob = await (insertDbRecord(db.job, job) as Promise<DbJob>);
-  for (let i = 0; i < jobInput.tags.length; i++) {
-    let tag = await db.tag.findOne({ name: jobInput.tags[i] });
+  const dbJobInput: DbJobInput = getDbJobInputFromJobInput(jobInput, {
+    companyName: dbCompany.name,
+    companyDisplayName: dbCompany.display_name,
+    descriptionHtml: convertToHtml(jobInput.description),
+    sanitizedTags: [] // TODO: fix sanatizedTags
+  });
+
+  const dbJob = await (insertDbRecord(db.job, dbJobInput) as Promise<DbJob>);
+  const tags: string[] = [];
+  for (let i = 0; i < dbJobInput.tags.length; i++) {
+    let tag = (await db.tag.findOne({ name: dbJobInput.tags[i] })) as DbTag;
     if (!tag) {
-      tag = await db.tag.insert({
-        name: jobInput.tags[i],
+      tag = (await db.tag.insert({
+        name: dbJobInput.tags[i],
         relevance: 1
-      } as DbTag);
+      } as DbTag)) as DbTag;
     }
+    tags.push(tag.name);
     await db.job_tags.insert({ job_id: dbJob.id, tag_id: tag.id } as DbJobTags);
   }
 
-  return {
-    id: dbJob.public_id,
-    title: dbJob.title,
-    description: dbJob.description,
-    createdAt: dbJob.created_at.toISOString(),
-    publishedAt: dbJob.published_at.toISOString(),
-    tags: jobInput.tags,
-    relativeUrl: "" // TODO: Fix
-  };
+  return getJobFromDbJob(dbJob, tags);
 }
 
 export async function getJobs(
@@ -47,19 +55,69 @@ export async function getJobs(
   limit: number,
   offset: number
 ): Promise<Job[]> {
-  const dbJobs = await db._remoted_get_jobs(limit, offset);
+  const dbJobs = await db.__remoted_get_jobs(limit, offset);
   return dbJobs.map(j => {
-    return {
-      id: j.public_id,
-      title: j.title,
-      description: j.description,
-      relativeUrl: "", // fix this,
-      tags: [],
-      publishedAt: "xxx",
-      createdAt: "xxx",
-      company: undefined,
-      location: undefined,
-      salary: undefined
-    };
+    return getJobFromDbJob(j, j.tags.split(" "));
   });
+}
+
+export function getJobFromDbJob(dbJob: DbJob, tags: string[]): Job {
+  return {
+    id: dbJob.public_id,
+    title: dbJob.title,
+    description: dbJob.description,
+    descriptionHtml: dbJob.description_html,
+    tags: tags,
+    createdAt: dbJob.created_at.toISOString(),
+    publishedAt: dbJob.published_at.toISOString(),
+    relativeUrl: "", // TODO: Fix,
+    locationRaw: dbJob.location_raw,
+    locationRequired: dbJob.location_required,
+    locationPreferred: dbJob.location_preferred,
+    locationPreferredTimeZone: dbJob.location_preferred_timezone,
+    locationPreferredTimeZoneTolerance:
+      dbJob.location_preferred_timezone_tolerance,
+    salaryRaw: dbJob.salary_raw,
+    salaryExact: dbJob.salary_exact,
+    salaryMin: dbJob.salary_min,
+    salaryMax: dbJob.salary_max,
+    salaryCurrency: dbJob.salary_currency,
+    salaryEquity: dbJob.salary_equity
+  };
+}
+
+export interface GetDbJobInputFromJobInputOptions {
+  descriptionHtml: string;
+  sanitizedTags: string[];
+  companyName: string;
+  companyDisplayName: string;
+}
+
+export function getDbJobInputFromJobInput(
+  jobInput: JobInput,
+  options: GetDbJobInputFromJobInputOptions
+): DbJobInput {
+  return {
+    title: jobInput.title,
+    description: jobInput.description,
+    description_html: options.descriptionHtml,
+    published_at: new Date(jobInput.publishedAt),
+    tags: options.sanitizedTags.join(" "),
+    created_at: new Date(),
+    company_id: jobInput.companyId,
+    company_name: options.companyName,
+    company_display_name: options.companyDisplayName,
+    location_raw: jobInput.locationRaw,
+    location_required: jobInput.locationRequired,
+    location_preferred: jobInput.locationPreferred,
+    location_preferred_timezone: jobInput.locationPreferredTimezone,
+    location_preferred_timezone_tolerance:
+      jobInput.locationPreferredTimezoneTolerance,
+    salary_raw: jobInput.salaryRaw,
+    salary_exact: jobInput.salaryExact,
+    salary_min: jobInput.salaryMin,
+    salary_max: jobInput.salaryMax,
+    salary_currency: jobInput.salaryCurrency,
+    salary_equity: jobInput.salaryEquity
+  };
 }

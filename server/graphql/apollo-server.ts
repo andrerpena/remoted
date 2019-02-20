@@ -12,7 +12,7 @@ import { Context } from "./context";
 import { buildDb } from "../db/build-db";
 import { PAGE_SIZE } from "../constants";
 import { GraphQLResolveInfo } from "graphql";
-import { DbJobInsert } from "../db/model/job";
+import { DbJobInput } from "../db/model/job";
 import { getJobs } from "./services/job-service";
 
 const typeDefs = gql(importSchema("server/graphql/schema.graphql"));
@@ -38,7 +38,7 @@ const resolvers: ResolversType = {
       ctx: Context,
       info: GraphQLResolveInfo
     ) => {
-      const job: DbJobInsert = {
+      const job: DbJobInput = {
         title: args.input.title
       };
     }

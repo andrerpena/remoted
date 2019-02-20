@@ -2,7 +2,7 @@ import * as childProcess from "child_process";
 import * as colors from "colors";
 
 import { config } from "dotenv";
-import { readEnvVariable } from "../server/util/env";
+import { readEnvVariable } from "../server/lib/env";
 
 config({ path: __dirname + "/../.env" });
 

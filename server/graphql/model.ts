@@ -1,14 +1,26 @@
+import { Nullable } from "../../lib/types";
+
 export interface Job {
   id: string;
   title: string;
   description: string;
+  descriptionHtml: string;
   tags: string[];
   createdAt: string;
   publishedAt: string;
   relativeUrl: string;
   company?: Company;
-  salary?: SalaryDetails;
-  location?: LocationDetails;
+  locationRaw: Nullable<string>;
+  locationRequired: Nullable<string>;
+  locationPreferred: Nullable<string>;
+  locationPreferredTimeZone: Nullable<number>;
+  locationPreferredTimeZoneTolerance: Nullable<number>;
+  salaryRaw: Nullable<string>;
+  salaryExact: Nullable<number>;
+  salaryMin: Nullable<number>;
+  salaryMax: Nullable<number>;
+  salaryCurrency: Nullable<string>;
+  salaryEquity: Nullable<boolean>;
 }
 
 export interface Company {
@@ -16,21 +28,4 @@ export interface Company {
   name: string;
   displayName: string;
   relativeUrl: string;
-}
-
-export interface LocationDetails {
-  raw: string;
-  requiredLocation?: string;
-  preferredLocation?: string;
-  preferredTimeZone?: number;
-  preferredTimeZoneTolerance?: number;
-}
-
-export interface SalaryDetails {
-  raw: string;
-  exact?: number;
-  min?: number;
-  max?: number;
-  currency?: string;
-  equity?: boolean;
 }

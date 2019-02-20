@@ -2,8 +2,8 @@ import { RemotedDatabase } from "../../db/model";
 import { MutationResolvers } from "../resolver-types";
 import CompanyInput = MutationResolvers.CompanyInput;
 import { Company } from "../model";
-import { DbCompany, DbCompanyInsert } from "../../db/model/company";
-import { generateSlug } from "../../util/slug";
+import { DbCompany, DbCompanyInput } from "../../db/model/company";
+import { generateSlug } from "../../lib/slug";
 
 export async function insertCompany(
   db: RemotedDatabase,
@@ -11,7 +11,7 @@ export async function insertCompany(
 ): Promise<Company> {
   const slug = generateSlug(companyInput.displayName);
 
-  const company: DbCompanyInsert = {
+  const company: DbCompanyInput = {
     name: slug,
     display_name: companyInput.displayName
   };

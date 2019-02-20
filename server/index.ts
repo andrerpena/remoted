@@ -1,6 +1,6 @@
 import * as next from "next";
 import * as express from "express";
-import { fromExpressRequest } from "./util/url";
+import { fromExpressRequest } from "./lib/url";
 import { apolloServer } from "./graphql/apollo-server";
 import { config } from "dotenv";
 
