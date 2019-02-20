@@ -399,14 +399,14 @@ export namespace MutationResolvers {
     args: ArgsAddJob,
     ctx: Context,
     info: GraphQLResolveInfo
-  ) => Array<Job | null> | null | Promise<Array<Job | null> | null>;
+  ) => Job | null | Promise<Job | null>;
 
   export type AddCompanyResolver = (
     parent: undefined,
     args: ArgsAddCompany,
     ctx: Context,
     info: GraphQLResolveInfo
-  ) => Array<Company | null> | null | Promise<Array<Company | null> | null>;
+  ) => Company | null | Promise<Company | null>;
 
   export interface Type {
     addJob: (
@@ -414,14 +414,14 @@ export namespace MutationResolvers {
       args: ArgsAddJob,
       ctx: Context,
       info: GraphQLResolveInfo
-    ) => Array<Job | null> | null | Promise<Array<Job | null> | null>;
+    ) => Job | null | Promise<Job | null>;
 
     addCompany: (
       parent: undefined,
       args: ArgsAddCompany,
       ctx: Context,
       info: GraphQLResolveInfo
-    ) => Array<Company | null> | null | Promise<Array<Company | null> | null>;
+    ) => Company | null | Promise<Company | null>;
   }
 }
 

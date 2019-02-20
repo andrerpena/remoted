@@ -107,17 +107,17 @@ export function getDbJobInputFromJobInput(
     company_id: jobInput.companyId,
     company_name: options.companyName,
     company_display_name: options.companyDisplayName,
-    location_raw: jobInput.locationRaw,
-    location_required: jobInput.locationRequired,
-    location_preferred: jobInput.locationPreferred,
-    location_preferred_timezone: jobInput.locationPreferredTimezone,
+    location_raw: jobInput.locationRaw || null,
+    location_required: jobInput.locationRequired || null,
+    location_preferred: jobInput.locationPreferred || null,
+    location_preferred_timezone: jobInput.locationPreferredTimezone || null,
     location_preferred_timezone_tolerance:
-      jobInput.locationPreferredTimezoneTolerance,
-    salary_raw: jobInput.salaryRaw,
-    salary_exact: jobInput.salaryExact,
-    salary_min: jobInput.salaryMin,
-    salary_max: jobInput.salaryMax,
-    salary_currency: jobInput.salaryCurrency,
-    salary_equity: jobInput.salaryEquity
+      jobInput.locationPreferredTimezoneTolerance || null,
+    salary_raw: jobInput.salaryRaw || null,
+    salary_exact: jobInput.salaryExact || null,
+    salary_min: jobInput.salaryMin || null,
+    salary_max: jobInput.salaryMax || null,
+    salary_currency: jobInput.salaryCurrency || null,
+    salary_equity: jobInput.salaryEquity || null
   };
 }

@@ -1,19 +1,11 @@
 import { importSchema } from "graphql-import";
 import { ApolloServer, gql } from "apollo-server-express";
-import {
-  JobResolvers,
-  LocationDetailsResolvers,
-  MutationResolvers,
-  Resolvers,
-  SalaryDetailsResolvers
-} from "./resolver-types";
+import { JobResolvers, MutationResolvers, Resolvers } from "./resolver-types";
 import { Request } from "express";
 import { Context } from "./context";
 import { buildDb } from "../db/build-db";
 import { PAGE_SIZE } from "../constants";
-import { GraphQLResolveInfo } from "graphql";
-import { DbJobInput } from "../db/model/job";
-import { getJobs } from "./services/job-service";
+import { getJobs, insertJob } from "./services/job-service";
 
 const typeDefs = gql(importSchema("server/graphql/schema.graphql"));
 
@@ -29,18 +21,10 @@ const resolvers: ResolversType = {
     }
   },
   Job: JobResolvers.defaultResolvers,
-  LocationDetails: LocationDetailsResolvers.defaultResolvers,
-  SalaryDetails: SalaryDetailsResolvers.defaultResolvers,
   Mutation: {
-    addJob: async (
-      parent: undefined,
-      args: MutationResolvers.ArgsAddJob,
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => {
-      const job: DbJobInput = {
-        title: args.input.title
-      };
+    addJob: async (_parent: undefined, args: MutationResolvers.ArgsAddJob) => {
+      const db = await buildDb();
+      return insertJob(db, args.input);
     }
   }
 };

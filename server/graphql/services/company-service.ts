@@ -1,8 +1,7 @@
-import { RemotedDatabase } from "../../db/model";
+import { DbCompany, DbCompanyInput, RemotedDatabase } from "../../db/model";
 import { MutationResolvers } from "../resolver-types";
 import CompanyInput = MutationResolvers.CompanyInput;
 import { Company } from "../model";
-import { DbCompany, DbCompanyInput } from "../../db/model/company";
 import { generateSlug } from "../../lib/slug";
 
 export async function insertCompany(

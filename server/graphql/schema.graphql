@@ -29,8 +29,8 @@ type Company {
 }
 
 type Mutation {
-  addJob(input: JobInput!): [Job]
-  addCompany(input: CompanyInput!): [Company]
+  addJob(input: JobInput!): Job
+  addCompany(input: CompanyInput!): Company
 }
 
 input JobInput {
