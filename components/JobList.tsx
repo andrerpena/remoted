@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Job } from "../server/graphql/model";
 import "./JobList.scss";
 import { JobPost } from "./JobPost";
+import { Job } from "../graphql-types";
 
 export interface JobBoardProps {
   jobs: Job[];

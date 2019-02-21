@@ -1,8 +1,6 @@
 import { DbCompany, DbCompanyInput, RemotedDatabase } from "../../db/model";
-import { MutationResolvers } from "../resolver-types";
-import CompanyInput = MutationResolvers.CompanyInput;
-import { Company } from "../model";
 import { generateSlug } from "../../lib/slug";
+import { Company, CompanyInput } from "../../../graphql-types";
 
 export async function insertCompany(
   db: RemotedDatabase,
