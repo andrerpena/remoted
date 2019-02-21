@@ -83,8 +83,8 @@ CREATE TABLE public.job (
     id integer NOT NULL,
     public_id uuid DEFAULT public.uuid_generate_v4(),
     title character varying(100) NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    published_at timestamp without time zone NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    published_at timestamp with time zone NOT NULL,
     company_id integer NOT NULL,
     location_required character varying(100),
     location_preferred character varying(100),
@@ -111,12 +111,12 @@ CREATE TABLE public.job (
 
 CREATE FUNCTION public.__remoted_get_jobs(_limit integer, _offset integer) RETURNS SETOF public.job
     LANGUAGE sql
-    AS $$
-select *
-from job u
-order by published_at desc
-limit _limit offset _offset
-
+    AS $$
+select *
+from job u
+order by published_at desc
+limit _limit offset _offset
+
 $$;
 
 
@@ -157,7 +157,8 @@ CREATE TABLE public.company (
     public_id uuid DEFAULT public.uuid_generate_v4(),
     name character varying(50) NOT NULL,
     primary_address integer,
-    display_name character varying(50) NOT NULL
+    display_name character varying(50) NOT NULL,
+    created_at timestamp with time zone DEFAULT now()
 );
 
 
@@ -349,7 +350,7 @@ COPY public.address (id, formatted_address, geometry, longitude, latitude, googl
 -- Data for Name: company; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.company (id, public_id, name, primary_address, display_name) FROM stdin;
+COPY public.company (id, public_id, name, primary_address, display_name, created_at) FROM stdin;
 \.
 
 

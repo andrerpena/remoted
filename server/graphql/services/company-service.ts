@@ -6,7 +6,7 @@ export async function insertCompany(
   db: RemotedDatabase,
   companyInput: CompanyInput
 ): Promise<Company> {
-  const slug = generateSlug(companyInput.displayName);
+  const slug = generateSlug(companyInput.displayName).toLowerCase();
 
   const company: DbCompanyInput = {
     name: slug,

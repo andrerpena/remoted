@@ -9,7 +9,7 @@ export interface JobInput {
 
   publishedAt: string;
 
-  companyId: number;
+  companyId: string;
 
   locationRaw?: Maybe<string>;
 

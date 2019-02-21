@@ -17,7 +17,7 @@ export async function insertJob(
 ): Promise<Job | null> {
   // Get the company so that it can be denormalized
   const dbCompany = (await db.company.findOne({
-    id: jobInput.companyId
+    public_id: jobInput.companyId
   } as DbCompanyInput)) as DbCompany;
   if (!dbCompany) {
     // TODO: log error here
@@ -28,7 +28,8 @@ export async function insertJob(
     companyName: dbCompany.name,
     companyDisplayName: dbCompany.display_name,
     descriptionHtml: convertToHtml(jobInput.description),
-    sanitizedTags: [] // TODO: fix sanatizedTags
+    sanitizedTags: [], // TODO: fix sanitized Tags,
+    companyId: dbCompany.id
   });
 
   const dbJob = await (insertDbRecord(db.job, dbJobInput) as Promise<DbJob>);
@@ -89,6 +90,7 @@ export interface GetDbJobInputFromJobInputOptions {
   sanitizedTags: string[];
   companyName: string;
   companyDisplayName: string;
+  companyId: number;
 }
 
 export function getDbJobInputFromJobInput(
@@ -101,8 +103,7 @@ export function getDbJobInputFromJobInput(
     description_html: options.descriptionHtml,
     published_at: new Date(jobInput.publishedAt),
     tags: options.sanitizedTags.join(" "),
-    created_at: new Date(),
-    company_id: jobInput.companyId,
+    company_id: options.companyId,
     company_name: options.companyName,
     company_display_name: options.companyDisplayName,
     location_raw: jobInput.locationRaw || null,

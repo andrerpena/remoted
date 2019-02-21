@@ -41,7 +41,7 @@ input JobInput {
   description: String!
   tags: [String!]!
   publishedAt: String!
-  companyId: Int!
+  companyId: String!
   locationRaw: String
   locationRequired: String
   locationPreferred: String
