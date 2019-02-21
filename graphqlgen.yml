@@ -1,9 +1,0 @@
-language: typescript
-
-schema: ./server/graphql/schema.graphql
-models:
-  files:
-    - ./server/graphql/model.ts
-context: ./server/graphql/context.ts:Context
-
-output: ./server/graphql/resolver-types.ts

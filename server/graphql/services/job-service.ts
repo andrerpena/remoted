@@ -7,11 +7,9 @@ import {
   DbTag,
   RemotedDatabase
 } from "../../db/model";
-import { Job } from "../model";
-import { MutationResolvers } from "../resolver-types";
 import { insertDbRecord } from "../../db/services/db-helpers";
-import JobInput = MutationResolvers.JobInput;
 import { convertToHtml } from "../../lib/markdown";
+import { Job, JobInput } from "../../../graphql-types";
 
 export async function insertJob(
   db: RemotedDatabase,
