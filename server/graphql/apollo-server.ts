@@ -19,11 +19,6 @@ const resolvers: Resolvers = {
       const db = await buildDb();
       return getJobs(db, args.limit || PAGE_SIZE, args.offset || 0);
     }
-  },
-  Job: {
-    id: async () => {
-      return "aa";
-    }
   }
 };
 
