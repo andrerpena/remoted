@@ -50,7 +50,7 @@ export interface DbJob {
 
 export type DbJobInput = PartialBy<
   DbJob,
-  "id" | "public_id" | "company_name" | "created_at" | "company_display_name"
+  "id" | "company_name" | "created_at" | "company_display_name"
 >;
 
 export interface DbJobTags {

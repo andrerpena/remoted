@@ -10,6 +10,7 @@ import {
 import { insertDbRecord } from "../../db/services/db-helpers";
 import { convertToHtml } from "../../lib/markdown";
 import { Job, JobInput } from "../../../graphql-types";
+import { generateSlug, makeId } from "../../lib/id";
 
 export async function insertJob(
   db: RemotedDatabase,
@@ -98,6 +99,7 @@ export function getDbJobInputFromJobInput(
   options: GetDbJobInputFromJobInputOptions
 ): DbJobInput {
   return {
+    public_id: generateJobPublicId(jobInput.title, options.companyDisplayName),
     title: jobInput.title,
     description: jobInput.description,
     description_html: options.descriptionHtml,
@@ -119,4 +121,11 @@ export function getDbJobInputFromJobInput(
     salary_currency: jobInput.salaryCurrency || null,
     salary_equity: jobInput.salaryEquity || null
   };
+}
+
+export function generateJobPublicId(jobTitle: string, companyName: string) {
+  const id = makeId();
+  const jobTitleSlug = generateSlug(jobTitle);
+  const companyNameSlug = generateSlug(companyName);
+  return `${id}-remote-${jobTitleSlug}-${companyNameSlug}`;
 }
