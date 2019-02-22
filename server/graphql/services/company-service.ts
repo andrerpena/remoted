@@ -1,5 +1,5 @@
 import { DbCompany, DbCompanyInput, RemotedDatabase } from "../../db/model";
-import { generateSlug } from "../../lib/slug";
+import { generateSlug } from "../../lib/id";
 import { Company, CompanyInput } from "../../../graphql-types";
 
 export async function insertCompany(

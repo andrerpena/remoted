@@ -45,7 +45,7 @@
     "db:install": "cross-env COMMAND=create_dev_dbs ts-node --project tsconfig.server.json ./tools/db-manager.ts",
     "db:reinstall": "npm run db:drop && npm run db:install",
     "tools:fake": "cross-env NODE_ENV=development ts-node --project tsconfig.server.json ./tools/fake.ts",
-    "test": "jest",
+    "test": "jest --config=jest.unit.config.js",
     "generate": "gql-gen --config codegen.yml"
   },
   "devDependencies": {

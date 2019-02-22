@@ -81,7 +81,7 @@ SET default_with_oids = false;
 
 CREATE TABLE public.job (
     id integer NOT NULL,
-    public_id uuid DEFAULT public.uuid_generate_v4(),
+    public_id character varying(100) NOT NULL,
     title character varying(100) NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     published_at timestamp with time zone NOT NULL,
@@ -111,12 +111,12 @@ CREATE TABLE public.job (
 
 CREATE FUNCTION public.__remoted_get_jobs(_limit integer, _offset integer) RETURNS SETOF public.job
     LANGUAGE sql
-    AS $$
-select *
-from job u
-order by published_at desc
-limit _limit offset _offset
-
+    AS $$
+select *
+from job u
+order by published_at desc
+limit _limit offset _offset
+
 $$;
 
 
@@ -154,7 +154,7 @@ CREATE TABLE public.address (
 
 CREATE TABLE public.company (
     id integer NOT NULL,
-    public_id uuid DEFAULT public.uuid_generate_v4(),
+    public_id character varying(100) NOT NULL,
     name character varying(50) NOT NULL,
     primary_address integer,
     display_name character varying(50) NOT NULL,

@@ -6,6 +6,7 @@ module.exports = {
   // An array of file extensions your modules use
   moduleFileExtensions: ["ts", "tsx", "js"],
   testMatch: ["**/*test.+(ts|tsx|js)"],
+  testPathIgnorePatterns: ["__ci_tests__"],
   transform: {
     "^.+\\.(ts|tsx)$": "ts-jest"
   }
