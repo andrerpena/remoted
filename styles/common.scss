@@ -1,6 +1,6 @@
-@import "./bulma-theme";
+@import "variables";
 
-$border-default: 1px solid $border;
+$border-default: 1px solid $grey-lighter;
 
 html,
 body {
