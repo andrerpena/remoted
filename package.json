@@ -35,7 +35,7 @@
   "scripts": {
     "dev": "nodemon",
     "build": "next build && tsc --project tsconfig.server.json",
-    "start": "cross-env NODE_ENV=production node ./.production-server/server/index.js",
+    "start": "cross-env NODE_ENV=production pm2 start process.yml",
     "lint": "prettier --write \"**/*.ts\"",
     "graphqlgen": "graphqlgen",
     "db:dump": "cross-env COMMAND=dump_db ts-node --project tsconfig.server.json ./tools/db-manager.ts",
