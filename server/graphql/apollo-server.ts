@@ -49,5 +49,6 @@ export function getContext({ req }: { req: Request }) {
 export const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
+  playground: true,
   context: getContext
 });
