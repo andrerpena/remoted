@@ -64,7 +64,7 @@ export class JobPost extends React.Component<Job, JobListState> {
           <div
             className="markdown"
             dangerouslySetInnerHTML={{
-              __html: this.converter.makeHtml(getSampleMarkdown())
+              __html: this.converter.makeHtml(`Hello!`)
             }}
           />
         </div>
