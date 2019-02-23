@@ -9,6 +9,7 @@ export interface RemotedDatabase extends massive.Database {
 
   job: Writable;
   company: Writable;
+  url_reference: Writable;
   stackoverflow_tags_cache: Writable;
   tag: Writable;
   job_tags: Writable;
@@ -66,3 +67,10 @@ export interface DbTag {
 }
 
 export type DbTagInsert = PartialBy<DbTag, "id">;
+
+export type DbUrlRefence = {
+  id: number;
+  company_public_id: string;
+  job_public_id: string;
+  url: string;
+};

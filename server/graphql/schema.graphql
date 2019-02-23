@@ -1,5 +1,7 @@
 type Query {
   jobs(offset: Int, limit: Int): [Job]
+  job(id: String, urlReference: String): Job
+  company(id: String, urlReference: String): Company
 }
 type Job {
   id: String!
@@ -7,7 +9,6 @@ type Job {
   description: String!
   descriptionHtml: String!
   tags: [String!]!
-  relativeUrl: String!
   company: Company
   createdAt: String!
   publishedAt: String!
@@ -22,13 +23,14 @@ type Job {
   salaryMax: Int
   salaryCurrency: String
   salaryEquity: Boolean
+  urlReferences: [String!]
 }
 
 type Company {
   id: String!
   name: String!
   displayName: String!
-  relativeUrl: String
+  urlReferences: [String!]
 }
 
 type Mutation {
@@ -53,10 +55,12 @@ input JobInput {
   salaryMax: Int
   salaryCurrency: String
   salaryEquity: Boolean
+  urlReference: String!
 }
 
 input CompanyInput {
   displayName: String!
+  urlReference: String!
 }
 
 schema {

@@ -70,7 +70,6 @@ export function getJobFromDbJob(dbJob: DbJob, tags: string[]): Job {
     tags: tags,
     createdAt: dbJob.created_at.toISOString(),
     publishedAt: dbJob.published_at.toISOString(),
-    relativeUrl: "", // TODO: Fix,
     locationRaw: dbJob.location_raw,
     locationRequired: dbJob.location_required,
     locationPreferred: dbJob.location_preferred,

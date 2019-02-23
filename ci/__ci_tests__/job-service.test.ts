@@ -22,14 +22,16 @@ describe("job-service", () => {
   describe("insertJob", () => {
     it("default behavior", async () => {
       const company = await insertCompany(db, {
-        displayName: "c-1"
+        displayName: "c-1",
+        urlReference: "URL"
       });
       const job = await insertJob(db, {
         title: "developer",
         description: "hello",
         companyId: company.id,
         publishedAt: new Date().toISOString(),
-        tags: ["react"]
+        tags: ["react"],
+        urlReference: "URL"
       });
       console.log(job!.createdAt.toString());
       expect(job).toEqual(
@@ -60,7 +62,8 @@ describe("job-service", () => {
   describe("getJobs", () => {
     beforeEach(async () => {
       const company = await insertCompany(db, {
-        displayName: "c-1"
+        displayName: "c-1",
+        urlReference: "URL"
       });
       for (let i = 0; i < 10; i++) {
         await insertJob(db, {
@@ -68,7 +71,8 @@ describe("job-service", () => {
           description: "This is a job",
           publishedAt: new Date().toISOString(),
           companyId: company.id,
-          tags: ["react"]
+          tags: ["react"],
+          urlReference: "URL"
         });
       }
     });

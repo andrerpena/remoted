@@ -32,10 +32,14 @@ export interface JobInput {
   salaryCurrency?: Maybe<string>;
 
   salaryEquity?: Maybe<boolean>;
+
+  urlReference: string;
 }
 
 export interface CompanyInput {
   displayName: string;
+
+  urlReference: string;
 }
 
 // ====================================================
@@ -44,6 +48,10 @@ export interface CompanyInput {
 
 export interface Query {
   jobs?: Maybe<(Maybe<Job>)[]>;
+
+  job?: Maybe<Job>;
+
+  company?: Maybe<Company>;
 }
 
 export interface Job {
@@ -56,8 +64,6 @@ export interface Job {
   descriptionHtml: string;
 
   tags: string[];
-
-  relativeUrl: string;
 
   company?: Maybe<Company>;
 
@@ -86,6 +92,8 @@ export interface Job {
   salaryCurrency?: Maybe<string>;
 
   salaryEquity?: Maybe<boolean>;
+
+  urlReferences?: Maybe<string[]>;
 }
 
 export interface Company {
@@ -95,7 +103,7 @@ export interface Company {
 
   displayName: string;
 
-  relativeUrl?: Maybe<string>;
+  urlReferences?: Maybe<string[]>;
 }
 
 export interface Mutation {
@@ -112,6 +120,16 @@ export interface JobsQueryArgs {
   offset?: Maybe<number>;
 
   limit?: Maybe<number>;
+}
+export interface JobQueryArgs {
+  id?: Maybe<string>;
+
+  urlReference?: Maybe<string>;
+}
+export interface CompanyQueryArgs {
+  id?: Maybe<string>;
+
+  urlReference?: Maybe<string>;
 }
 export interface AddJobMutationArgs {
   input: JobInput;
@@ -174,6 +192,10 @@ export type DirectiveResolverFn<TResult, TArgs = {}, TContext = {}> = (
 export namespace QueryResolvers {
   export interface Resolvers<Context = {}, TypeParent = {}> {
     jobs?: JobsResolver<Maybe<(Maybe<Job>)[]>, TypeParent, Context>;
+
+    job?: JobResolver<Maybe<Job>, TypeParent, Context>;
+
+    company?: CompanyResolver<Maybe<Company>, TypeParent, Context>;
   }
 
   export type JobsResolver<
@@ -185,6 +207,29 @@ export namespace QueryResolvers {
     offset?: Maybe<number>;
 
     limit?: Maybe<number>;
+  }
+
+  export type JobResolver<R = Maybe<Job>, Parent = {}, Context = {}> = Resolver<
+    R,
+    Parent,
+    Context,
+    JobArgs
+  >;
+  export interface JobArgs {
+    id?: Maybe<string>;
+
+    urlReference?: Maybe<string>;
+  }
+
+  export type CompanyResolver<
+    R = Maybe<Company>,
+    Parent = {},
+    Context = {}
+  > = Resolver<R, Parent, Context, CompanyArgs>;
+  export interface CompanyArgs {
+    id?: Maybe<string>;
+
+    urlReference?: Maybe<string>;
   }
 }
 
@@ -199,8 +244,6 @@ export namespace JobResolvers {
     descriptionHtml?: DescriptionHtmlResolver<string, TypeParent, Context>;
 
     tags?: TagsResolver<string[], TypeParent, Context>;
-
-    relativeUrl?: RelativeUrlResolver<string, TypeParent, Context>;
 
     company?: CompanyResolver<Maybe<Company>, TypeParent, Context>;
 
@@ -245,6 +288,8 @@ export namespace JobResolvers {
     salaryCurrency?: SalaryCurrencyResolver<Maybe<string>, TypeParent, Context>;
 
     salaryEquity?: SalaryEquityResolver<Maybe<boolean>, TypeParent, Context>;
+
+    urlReferences?: UrlReferencesResolver<Maybe<string[]>, TypeParent, Context>;
   }
 
   export type IdResolver<R = string, Parent = Job, Context = {}> = Resolver<
@@ -272,11 +317,6 @@ export namespace JobResolvers {
     Parent,
     Context
   >;
-  export type RelativeUrlResolver<
-    R = string,
-    Parent = Job,
-    Context = {}
-  > = Resolver<R, Parent, Context>;
   export type CompanyResolver<
     R = Maybe<Company>,
     Parent = Job,
@@ -347,6 +387,11 @@ export namespace JobResolvers {
     Parent = Job,
     Context = {}
   > = Resolver<R, Parent, Context>;
+  export type UrlReferencesResolver<
+    R = Maybe<string[]>,
+    Parent = Job,
+    Context = {}
+  > = Resolver<R, Parent, Context>;
 }
 
 export namespace CompanyResolvers {
@@ -357,7 +402,7 @@ export namespace CompanyResolvers {
 
     displayName?: DisplayNameResolver<string, TypeParent, Context>;
 
-    relativeUrl?: RelativeUrlResolver<Maybe<string>, TypeParent, Context>;
+    urlReferences?: UrlReferencesResolver<Maybe<string[]>, TypeParent, Context>;
   }
 
   export type IdResolver<R = string, Parent = Company, Context = {}> = Resolver<
@@ -375,8 +420,8 @@ export namespace CompanyResolvers {
     Parent = Company,
     Context = {}
   > = Resolver<R, Parent, Context>;
-  export type RelativeUrlResolver<
-    R = Maybe<string>,
+  export type UrlReferencesResolver<
+    R = Maybe<string[]>,
     Parent = Company,
     Context = {}
   > = Resolver<R, Parent, Context>;
