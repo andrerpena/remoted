@@ -30,34 +30,6 @@ COMMENT ON SCHEMA topology IS 'PostGIS Topology schema';
 
 
 --
--- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
-
-
---
--- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION postgis IS 'PostGIS geometry, geography, and raster spatial types and functions';
-
-
---
--- Name: postgis_topology; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS postgis_topology WITH SCHEMA topology;
-
-
---
--- Name: EXTENSION postgis_topology; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION postgis_topology IS 'PostGIS topology spatial types and functions';
-
-
---
 -- Name: uuid-ossp; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -111,41 +83,13 @@ CREATE TABLE public.job (
 
 CREATE FUNCTION public.__remoted_get_jobs(_limit integer, _offset integer) RETURNS SETOF public.job
     LANGUAGE sql
-    AS $$
-select *
-from job u
-order by published_at desc
-limit _limit offset _offset
-
+    AS $$
+select *
+from job u
+order by published_at desc
+limit _limit offset _offset
+
 $$;
-
-
---
--- Name: google_places_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.google_places_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: address; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.address (
-    id integer DEFAULT nextval('public.google_places_id_seq'::regclass) NOT NULL,
-    formatted_address character varying(255) NOT NULL,
-    geometry public.geometry,
-    longitude double precision,
-    latitude double precision,
-    google_place_id character varying(255) NOT NULL,
-    google_place_details json,
-    CONSTRAINT enforce_srid CHECK ((public.st_srid(geometry) = 4326))
-);
 
 
 --
@@ -156,7 +100,6 @@ CREATE TABLE public.company (
     id integer NOT NULL,
     public_id character varying(100) NOT NULL,
     name character varying(50) NOT NULL,
-    primary_address integer,
     display_name character varying(50) NOT NULL,
     created_at timestamp with time zone DEFAULT now()
 );
@@ -180,37 +123,6 @@ CREATE SEQUENCE public.companies_id_seq
 --
 
 ALTER SEQUENCE public.companies_id_seq OWNED BY public.company.id;
-
-
---
--- Name: company_addresses; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.company_addresses (
-    id integer NOT NULL,
-    company_id integer NOT NULL,
-    google_place_id integer NOT NULL
-);
-
-
---
--- Name: company_google_places_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.company_google_places_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: company_google_places_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.company_google_places_id_seq OWNED BY public.company_addresses.id;
 
 
 --
@@ -243,6 +155,18 @@ CREATE SEQUENCE public.company_url_reference_id_seq
 --
 
 ALTER SEQUENCE public.company_url_reference_id_seq OWNED BY public.url_reference.id;
+
+
+--
+-- Name: google_places_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.google_places_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -350,13 +274,6 @@ ALTER TABLE ONLY public.company ALTER COLUMN id SET DEFAULT nextval('public.comp
 
 
 --
--- Name: company_addresses id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.company_addresses ALTER COLUMN id SET DEFAULT nextval('public.company_google_places_id_seq'::regclass);
-
-
---
 -- Name: job id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -378,30 +295,14 @@ ALTER TABLE ONLY public.url_reference ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
--- Data for Name: address; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY public.address (id, formatted_address, geometry, longitude, latitude, google_place_id, google_place_details) FROM stdin;
-\.
-
-
---
 -- Data for Name: company; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.company (id, public_id, name, primary_address, display_name, created_at) FROM stdin;
-1	s76f1-github	github	\N	Github	2019-02-22 08:18:22.092217+01
-4	07mff-auth0	auth0	\N	Auth0	2019-02-22 08:18:22.092546+01
-3	z2lgb-elastic	elastic	\N	Elastic	2019-02-22 08:18:22.092412+01
-2	w38jd-zapper	zapper	\N	Zapper	2019-02-22 08:18:22.092298+01
-\.
-
-
---
--- Data for Name: company_addresses; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY public.company_addresses (id, company_id, google_place_id) FROM stdin;
+COPY public.company (id, public_id, name, display_name, created_at) FROM stdin;
+1	s76f1-github	github	Github	2019-02-22 08:18:22.092217+01
+4	07mff-auth0	auth0	Auth0	2019-02-22 08:18:22.092546+01
+3	z2lgb-elastic	elastic	Elastic	2019-02-22 08:18:22.092412+01
+2	w38jd-zapper	zapper	Zapper	2019-02-22 08:18:22.092298+01
 \.
 
 
@@ -522,14 +423,6 @@ COPY public.job_tags (id, job_id, tag_id) FROM stdin;
 
 
 --
--- Data for Name: spatial_ref_sys; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY public.spatial_ref_sys (srid, auth_name, auth_srid, srtext, proj4text) FROM stdin;
-\.
-
-
---
 -- Data for Name: tag; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -546,33 +439,10 @@ COPY public.url_reference (id, company_public_id, job_public_id, url) FROM stdin
 
 
 --
--- Data for Name: topology; Type: TABLE DATA; Schema: topology; Owner: -
---
-
-COPY topology.topology (id, name, srid, "precision", hasz) FROM stdin;
-\.
-
-
---
--- Data for Name: layer; Type: TABLE DATA; Schema: topology; Owner: -
---
-
-COPY topology.layer (topology_id, layer_id, schema_name, table_name, feature_column, feature_type, level, child_id) FROM stdin;
-\.
-
-
---
 -- Name: companies_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public.companies_id_seq', 4, true);
-
-
---
--- Name: company_google_places_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('public.company_google_places_id_seq', 1, false);
 
 
 --
@@ -625,27 +495,11 @@ SELECT pg_catalog.setval('public.tag_id_seq', 1, false);
 
 
 --
--- Name: address address_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.address
-    ADD CONSTRAINT address_pkey PRIMARY KEY (id);
-
-
---
 -- Name: company companies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.company
     ADD CONSTRAINT companies_pkey PRIMARY KEY (id);
-
-
---
--- Name: company_addresses company_google_places_pk; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.company_addresses
-    ADD CONSTRAINT company_google_places_pk PRIMARY KEY (id);
 
 
 --
@@ -681,52 +535,10 @@ ALTER TABLE ONLY public.tag
 
 
 --
--- Name: address_formatted_address_uindex; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX address_formatted_address_uindex ON public.address USING btree (formatted_address);
-
-
---
--- Name: address_google_place_id_uindex; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX address_google_place_id_uindex ON public.address USING btree (google_place_id);
-
-
---
--- Name: address_gpx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX address_gpx ON public.address USING btree (public.geography(geometry));
-
-
---
--- Name: address_id_uindex; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX address_id_uindex ON public.address USING btree (id);
-
-
---
--- Name: address_spx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX address_spx ON public.address USING btree (geometry);
-
-
---
 -- Name: companies_name_uindex; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX companies_name_uindex ON public.company USING btree (name);
-
-
---
--- Name: company_google_places_id_uindex; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX company_google_places_id_uindex ON public.company_addresses USING btree (id);
 
 
 --
@@ -755,30 +567,6 @@ CREATE UNIQUE INDEX tag_id_uindex ON public.tag USING btree (id);
 --
 
 CREATE UNIQUE INDEX tag_name_uindex ON public.tag USING btree (name);
-
-
---
--- Name: company companies_primary_address_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.company
-    ADD CONSTRAINT companies_primary_address_fk FOREIGN KEY (primary_address) REFERENCES public.address(id);
-
-
---
--- Name: company_addresses company_google_places_company_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.company_addresses
-    ADD CONSTRAINT company_google_places_company_id_fk FOREIGN KEY (company_id) REFERENCES public.company(id);
-
-
---
--- Name: company_addresses company_google_places_google_place_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.company_addresses
-    ADD CONSTRAINT company_google_places_google_place_id_fk FOREIGN KEY (google_place_id) REFERENCES public.address(id);
 
 
 --
