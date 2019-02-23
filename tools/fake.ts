@@ -67,7 +67,8 @@ buildDb()
           description: "This is the best job ever",
           publishedAt: new Date().toISOString(),
           tags: [getRandomArrayItem(randomTags)],
-          companyId: companies[0].id
+          companyId: companies[0].id,
+          urlReference: "URL"
         });
       } catch (ex) {
         console.log("error");
