@@ -3,8 +3,8 @@ import { buildTestDb } from "../../server/db/build-db";
 import { config } from "dotenv";
 import { RemotedDatabase } from "../../server/db/model";
 import { clearDb } from "../../server/lib/db-ci-helpers";
-import { insertCompany } from "../../server/graphql/services/company-service";
-import { getJobs, insertJob } from "../../server/graphql/services/job-service";
+import { addCompany } from "../../server/graphql/services/company-service";
+import { getJobs, addJob } from "../../server/graphql/services/job-service";
 import { Job } from "../../graphql-types";
 
 let db: RemotedDatabase;
@@ -19,13 +19,13 @@ beforeEach(async () => {
 });
 
 describe("job-service", () => {
-  describe("insertJob", () => {
+  describe("addJob", () => {
     it("default behavior", async () => {
-      const company = await insertCompany(db, {
+      const company = await addCompany(db, {
         displayName: "c-1",
         urlReference: "URL"
       });
-      const job = await insertJob(db, {
+      const job = await addJob(db, {
         title: "developer",
         description: "hello",
         companyId: company.id,
@@ -61,12 +61,12 @@ describe("job-service", () => {
   });
   describe("getJobs", () => {
     beforeEach(async () => {
-      const company = await insertCompany(db, {
+      const company = await addCompany(db, {
         displayName: "c-1",
         urlReference: "URL"
       });
       for (let i = 0; i < 10; i++) {
-        await insertJob(db, {
+        await addJob(db, {
           title: `dev job ${i}`,
           description: "This is a job",
           publishedAt: new Date().toISOString(),

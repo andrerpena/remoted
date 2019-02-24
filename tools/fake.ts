@@ -3,9 +3,9 @@ import { RemotedDatabase } from "../server/db/model";
 import { clearDb } from "../server/lib/db-ci-helpers";
 import * as colors from "colors";
 import { config } from "dotenv";
-import { insertCompany } from "../server/graphql/services/company-service";
+import { addCompany } from "../server/graphql/services/company-service";
 import { Company } from "../graphql-types";
-import { insertJob } from "../server/graphql/services/job-service";
+import { addJob } from "../server/graphql/services/job-service";
 
 const randomTags = [
   // .NET
@@ -41,7 +41,7 @@ function getRandomArrayItem(array: string[]) {
 async function insertCompanies(db: RemotedDatabase): Promise<Company[]> {
   return await Promise.all(
     ["Github", "Zapper", "Elastic", "Auth0"].map(companyName => {
-      return insertCompany(db, {
+      return addCompany(db, {
         displayName: companyName,
         urlReference: "URL"
       });
@@ -62,7 +62,7 @@ buildDb()
     for (let i = 0; i < 100; i++) {
       try {
         console.log(colors.green(`Inserting job ${i}`));
-        await insertJob(db, {
+        await addJob(db, {
           title: "Software developer",
           description: "This is the best job ever",
           publishedAt: new Date().toISOString(),

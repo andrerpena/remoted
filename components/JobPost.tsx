@@ -1,6 +1,5 @@
 import * as React from "react";
 import "./JobPost.scss";
-import { getSampleMarkdown } from "../server/lib/markdown";
 import * as Showdown from "showdown";
 import { Job } from "../graphql-types";
 

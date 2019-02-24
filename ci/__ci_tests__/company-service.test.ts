@@ -4,7 +4,7 @@ import { config } from "dotenv";
 import { RemotedDatabase } from "../../server/db/model";
 import {
   getCompany,
-  insertCompany
+  addCompany
 } from "../../server/graphql/services/company-service";
 import { clearDb } from "../../server/lib/db-ci-helpers";
 
@@ -20,9 +20,9 @@ beforeEach(async () => {
 });
 
 describe("company-service", () => {
-  describe("insertCompany", () => {
+  describe("addCompany", () => {
     it("default behavior", async () => {
-      const company = await insertCompany(db, {
+      const company = await addCompany(db, {
         displayName: "This is my company",
         urlReference: "SOME_URL"
       });
@@ -38,7 +38,7 @@ describe("company-service", () => {
   });
   describe("getCompany", () => {
     it("should work with id", async () => {
-      const company = await insertCompany(db, {
+      const company = await addCompany(db, {
         displayName: "This is my company",
         urlReference: "SOME_URL"
       });

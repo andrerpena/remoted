@@ -14,7 +14,7 @@ export function generateCompanyPublicId(companyName: string) {
   return `${id}-${companyNameSlug}`;
 }
 
-export async function insertCompany(
+export async function addCompany(
   db: RemotedDatabase,
   companyInput: CompanyInput
 ): Promise<Company> {
@@ -50,6 +50,9 @@ export async function getCompanyByPublicId(
   let dbCompany = await db.company.findOne({
     public_id: publicId
   } as DbCompany);
+  if (!dbCompany) {
+    return null;
+  }
   return getCompanyFromDbCompany(dbCompany);
 }
 

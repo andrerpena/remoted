@@ -12,7 +12,7 @@ import { convertToHtml } from "../../lib/markdown";
 import { Job, JobInput } from "../../../graphql-types";
 import { generateSlug, makeId } from "../../lib/id";
 
-export async function insertJob(
+export async function addJob(
   db: RemotedDatabase,
   jobInput: JobInput
 ): Promise<Job | null> {
