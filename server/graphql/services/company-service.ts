@@ -27,6 +27,10 @@ export async function addCompany(
   };
 
   const dbCompany = await (db.company.insert(company) as Promise<DbCompany>);
+  await db.url_reference.insert({
+    company_public_id: dbCompany.public_id,
+    url: companyInput.urlReference
+  } as DbUrlRefence);
 
   return {
     id: dbCompany.public_id,

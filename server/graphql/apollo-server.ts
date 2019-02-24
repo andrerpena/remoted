@@ -5,8 +5,8 @@ import { Context } from "./context";
 import { buildDb } from "../db/build-db";
 import { PAGE_SIZE } from "../constants";
 import { getJobs } from "./services/job-service";
-import { Company, IResolvers } from "../../graphql-types";
-import { getCompany } from "./services/company-service";
+import { IResolvers } from "../../graphql-types";
+import { addCompany, getCompany } from "./services/company-service";
 
 const typeDefs = gql(importSchema("server/graphql/schema.graphql"));
 
@@ -28,10 +28,12 @@ const resolvers: Resolvers = {
   Mutation: {
     addCompany: async (_parent, args) => {
       console.log(args);
-      return {
-        id: "aaa",
-        name: "aaa"
-      } as Company;
+      const db = await buildDb();
+      const company = await getCompany(db, null, args.input.urlReference);
+      if (company) {
+        return company;
+      }
+      return addCompany(db, args.input);
     }
   }
 };
