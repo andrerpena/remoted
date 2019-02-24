@@ -5,17 +5,57 @@ import {
   DbJobInput,
   DbJobTags,
   DbTag,
+  DbUrlRefence,
   RemotedDatabase
 } from "../../db/model";
 import { insertDbRecord } from "../../db/services/db-helpers";
 import { convertToHtml } from "../../lib/markdown";
 import { Job, JobInput } from "../../../graphql-types";
 import { generateSlug, makeId } from "../../lib/id";
+import { Nullable } from "../../../lib/types";
+
+export async function getJobByPublicId(
+  db: RemotedDatabase,
+  publicId: string
+): Promise<Job | null> {
+  let dbJob = await db.job.findOne({
+    public_id: publicId
+  } as DbJob);
+  if (!dbJob) {
+    return null;
+  }
+  return getJobFromDbJob(dbJob);
+}
+
+export async function getJob(
+  db: RemotedDatabase,
+  publicId?: Nullable<string>,
+  urlReference?: Nullable<string>
+): Promise<Job | null> {
+  if (publicId) {
+    return getJobByPublicId(db, publicId);
+  }
+  // in case it is a reference
+  let dbReference = await (db.url_reference.findOne({
+    url: urlReference
+  } as DbUrlRefence) as Promise<DbUrlRefence>);
+
+  if (!dbReference || !dbReference.job_public_id) {
+    return null;
+  }
+
+  return getJobByPublicId(db, dbReference.job_public_id);
+}
 
 export async function addJob(
   db: RemotedDatabase,
   jobInput: JobInput
 ): Promise<Job | null> {
+  const existingJob = await getJob(db, null, jobInput.urlReference);
+  if (existingJob) {
+    return existingJob;
+  }
+
   // Get the company so that it can be denormalized
   const dbCompany = (await db.company.findOne({
     public_id: jobInput.companyId
@@ -34,6 +74,12 @@ export async function addJob(
   });
 
   const dbJob = await (insertDbRecord(db.job, dbJobInput) as Promise<DbJob>);
+
+  await db.url_reference.insert({
+    job_public_id: dbJob.public_id,
+    url: jobInput.urlReference
+  } as DbUrlRefence);
+
   const tags: string[] = [];
   for (let i = 0; i < dbJobInput.tags.length; i++) {
     let tag = (await db.tag.findOne({ name: dbJobInput.tags[i] })) as DbTag;
@@ -47,7 +93,7 @@ export async function addJob(
     await db.job_tags.insert({ job_id: dbJob.id, tag_id: tag.id } as DbJobTags);
   }
 
-  return getJobFromDbJob(dbJob, tags);
+  return getJobFromDbJob(dbJob);
 }
 
 export async function getJobs(
@@ -57,17 +103,17 @@ export async function getJobs(
 ): Promise<Job[]> {
   const dbJobs = await db.__remoted_get_jobs(limit, offset);
   return dbJobs.map(j => {
-    return getJobFromDbJob(j, j.tags.split(" "));
+    return getJobFromDbJob(j);
   });
 }
 
-export function getJobFromDbJob(dbJob: DbJob, tags: string[]): Job {
+export function getJobFromDbJob(dbJob: DbJob): Job {
   return {
     id: dbJob.public_id,
     title: dbJob.title,
     description: dbJob.description,
     descriptionHtml: dbJob.description_html,
-    tags: tags,
+    tags: dbJob.tags.split(" "),
     createdAt: dbJob.created_at.toISOString(),
     publishedAt: dbJob.published_at.toISOString(),
     locationRaw: dbJob.location_raw,

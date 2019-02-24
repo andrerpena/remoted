@@ -4,7 +4,7 @@ import { Request } from "express";
 import { Context } from "./context";
 import { buildDb } from "../db/build-db";
 import { PAGE_SIZE } from "../constants";
-import { getJobs } from "./services/job-service";
+import { addJob, getJobs } from "./services/job-service";
 import { IResolvers } from "../../graphql-types";
 import { addCompany, getCompany } from "./services/company-service";
 
@@ -27,13 +27,12 @@ const resolvers: Resolvers = {
   },
   Mutation: {
     addCompany: async (_parent, args) => {
-      console.log(args);
       const db = await buildDb();
-      const company = await getCompany(db, null, args.input.urlReference);
-      if (company) {
-        return company;
-      }
       return addCompany(db, args.input);
+    },
+    addJob: async (_parent, args) => {
+      const db = await buildDb();
+      return addJob(db, args.input);
     }
   }
 };

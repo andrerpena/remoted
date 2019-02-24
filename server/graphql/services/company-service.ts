@@ -20,6 +20,11 @@ export async function addCompany(
 ): Promise<Company> {
   const slug = generateSlug(companyInput.displayName);
 
+  const existingCompany = await getCompany(db, null, companyInput.urlReference);
+  if (existingCompany) {
+    return existingCompany;
+  }
+
   const company: DbCompanyInput = {
     name: slug,
     public_id: generateCompanyPublicId(companyInput.displayName),
