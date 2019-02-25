@@ -31,7 +31,7 @@ describe("job-service", () => {
         companyId: company.id,
         publishedAt: new Date().toISOString(),
         tags: ["react"],
-        urlReference: "URL"
+        url: "URL"
       });
       console.log(job!.createdAt.toString());
       expect(job).toEqual(
@@ -72,7 +72,7 @@ describe("job-service", () => {
           publishedAt: new Date().toISOString(),
           companyId: company.id,
           tags: ["react"],
-          urlReference: "URL"
+          url: "URL"
         });
       }
     });

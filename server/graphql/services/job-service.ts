@@ -5,53 +5,39 @@ import {
   DbJobInput,
   DbJobTags,
   DbTag,
-  DbUrlRefence,
   RemotedDatabase
 } from "../../db/model";
 import { insertDbRecord } from "../../db/services/db-helpers";
 import { convertToHtml } from "../../lib/markdown";
 import { Job, JobInput } from "../../../graphql-types";
 import { generateSlug, makeId } from "../../lib/id";
-import { Nullable } from "../../../lib/types";
 
-export async function getJobByPublicId(
+export async function getJob(
   db: RemotedDatabase,
-  publicId: string
+  publicId?: string,
+  url?: string
 ): Promise<Job | null> {
   let dbJob = await db.job.findOne({
-    public_id: publicId
-  } as DbJob);
+    or: [
+      {
+        public_id: publicId
+      },
+      {
+        url
+      }
+    ]
+  });
   if (!dbJob) {
     return null;
   }
   return getJobFromDbJob(dbJob);
 }
 
-export async function getJob(
-  db: RemotedDatabase,
-  publicId?: Nullable<string>,
-  urlReference?: Nullable<string>
-): Promise<Job | null> {
-  if (publicId) {
-    return getJobByPublicId(db, publicId);
-  }
-  // in case it is a reference
-  let dbReference = await (db.url_reference.findOne({
-    url: urlReference
-  } as DbUrlRefence) as Promise<DbUrlRefence>);
-
-  if (!dbReference || !dbReference.job_public_id) {
-    return null;
-  }
-
-  return getJobByPublicId(db, dbReference.job_public_id);
-}
-
 export async function addJob(
   db: RemotedDatabase,
   jobInput: JobInput
 ): Promise<Job | null> {
-  const existingJob = await getJob(db, null, jobInput.urlReference);
+  const existingJob = await getJob(db, undefined, jobInput.url);
   if (existingJob) {
     return existingJob;
   }
@@ -69,16 +55,11 @@ export async function addJob(
     companyName: dbCompany.name,
     companyDisplayName: dbCompany.display_name,
     descriptionHtml: convertToHtml(jobInput.description),
-    sanitizedTags: [], // TODO: fix sanitized Tags,
+    sanitizedTags: jobInput.tags,
     companyId: dbCompany.id
   });
 
   const dbJob = await (insertDbRecord(db.job, dbJobInput) as Promise<DbJob>);
-
-  await db.url_reference.insert({
-    job_public_id: dbJob.public_id,
-    url: jobInput.urlReference
-  } as DbUrlRefence);
 
   const tags: string[] = [];
   for (let i = 0; i < dbJobInput.tags.length; i++) {
@@ -127,7 +108,8 @@ export function getJobFromDbJob(dbJob: DbJob): Job {
     salaryMin: dbJob.salary_min,
     salaryMax: dbJob.salary_max,
     salaryCurrency: dbJob.salary_currency,
-    salaryEquity: dbJob.salary_equity
+    salaryEquity: dbJob.salary_equity,
+    url: dbJob.url
   };
 }
 
@@ -164,7 +146,8 @@ export function getDbJobInputFromJobInput(
     salary_min: jobInput.salaryMin || null,
     salary_max: jobInput.salaryMax || null,
     salary_currency: jobInput.salaryCurrency || null,
-    salary_equity: jobInput.salaryEquity || null
+    salary_equity: jobInput.salaryEquity || null,
+    url: jobInput.url
   };
 }
 

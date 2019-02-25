@@ -23,7 +23,7 @@ type Job {
   salaryMax: Int
   salaryCurrency: String
   salaryEquity: Boolean
-  urlReferences: [String!]
+  url: String!
 }
 
 type Company {
@@ -55,7 +55,7 @@ input JobInput {
   salaryMax: Int
   salaryCurrency: String
   salaryEquity: Boolean
-  urlReference: String!
+  url: String!
 }
 
 input CompanyInput {

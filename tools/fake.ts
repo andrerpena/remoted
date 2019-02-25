@@ -68,7 +68,7 @@ buildDb()
           publishedAt: new Date().toISOString(),
           tags: [getRandomArrayItem(randomTags)],
           companyId: companies[0].id,
-          urlReference: "URL"
+          url: "URL"
         });
       } catch (ex) {
         console.log("error");

@@ -1,7 +1,7 @@
 import {
   DbCompany,
   DbCompanyInput,
-  DbUrlRefence,
+  DbCompanyUrl,
   RemotedDatabase
 } from "../../db/model";
 import { generateSlug, makeId } from "../../lib/id";
@@ -32,10 +32,10 @@ export async function addCompany(
   };
 
   const dbCompany = await (db.company.insert(company) as Promise<DbCompany>);
-  await db.url_reference.insert({
+  await db.company_url.insert({
     company_public_id: dbCompany.public_id,
     url: companyInput.urlReference
-  } as DbUrlRefence);
+  } as DbCompanyUrl);
 
   return {
     id: dbCompany.public_id,
@@ -74,9 +74,9 @@ export async function getCompany(
     return getCompanyByPublicId(db, publicId);
   }
   // in case it is a reference
-  let dbReference = await (db.url_reference.findOne({
+  let dbReference = await (db.company_url.findOne({
     url: urlReference
-  } as DbUrlRefence) as Promise<DbUrlRefence>);
+  } as DbCompanyUrl) as Promise<DbCompanyUrl>);
 
   if (!dbReference || !dbReference.company_public_id) {
     return null;
