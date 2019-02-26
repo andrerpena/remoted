@@ -30,6 +30,9 @@ export class JobPost extends React.Component<Job, JobListState> {
   };
 
   render() {
+    const { title, descriptionHtml, tags, company } = this.props;
+    const companyName = company ? company.displayName : "";
+
     return (
       <li className="job-post" onClick={this.handleClick}>
         <div className="box-white-content job-post-header">
@@ -38,15 +41,18 @@ export class JobPost extends React.Component<Job, JobListState> {
           </figure>
           <div className="job-post-body">
             <div>
-              <h5 className="title is-5">{this.props.title}</h5>
+              <h5 className="title is-5">{title}</h5>
             </div>
-            <div className="job-post-body-more-info">Microsoft · 2d ago</div>
+            <div className="job-post-body-more-info">
+              ${companyName} · 2d ago
+            </div>
             <div className="job-post-tags">
               <div className="tags left">
-                <span className="tag is-white">Primary</span>
-                <span className="tag is-white">asp.net</span>
-                <span className="tag is-white">css</span>
-                <span className="tag is-white">html</span>
+                {tags.map(t => (
+                  <span key={t} className="tag is-white">
+                    {t}
+                  </span>
+                ))}
               </div>
               <div className="tags right">
                 <span className="tag save is-light">
@@ -63,7 +69,7 @@ export class JobPost extends React.Component<Job, JobListState> {
           <div
             className="markdown"
             dangerouslySetInnerHTML={{
-              __html: this.converter.makeHtml(`Hello!`)
+              __html: descriptionHtml
             }}
           />
         </div>

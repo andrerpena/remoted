@@ -6,7 +6,11 @@ import { buildDb } from "../db/build-db";
 import { PAGE_SIZE } from "../constants";
 import { addJob, getJobs } from "./services/job-service";
 import { IResolvers } from "../../graphql-types";
-import { addCompany, getCompany } from "./services/company-service";
+import {
+  addCompany,
+  getCompany,
+  getCompanyByJobPublicId
+} from "./services/company-service";
 
 const typeDefs = gql(importSchema("server/graphql/schema.graphql"));
 
@@ -33,6 +37,12 @@ const resolvers: Resolvers = {
     addJob: async (_parent, args) => {
       const db = await buildDb();
       return addJob(db, args.input);
+    }
+  },
+  Job: {
+    company: async _parent => {
+      const db = await buildDb();
+      return getCompanyByJobPublicId(db, _parent.id);
     }
   }
 };

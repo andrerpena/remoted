@@ -2,6 +2,7 @@ import {
   DbCompany,
   DbCompanyInput,
   DbCompanyUrl,
+  DbJob,
   RemotedDatabase
 } from "../../db/model";
 import { generateSlug, makeId } from "../../lib/id";
@@ -59,6 +60,25 @@ export async function getCompanyByPublicId(
   let dbCompany = await db.company.findOne({
     public_id: publicId
   } as DbCompany);
+  if (!dbCompany) {
+    return null;
+  }
+  return getCompanyFromDbCompany(dbCompany);
+}
+
+export async function getCompanyByJobPublicId(
+  db: RemotedDatabase,
+  jobPublicId: string
+): Promise<Company | null> {
+  const dbJob = (await db.job.findOne({
+    public_id: jobPublicId
+  })) as DbJob;
+  if (!dbJob) {
+    return null;
+  }
+  const dbCompany = await db.company.findOne({
+    id: dbJob.company_id
+  });
   if (!dbCompany) {
     return null;
   }
