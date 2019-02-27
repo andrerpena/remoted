@@ -38,12 +38,6 @@ switch (selectedCommand) {
         dropdb --if-exists -U ${userName} ${dbTestsName}
     `;
     break;
-  case "generate_scripts":
-    commands = `
-        echo Create the ${dbFile} file
-        pg_dump --schema-only -W -w -f ${dbFile} -p 5432 -U ${userName} ${dbName}
-        `;
-    break;
   case "dump_db":
     commands = `
         echo Dumping ${dbName}

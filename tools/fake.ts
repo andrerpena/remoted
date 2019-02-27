@@ -43,7 +43,7 @@ async function insertCompanies(db: RemotedDatabase): Promise<Company[]> {
     ["Github", "Zapper", "Elastic", "Auth0"].map(companyName => {
       return addCompany(db, {
         displayName: companyName,
-        urlReference: "URL"
+        url: "URL"
       });
     })
   );
@@ -68,7 +68,8 @@ buildDb()
           publishedAt: new Date().toISOString(),
           tags: [getRandomArrayItem(randomTags)],
           companyId: companies[0].id,
-          url: "URL"
+          url: "URL",
+          source: "stackoverflow"
         });
       } catch (ex) {
         console.log("error");

@@ -12,7 +12,8 @@ export interface RemotedDatabase extends massive.Database {
   company_url: Writable;
   stackoverflow_tags_cache: Writable;
   tag: Writable;
-  job_tags: Writable;
+  job_tag: Writable;
+  source: Writable;
 }
 
 export interface DbCompany extends AnyObject<any> {
@@ -20,6 +21,7 @@ export interface DbCompany extends AnyObject<any> {
   public_id: string;
   name: string;
   display_name: string;
+  image_url?: string;
 }
 
 export type DbCompanyInput = PartialBy<DbCompany, "id">;
@@ -48,6 +50,7 @@ export interface DbJob {
   salary_currency: Nullable<string>;
   salary_equity: Nullable<boolean>;
   url: string;
+  source_id: number;
 }
 
 export type DbJobInput = PartialBy<
@@ -55,7 +58,12 @@ export type DbJobInput = PartialBy<
   "id" | "company_name" | "created_at" | "company_display_name"
 >;
 
-export interface DbJobTags {
+export interface DbSource {
+  id: number;
+  name: string;
+}
+
+export interface DbJobTag {
   id: number;
   job_id: number;
   tag_id: number;
@@ -71,6 +79,6 @@ export type DbTagInsert = PartialBy<DbTag, "id">;
 
 export type DbCompanyUrl = {
   id: number;
-  company_public_id: string;
+  company_id: number;
   url: string;
 };

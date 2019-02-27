@@ -30,7 +30,8 @@ type Company {
   id: String!
   name: String!
   displayName: String!
-  urlReferences: [String!]
+  urls: [String!]
+  imageUrl: String
 }
 
 type Mutation {
@@ -56,11 +57,12 @@ input JobInput {
   salaryCurrency: String
   salaryEquity: Boolean
   url: String!
+  source: String!
 }
 
 input CompanyInput {
   displayName: String!
-  urlReference: String!
+  url: String!
 }
 
 schema {

@@ -34,12 +34,14 @@ export interface JobInput {
   salaryEquity?: Maybe<boolean>;
 
   url: string;
+
+  source: string;
 }
 
 export interface CompanyInput {
   displayName: string;
 
-  urlReference: string;
+  url: string;
 }
 
 // ====================================================
@@ -103,7 +105,9 @@ export interface Company {
 
   displayName: string;
 
-  urlReferences?: Maybe<string[]>;
+  urls?: Maybe<string[]>;
+
+  imageUrl?: Maybe<string>;
 }
 
 export interface Mutation {
@@ -402,7 +406,9 @@ export namespace CompanyResolvers {
 
     displayName?: DisplayNameResolver<string, TypeParent, Context>;
 
-    urlReferences?: UrlReferencesResolver<Maybe<string[]>, TypeParent, Context>;
+    urls?: UrlsResolver<Maybe<string[]>, TypeParent, Context>;
+
+    imageUrl?: ImageUrlResolver<Maybe<string>, TypeParent, Context>;
   }
 
   export type IdResolver<R = string, Parent = Company, Context = {}> = Resolver<
@@ -420,8 +426,13 @@ export namespace CompanyResolvers {
     Parent = Company,
     Context = {}
   > = Resolver<R, Parent, Context>;
-  export type UrlReferencesResolver<
+  export type UrlsResolver<
     R = Maybe<string[]>,
+    Parent = Company,
+    Context = {}
+  > = Resolver<R, Parent, Context>;
+  export type ImageUrlResolver<
+    R = Maybe<string>,
     Parent = Company,
     Context = {}
   > = Resolver<R, Parent, Context>;

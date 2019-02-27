@@ -24,7 +24,7 @@ describe("company-service", () => {
     it("default behavior", async () => {
       const company = await addCompany(db, {
         displayName: "This is my company",
-        urlReference: "SOME_URL"
+        url: "SOME_URL"
       });
       expect(company).toEqual(
         expect.objectContaining({
@@ -40,7 +40,7 @@ describe("company-service", () => {
     it("should work with id", async () => {
       const company = await addCompany(db, {
         displayName: "This is my company",
-        urlReference: "SOME_URL"
+        url: "SOME_URL"
       });
       const companyRetrieved = await getCompany(db, company.id);
       expect(companyRetrieved).toEqual(

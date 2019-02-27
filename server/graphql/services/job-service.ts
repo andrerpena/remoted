@@ -3,7 +3,8 @@ import {
   DbCompanyInput,
   DbJob,
   DbJobInput,
-  DbJobTags,
+  DbJobTag,
+  DbSource,
   DbTag,
   RemotedDatabase
 } from "../../db/model";
@@ -51,12 +52,29 @@ export async function addJob(
     return null;
   }
 
+  // validate the source
+  if (!whiteListedSources.includes(jobInput.source)) {
+    throw new Error(`Invalid source: ${jobInput.source}`);
+  }
+
+  // get or create the source
+  let dbSource: DbSource = await db.source.findOne({
+    name: jobInput.source
+  } as DbSource);
+
+  if (!dbSource) {
+    dbSource = (await insertDbRecord(db.source, {
+      name: jobInput.source
+    } as DbSource)) as DbSource;
+  }
+
   const dbJobInput: DbJobInput = getDbJobInputFromJobInput(jobInput, {
     companyName: dbCompany.name,
     companyDisplayName: dbCompany.display_name,
     descriptionHtml: convertToHtml(jobInput.description),
     sanitizedTags: jobInput.tags,
-    companyId: dbCompany.id
+    companyId: dbCompany.id,
+    sourceId: dbSource.id
   });
 
   const dbJob = await (insertDbRecord(db.job, dbJobInput) as Promise<DbJob>);
@@ -71,7 +89,7 @@ export async function addJob(
       } as DbTag)) as DbTag;
     }
     tags.push(tag.name);
-    await db.job_tags.insert({ job_id: dbJob.id, tag_id: tag.id } as DbJobTags);
+    await db.job_tag.insert({ job_id: dbJob.id, tag_id: tag.id } as DbJobTag);
   }
 
   return getJobFromDbJob(dbJob);
@@ -119,6 +137,7 @@ export interface GetDbJobInputFromJobInputOptions {
   companyName: string;
   companyDisplayName: string;
   companyId: number;
+  sourceId: number;
 }
 
 export function getDbJobInputFromJobInput(
@@ -147,7 +166,8 @@ export function getDbJobInputFromJobInput(
     salary_max: jobInput.salaryMax || null,
     salary_currency: jobInput.salaryCurrency || null,
     salary_equity: jobInput.salaryEquity || null,
-    url: jobInput.url
+    url: jobInput.url,
+    source_id: options.sourceId
   };
 }
 
@@ -157,3 +177,5 @@ export function generateJobPublicId(jobTitle: string, companyName: string) {
   const companyNameSlug = generateSlug(companyName);
   return `${id}-remote-${jobTitleSlug}-${companyNameSlug}`;
 }
+
+export const whiteListedSources = ["stackoverflow"];

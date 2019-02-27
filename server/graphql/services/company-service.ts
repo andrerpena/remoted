@@ -21,7 +21,7 @@ export async function addCompany(
 ): Promise<Company> {
   const slug = generateSlug(companyInput.displayName);
 
-  const existingCompany = await getCompany(db, null, companyInput.urlReference);
+  const existingCompany = await getCompany(db, null, companyInput.url);
   if (existingCompany) {
     return existingCompany;
   }
@@ -34,8 +34,8 @@ export async function addCompany(
 
   const dbCompany = await (db.company.insert(company) as Promise<DbCompany>);
   await db.company_url.insert({
-    company_public_id: dbCompany.public_id,
-    url: companyInput.urlReference
+    company_id: dbCompany.id,
+    url: companyInput.url
   } as DbCompanyUrl);
 
   return {
@@ -66,6 +66,19 @@ export async function getCompanyByPublicId(
   return getCompanyFromDbCompany(dbCompany);
 }
 
+export async function getCompanyById(
+  db: RemotedDatabase,
+  id: number
+): Promise<Company | null> {
+  let dbCompany = await db.company.findOne({
+    id: id
+  } as DbCompany);
+  if (!dbCompany) {
+    return null;
+  }
+  return getCompanyFromDbCompany(dbCompany);
+}
+
 export async function getCompanyByJobPublicId(
   db: RemotedDatabase,
   jobPublicId: string
@@ -88,19 +101,19 @@ export async function getCompanyByJobPublicId(
 export async function getCompany(
   db: RemotedDatabase,
   publicId?: Nullable<string>,
-  urlReference?: Nullable<string>
+  url?: Nullable<string>
 ): Promise<Company | null> {
   if (publicId) {
     return getCompanyByPublicId(db, publicId);
   }
   // in case it is a reference
-  let dbReference = await (db.company_url.findOne({
-    url: urlReference
+  let dbCompanyUrl = await (db.company_url.findOne({
+    url: url
   } as DbCompanyUrl) as Promise<DbCompanyUrl>);
 
-  if (!dbReference || !dbReference.company_public_id) {
+  if (!dbCompanyUrl || !dbCompanyUrl.company_id) {
     return null;
   }
 
-  return getCompanyByPublicId(db, dbReference.company_public_id);
+  return getCompanyById(db, dbCompanyUrl.company_id);
 }
