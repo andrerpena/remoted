@@ -24,6 +24,44 @@ describe("job-service", () => {
         displayName: "c-1",
         url: "URL"
       });
+      const job = await addJob(db, {
+        title: "developer",
+        description: "hello",
+        companyId: company.id,
+        publishedAt: new Date().toISOString(),
+        tags: ["react"],
+        url: "URL",
+        source: "stackoverflow"
+      });
+      expect(job).toEqual(
+        expect.objectContaining({
+          createdAt: expect.any(String),
+          description: "hello",
+          descriptionHtml: "<p>hello</p>",
+          id: expect.any(String),
+          locationPreferred: null,
+          locationPreferredTimeZone: null,
+          locationPreferredTimeZoneTolerance: null,
+          locationRaw: null,
+          locationRequired: null,
+          publishedAt: expect.any(String),
+          salaryCurrency: null,
+          salaryEquity: null,
+          salaryExact: null,
+          salaryMax: null,
+          salaryMin: null,
+          salaryRaw: null,
+          tags: ["react"],
+          title: "developer",
+          url: "URL"
+        })
+      );
+    });
+    it("add the same job twice with the same URL should not end with 2 jobs", async () => {
+      const company = await addCompany(db, {
+        displayName: "c-1",
+        url: "URL"
+      });
       await addJob(db, {
         title: "developer",
         description: "hello",
@@ -33,30 +71,21 @@ describe("job-service", () => {
         url: "URL",
         source: "stackoverflow"
       });
-      // console.log(job!.createdAt.toString());
-      // expect(job).toEqual(
-      //   expect.objectContaining({
-      //     createdAt: expect.any(String),
-      //     description: "hello",
-      //     descriptionHtml: "<p>hello</p>",
-      //     id: expect.any(String),
-      //     locationPreferred: null,
-      //     locationPreferredTimeZone: null,
-      //     locationPreferredTimeZoneTolerance: null,
-      //     locationRaw: null,
-      //     locationRequired: null,
-      //     publishedAt: expect.any(String),
-      //     relativeUrl: "",
-      //     salaryCurrency: null,
-      //     salaryEquity: null,
-      //     salaryExact: null,
-      //     salaryMax: null,
-      //     salaryMin: null,
-      //     salaryRaw: null,
-      //     tags: [],
-      //     title: "developer"
-      //   })
-      // );
+      await addJob(db, {
+        title: "developer-2",
+        description: "hello-2",
+        companyId: company.id,
+        publishedAt: new Date().toISOString(),
+        tags: ["react"],
+        url: "URL",
+        source: "stackoverflow"
+      });
+      const data = await getJobs(db, 10, 0);
+      expect(data.length).toBe(1);
+      expect(data[0]).toMatchObject({
+        title: "developer",
+        description: "hello"
+      });
     });
   });
   describe("getJobs", () => {
