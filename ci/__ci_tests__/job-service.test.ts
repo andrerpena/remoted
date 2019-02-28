@@ -5,7 +5,6 @@ import { RemotedDatabase } from "../../server/db/model";
 import { clearDb } from "../../server/lib/db-ci-helpers";
 import { addCompany } from "../../server/graphql/services/company-service";
 import { getJobs, addJob } from "../../server/graphql/services/job-service";
-import { Job } from "../../graphql-types";
 
 let db: RemotedDatabase;
 
@@ -73,57 +72,49 @@ describe("job-service", () => {
           publishedAt: new Date().toISOString(),
           companyId: company.id,
           tags: ["react"],
-          url: "URL",
+          url: `URL_${i}`,
           source: "stackoverflow"
         });
       }
     });
 
-    function testResultFormat(data: Job[]) {
-      expect(data).toContainEqual(
-        expect.objectContaining({
-          createdAt: expect.any(String),
-          description: "This is a job",
-          descriptionHtml: "<p>This is a job</p>",
-          id: expect.any(String),
-          locationPreferred: null,
-          locationPreferredTimeZone: null,
-          locationPreferredTimeZoneTolerance: null,
-          locationRaw: null,
-          locationRequired: null,
-          publishedAt: expect.any(String),
-          relativeUrl: "",
-          salaryCurrency: null,
-          salaryEquity: null,
-          salaryExact: null,
-          salaryMax: null,
-          salaryMin: null,
-          salaryRaw: null,
-          tags: [""],
-          title: expect.any(String)
-        })
-      );
-    }
-
     it("default behavior", async () => {
       const data = await getJobs(db, 10, 0);
       expect(Array.isArray(data)).toBe(true);
       expect(data.length).toBe(10);
-      testResultFormat(data);
+      expect(data[0]).toEqual({
+        createdAt: expect.any(String),
+        description: "This is a job",
+        descriptionHtml: "<p>This is a job</p>",
+        id: expect.any(String),
+        locationPreferred: null,
+        locationPreferredTimeZone: null,
+        locationPreferredTimeZoneTolerance: null,
+        locationRaw: null,
+        locationRequired: null,
+        publishedAt: expect.any(String),
+        salaryCurrency: null,
+        salaryEquity: null,
+        salaryExact: null,
+        salaryMax: null,
+        salaryMin: null,
+        salaryRaw: null,
+        tags: ["react"],
+        title: "dev job 9",
+        url: "URL_9"
+      });
     });
 
     it("getting more data should return just 10", async () => {
       const data = await getJobs(db, 20, 0);
       expect(Array.isArray(data)).toBe(true);
       expect(data.length).toBe(10);
-      testResultFormat(data);
     });
 
     it("should work with half of the data", async () => {
       const data = await getJobs(db, 10, 5);
       expect(Array.isArray(data)).toBe(true);
       expect(data.length).toBe(5);
-      testResultFormat(data);
     });
 
     it("the job title should be correct", async () => {

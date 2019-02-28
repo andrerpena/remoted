@@ -30,8 +30,7 @@ describe("company-service", () => {
         expect.objectContaining({
           displayName: "This is my company",
           id: expect.any(String),
-          name: "this-is-my-company",
-          relativeUrl: ""
+          name: "this-is-my-company"
         })
       );
     });
@@ -47,8 +46,7 @@ describe("company-service", () => {
         expect.objectContaining({
           displayName: "This is my company",
           id: expect.any(String),
-          name: "this-is-my-company",
-          relativeUrl: ""
+          name: "this-is-my-company"
         })
       );
     });
