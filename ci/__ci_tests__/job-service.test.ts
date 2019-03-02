@@ -4,7 +4,11 @@ import { config } from "dotenv";
 import { RemotedDatabase } from "../../server/db/model";
 import { clearDb } from "../../server/lib/db-ci-helpers";
 import { addCompany } from "../../server/graphql/services/company-service";
-import { getJobs, addJob } from "../../server/graphql/services/job-service";
+import {
+  getJobs,
+  addJob,
+  getJob
+} from "../../server/graphql/services/job-service";
 
 let db: RemotedDatabase;
 
@@ -86,6 +90,35 @@ describe("job-service", () => {
         title: "developer",
         description: "hello"
       });
+    });
+    it("should normalize the URL", async () => {
+      const company = await addCompany(db, {
+        displayName: "c-1",
+        url: "URL"
+      });
+      const job = await addJob(db, {
+        title: "developer",
+        description: "hello",
+        companyId: company.id,
+        publishedAt: new Date().toISOString(),
+        tags: ["react"],
+        url:
+          "https://stackoverflow.com/jobs/243210/open-source-engineer-falco-sysdig?a=1jz2mYJONKs8&so=p&pg=1&offset=-1&total=349&r=true",
+        source: "stackoverflow"
+      });
+      if (!job) {
+        throw new Error("job was not supposed to be null");
+      }
+      expect(job.url).toEqual(
+        "stackoverflow.com/jobs/243210/open-source-engineer-falco-sysdig"
+      );
+      const existingJob = await getJob(db, job.id);
+      if (!existingJob) {
+        throw new Error("existingJob was not supposed to be null");
+      }
+      expect(existingJob.url).toEqual(
+        "stackoverflow.com/jobs/243210/open-source-engineer-falco-sysdig"
+      );
     });
   });
   describe("getJobs", () => {

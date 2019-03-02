@@ -12,6 +12,7 @@ import { insertDbRecord } from "../../db/services/db-helpers";
 import { convertToHtml } from "../../lib/markdown";
 import { Job, JobInput } from "../../../graphql-types";
 import { generateSlug, makeId } from "../../lib/id";
+import { normalizeUrl } from "../../../lib/url";
 
 export async function getJob(
   db: RemotedDatabase,
@@ -38,7 +39,14 @@ export async function addJob(
   db: RemotedDatabase,
   jobInput: JobInput
 ): Promise<Job | null> {
-  const existingJob = await getJob(db, undefined, jobInput.url);
+  let normalizedUrl;
+  try {
+    normalizedUrl = normalizeUrl(jobInput.url);
+  } catch (error) {
+    // Let's just ignore
+    normalizedUrl = jobInput.url;
+  }
+  const existingJob = await getJob(db, undefined, normalizedUrl);
   if (existingJob) {
     return existingJob;
   }
@@ -74,7 +82,8 @@ export async function addJob(
     descriptionHtml: convertToHtml(jobInput.description),
     sanitizedTags: jobInput.tags,
     companyId: dbCompany.id,
-    sourceId: dbSource.id
+    sourceId: dbSource.id,
+    normalizedUrl: normalizedUrl
   });
 
   const dbJob = await (insertDbRecord(db.job, dbJobInput) as Promise<DbJob>);
@@ -138,6 +147,7 @@ export interface GetDbJobInputFromJobInputOptions {
   companyDisplayName: string;
   companyId: number;
   sourceId: number;
+  normalizedUrl: string;
 }
 
 export function getDbJobInputFromJobInput(
@@ -166,7 +176,7 @@ export function getDbJobInputFromJobInput(
     salary_max: jobInput.salaryMax || null,
     salary_currency: jobInput.salaryCurrency || null,
     salary_equity: jobInput.salaryEquity || null,
-    url: jobInput.url,
+    url: options.normalizedUrl,
     source_id: options.sourceId
   };
 }
