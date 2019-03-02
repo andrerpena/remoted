@@ -1,6 +1,7 @@
 import { buildTestDb } from "../../server/db/build-db";
 
 import { config } from "dotenv";
+config();
 import { RemotedDatabase } from "../../server/db/model";
 import { clearDb } from "../../server/lib/db-ci-helpers";
 import { updateSource } from "../../server/graphql/services/source-service";
@@ -8,7 +9,6 @@ import { updateSource } from "../../server/graphql/services/source-service";
 let db: RemotedDatabase;
 
 beforeAll(async () => {
-  config();
   db = await buildTestDb();
 });
 

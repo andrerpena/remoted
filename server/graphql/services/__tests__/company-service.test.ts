@@ -1,3 +1,6 @@
+import { config } from "dotenv";
+
+config();
 import { generateCompanyPublicId } from "../company-service";
 
 describe("company-service", () => {

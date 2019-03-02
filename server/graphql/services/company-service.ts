@@ -8,6 +8,7 @@ import {
 import { generateSlug, makeId } from "../../lib/id";
 import { Company, CompanyInput } from "../../../graphql-types";
 import { Nullable } from "../../../lib/types";
+import { uploadFromUrl } from "../../../lib/storage";
 
 export function generateCompanyPublicId(companyName: string) {
   const id = makeId();
@@ -38,6 +39,18 @@ export async function addCompany(
     url: companyInput.url
   } as DbCompanyUrl);
 
+  if (companyInput.imageUrl) {
+    try {
+      await updateCompanyImageUrl(
+        db,
+        dbCompany.public_id,
+        companyInput.imageUrl
+      );
+    } catch (ex) {
+      // I will ignore for now
+    }
+  }
+
   return {
     id: dbCompany.public_id,
     displayName: dbCompany.display_name,
@@ -49,7 +62,8 @@ export function getCompanyFromDbCompany(dbCompany: DbCompany): Company {
   return {
     id: dbCompany.public_id,
     displayName: dbCompany.display_name,
-    name: dbCompany.name
+    name: dbCompany.name,
+    imageUrl: dbCompany.image_url
   };
 }
 
@@ -116,4 +130,36 @@ export async function getCompany(
   }
 
   return getCompanyById(db, dbCompanyUrl.company_id);
+}
+
+export async function updateCompanyImageUrl(
+  db: RemotedDatabase,
+  public_id: string,
+  imageUrl: string
+): Promise<DbCompany> {
+  const dbCompany = await db.company.findOne({
+    public_id
+  });
+  if (!dbCompany) {
+    throw new Error("dbCompany was not supposed to be null");
+  }
+  const location = await uploadFromUrl(public_id, imageUrl);
+  return db.company.save({
+    ...dbCompany,
+    image_url: location.Location
+  }) as Promise<DbCompany>;
+}
+
+export async function getCompanyUrls(
+  db: RemotedDatabase,
+  public_id: string
+): Promise<string[]> {
+  const dbCompany = await db.company.findOne({
+    public_id
+  });
+  const companyUrls = (await db.company_url.find({
+    company_id: dbCompany.id
+  })) as DbCompanyUrl[];
+
+  return companyUrls.map(u => u.url);
 }

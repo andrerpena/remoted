@@ -3,13 +3,12 @@ import * as express from "express";
 import { fromExpressRequest } from "./lib/url";
 import { apolloServer } from "./graphql/apollo-server";
 import { config } from "dotenv";
+config();
 
 const port = parseInt(process.env.PORT || "3000", 10);
 const dev = process.env.NODE_ENV !== "production";
 const nextServer = next({ dev });
 const nextRequestHandler = nextServer.getRequestHandler();
-
-config();
 
 nextServer.prepare().then(() => {
   const app = express();

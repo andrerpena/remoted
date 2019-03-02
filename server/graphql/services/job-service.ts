@@ -46,13 +46,13 @@ export async function addJob(
     // Let's just ignore
     normalizedUrl = jobInput.url;
   }
+
   const existingJob = await getJob(db, undefined, normalizedUrl);
   if (existingJob) {
     return existingJob;
   }
-
   // Get the company so that it can be denormalized
-  const dbCompany = (await db.company.findOne({
+  let dbCompany = (await db.company.findOne({
     public_id: jobInput.companyId
   } as DbCompanyInput)) as DbCompany;
   if (!dbCompany) {

@@ -721,6 +721,12 @@
               "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
             },
             "defaultValue": null
+          },
+          {
+            "name": "imageUrl",
+            "description": "",
+            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "defaultValue": null
           }
         ],
         "interfaces": null,

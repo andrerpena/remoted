@@ -42,6 +42,8 @@ export interface CompanyInput {
   displayName: string;
 
   url: string;
+
+  imageUrl?: Maybe<string>;
 }
 
 export interface UpdateSourceInput {

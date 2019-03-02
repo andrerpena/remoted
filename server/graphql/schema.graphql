@@ -65,6 +65,7 @@ input JobInput {
 input CompanyInput {
   displayName: String!
   url: String!
+  imageUrl: String
 }
 
 type Source {

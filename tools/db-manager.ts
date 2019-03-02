@@ -41,7 +41,7 @@ switch (selectedCommand) {
   case "dump_db":
     commands = `
         echo Dumping ${dbName}
-        pg_dump --no-acl --no-owner -h localhost -U ${userName} ${dbName} > ${dbFile}
+        pg_dump --no-acl --no-owner --schema-only -h localhost -U ${userName} ${dbName} > ${dbFile}
         `;
     break;
   case "restore_db":
