@@ -2,6 +2,7 @@ type Query {
   jobs(offset: Int, limit: Int): [Job]
   job(id: String, urlReference: String): Job
   company(id: String, urlReference: String): Company
+  sources: [Source]
 }
 type Job {
   id: String!
@@ -37,6 +38,7 @@ type Company {
 type Mutation {
   addJob(input: JobInput!): Job
   addCompany(input: CompanyInput!): Company
+  updateSource(input: UpdateSourceInput!): Source
 }
 
 input JobInput {
@@ -63,6 +65,19 @@ input JobInput {
 input CompanyInput {
   displayName: String!
   url: String!
+}
+
+type Source {
+  name: String!
+  lastUpdatedAt: String
+  lastUpdateMessage: String
+  lastUpdateMessageDetails: String
+}
+
+input UpdateSourceInput {
+  name: String!
+  updateMessage: String!
+  updateMessageDetails: String
 }
 
 schema {

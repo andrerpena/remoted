@@ -11,6 +11,7 @@ import {
   getCompany,
   getCompanyByJobPublicId
 } from "./services/company-service";
+import { updateSource } from "./services/source-service";
 
 const typeDefs = gql(importSchema("server/graphql/schema.graphql"));
 
@@ -37,6 +38,10 @@ const resolvers: Resolvers = {
     addJob: async (_parent, args) => {
       const db = await buildDb();
       return addJob(db, args.input);
+    },
+    updateSource: async (_parent, args) => {
+      const db = await buildDb();
+      return updateSource(db, args.input);
     }
   },
   Job: {

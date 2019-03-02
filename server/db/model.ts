@@ -61,6 +61,9 @@ export type DbJobInput = PartialBy<
 export interface DbSource {
   id: number;
   name: string;
+  last_updated_at: Date;
+  last_update_message: string;
+  last_update_message_details: string;
 }
 
 export interface DbJobTag {

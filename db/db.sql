@@ -85,12 +85,12 @@ CREATE TABLE public.job (
 
 CREATE FUNCTION public.__remoted_get_jobs(_limit integer, _offset integer) RETURNS SETOF public.job
     LANGUAGE sql
-    AS $$
-select *
-from job u
-order by published_at desc
-limit _limit offset _offset
-
+    AS $$
+select *
+from job u
+order by published_at desc
+limit _limit offset _offset
+
 $$;
 
 
@@ -239,7 +239,10 @@ ALTER SEQUENCE public.jobs_id_seq OWNED BY public.job.id;
 
 CREATE TABLE public.source (
     id integer NOT NULL,
-    name character varying(100)
+    name character varying(100),
+    last_updated_at timestamp with time zone,
+    last_update_message text,
+    last_update_message_details text
 );
 
 
@@ -435,7 +438,7 @@ COPY public.job_tag (id, job_id, tag_id) FROM stdin;
 -- Data for Name: source; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.source (id, name) FROM stdin;
+COPY public.source (id, name, last_updated_at, last_update_message, last_update_message_details) FROM stdin;
 \.
 
 
