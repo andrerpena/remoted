@@ -32,12 +32,13 @@ export class JobPost extends React.Component<Job, JobListState> {
   render() {
     const { title, descriptionHtml, tags, company } = this.props;
     const companyName = company ? company.displayName : "";
+    const companyUrl = company ? company.imageUrl : "";
 
     return (
       <li className="job-post" onClick={this.handleClick}>
         <div className="box-white-content job-post-header">
           <figure className="job-post-image">
-            <img src="https://ph-files.imgix.net/9196e189-287f-4381-ad38-f8b422b90789?auto=format&auto=compress&codec=mozjpeg&cs=strip&w=80&h=80&fit=crop&dpr=2%202x,%20https://ph-files.imgix.net/9196e189-287f-4381-ad38-f8b422b90789?auto=format&auto=compress&codec=mozjpeg&cs=strip&w=80&h=80&fit=crop&dpr=3%203x" />
+            <img src={companyUrl as string} />
           </figure>
           <div className="job-post-body">
             <div>

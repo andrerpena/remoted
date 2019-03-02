@@ -17,6 +17,7 @@ export const getJobsQuery = gql`
       tags
       company {
         displayName
+        imageUrl
       }
     }
   }
