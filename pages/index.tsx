@@ -43,7 +43,6 @@ export default () => (
           <div className="box-white">Subscribe</div>
           <div className="box-white">My favorite tags</div>
           <div className="box-white">Top tags</div>
-          <div className="box-white">Top remote companies</div>
         </div>
       </div>
     </div>
