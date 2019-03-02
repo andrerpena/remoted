@@ -20,7 +20,10 @@ function setupConfig(): Config {
     connection: connection,
     testConnection: {
       ...connection,
-      database: readEnvVariable("PGDATABASETEST")
+      database:
+        process.env.NODE_ENV !== "production"
+          ? readEnvVariable("PGDATABASETEST")
+          : ""
     }
   };
 }

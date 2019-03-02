@@ -16,17 +16,5 @@ module.exports = {
         NODE_ENV: "production"
       }
     }
-  ],
-
-  deploy: {
-    production: {
-      user: "andrerpena",
-      host: "212.83.163.1",
-      ref: "origin/master",
-      repo: "git@github.com:andrerpena/remoted.git",
-      path: "/root/git/remoted",
-      "post-deploy":
-        "npm install && npm run build && pm2 reload ecosystem.config.js --env production"
-    }
-  }
+  ]
 };
