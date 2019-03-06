@@ -9,6 +9,7 @@ import { generateSlug, makeId } from "../../lib/id";
 import { Company, CompanyInput } from "../../../graphql-types";
 import { Nullable } from "../../../lib/types";
 import { uploadFromUrl } from "../../../lib/storage";
+import { serverConfig } from "../../../lib/serverConfig";
 
 export function generateCompanyPublicId(companyName: string) {
   const id = makeId();
@@ -58,12 +59,20 @@ export async function addCompany(
   };
 }
 
+export function buildCompanyImageUrl(imagePath: string) {
+  return `${serverConfig.storageHost}/${
+    serverConfig.storageCompanyHost
+  }/${imagePath}`;
+}
+
 export function getCompanyFromDbCompany(dbCompany: DbCompany): Company {
   return {
     id: dbCompany.public_id,
     displayName: dbCompany.display_name,
     name: dbCompany.name,
     imageUrl: dbCompany.image_url
+      ? buildCompanyImageUrl(dbCompany.image_url)
+      : ""
   };
 }
 
@@ -143,10 +152,18 @@ export async function updateCompanyImageUrl(
   if (!dbCompany) {
     throw new Error("dbCompany was not supposed to be null");
   }
-  const location = await uploadFromUrl(public_id, imageUrl);
+  const location = await uploadFromUrl(
+    `${serverConfig.storageCompanyHost}/${public_id}`,
+    imageUrl
+  );
+  console.log(`${serverConfig.storageHost}/${public_id}`);
+  const fullFileKey = location.Key;
+  const processedFileKey = fullFileKey.substring(
+    fullFileKey.lastIndexOf("/") + 1
+  );
   return db.company.save({
     ...dbCompany,
-    image_url: location.Location
+    image_url: processedFileKey
   }) as Promise<DbCompany>;
 }
 
