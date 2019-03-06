@@ -15,10 +15,11 @@ describe("company-service", () => {
   });
   describe("buildCompanyImageUrl", () => {
     it("should work", () => {
-      const companyPublicId = buildCompanyImageUrl("something.png");
-      expect(companyPublicId).toEqual(
-        "https://remoted.sfo2.digitaloceanspaces.com/dev/remoted/companies/something.png"
-      );
+      const companyImageUrl = buildCompanyImageUrl("something.png");
+      expect([
+        "https://remoted.sfo2.digitaloceanspaces.com/dev/remoted/companies/something.png",
+        "https://remoted.sfo2.digitaloceanspaces.com/prod/remoted/companies/something.png"
+      ]).toContain(companyImageUrl);
     });
   });
 });

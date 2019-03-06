@@ -3,8 +3,14 @@ import { readEnvVariable } from "../server/lib/env";
 
 dotenv();
 
-const storageHost = readEnvVariable("STORAGE_HOST");
-const storageCompanyPath = readEnvVariable("STORAGE_COMPANY_PATH");
+const storageHost = readEnvVariable(
+  "STORAGE_HOST",
+  "https://remoted.sfo2.digitaloceanspaces.com"
+);
+const storageCompanyPath = readEnvVariable(
+  "STORAGE_COMPANY_PATH",
+  "prod/remoted/companies"
+);
 
 export interface Config {
   storageHost: string;
