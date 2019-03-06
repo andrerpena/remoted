@@ -11,5 +11,5 @@ export function makeId() {
 }
 
 export function generateSlug(text: string) {
-  return slugify(text, { remove: /[*+¨~.()'"!:@]/g }).toLowerCase();
+  return slugify(text, { remove: /[*+¨~.()\/\\'"!:@]/g }).toLowerCase();
 }
