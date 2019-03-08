@@ -43,14 +43,16 @@
   }
 
   .job-post-tags {
-    margin-top: $size-7;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin-top: $size-8;
+    margin-bottom: -$size-8;
     .tags {
       margin: 0 !important;
       .tag {
-        margin-bottom: 0;
+        margin-right: $size-8;
+        margin-bottom: $size-8;
         text-transform: uppercase;
         .fas,
         .far {
