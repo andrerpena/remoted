@@ -23,10 +23,9 @@ export const ApplyPanel: React.FunctionComponent<{
             👍 Apply for this job
           </a>
         </div>
-        fa
         <div className="column">
           <a className="button is-light" onClick={props.onClose}>
-            Nevermind
+            ❌ Nevermind
           </a>
         </div>
       </div>
