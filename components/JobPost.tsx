@@ -5,6 +5,7 @@ import { Job } from "../graphql-types";
 import { timeAgo } from "../lib/time";
 import { getSalaryText } from "../lib/salary";
 import { getLocationText } from "../lib/location";
+import { buildAbsoluteUrl } from "../lib/url";
 
 interface JobListState {
   open: boolean;
@@ -33,7 +34,14 @@ export class JobPost extends React.Component<Job, JobListState> {
   };
 
   render() {
-    const { title, descriptionHtml, tags, company, publishedAt } = this.props;
+    const {
+      title,
+      descriptionHtml,
+      tags,
+      company,
+      publishedAt,
+      url
+    } = this.props;
     const companyName = company ? company.displayName : "";
     const companyUrl = company ? company.imageUrl : "";
 
@@ -41,8 +49,11 @@ export class JobPost extends React.Component<Job, JobListState> {
     const locationText = getLocationText(this.props);
 
     return (
-      <li className="job-post" onClick={this.handleClick}>
-        <div className="box-white-content job-post-header">
+      <li className="job-post">
+        <div
+          className="box-white-content job-post-header"
+          onClick={this.handleClick}
+        >
           <div className="company-header">
             <figure className="job-post-image">
               <img src={companyUrl as string} />
@@ -76,33 +87,50 @@ export class JobPost extends React.Component<Job, JobListState> {
               ))}
             </div>
           </div>
-
-          {/*<div className="job-post-body">*/}
-          {/*<div>*/}
-          {/*<h5 className="title is-5">{title}</h5>*/}
-          {/*</div>*/}
-          {/*<div className="job-post-body-more-info">*/}
-          {/*${companyName} · 2d ago*/}
-          {/*</div>*/}
-
-          {/*<div className="tags right">*/}
-          {/*<span className="tag save is-light">*/}
-          {/*save as <i className="far fa-heart" />*/}
-          {/*</span>*/}
-          {/*<span className="tag apply is-light">*/}
-          {/*apply <i className="fas fa-check" />*/}
-          {/*</span>*/}
-          {/*</div>*/}
-          {/*</div>*/}
-          {/*</div>*/}
         </div>
         <div className={`job-post-extension ${this.state.open ? "open" : ""}`}>
+          <div className="apply">
+            <div className="columns is-mobile">
+              <div className="column is-three-fifths">
+                <a
+                  className="button is-primary"
+                  target="_blank"
+                  href={buildAbsoluteUrl(url)}
+                >
+                  👍 Apply to this job
+                </a>
+              </div>
+              <div className="column">
+                <a className="button is-light" onClick={this.handleClick}>
+                  ❌ Close
+                </a>
+              </div>
+            </div>
+          </div>
           <div
-            className="markdown"
+            className="description markdown"
             dangerouslySetInnerHTML={{
               __html: descriptionHtml
             }}
           />
+          <div className="apply">
+            <div className="columns">
+              <div className="column is-three-fifths">
+                <a
+                  className="button is-primary"
+                  target="_blank"
+                  href={buildAbsoluteUrl(url)}
+                >
+                  👍 Apply to this job
+                </a>
+              </div>
+              <div className="column">
+                <a className="button is-light" onClick={this.handleClick}>
+                  ❌ Close
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </li>
     );

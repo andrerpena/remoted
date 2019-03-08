@@ -103,10 +103,18 @@
 
 .job-post-extension {
   display: none;
-  padding: $size-7;
+  padding: $size-7 $size-7 $size-6 $size-7;
 
   &.open {
     display: block;
+  }
+
+  .apply a {
+    display: block;
+  }
+
+  .description {
+    margin: $size-8 0;
   }
 }
 

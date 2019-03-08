@@ -13,6 +13,7 @@ export const getJobsQuery = gql`
     jobs(offset: $offset, limit: $limit) {
       id
       title
+      url
       descriptionHtml
       tags
       publishedAt
