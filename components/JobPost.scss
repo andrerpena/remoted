@@ -7,11 +7,66 @@
 
 .job-post-header {
   border-top: $border-default;
-  display: flex;
+  a {
+    color: $black;
+  }
 
   &:hover {
     background-color: $white-bis;
     cursor: pointer;
+  }
+
+  .company-header {
+    display: flex;
+    flex-direction: row;
+    font-size: 0.8em;
+    color: $grey;
+
+    .job-post-image {
+      img {
+        object-fit: contain;
+      }
+    }
+
+    .company-name {
+      font-weight: bold;
+      margin-left: $size-7;
+    }
+
+    .post-info {
+      margin-left: $size-8;
+    }
+  }
+
+  .job-title {
+    margin-top: $size-8;
+  }
+
+  .job-post-tags {
+    margin-top: $size-7;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .tags {
+      margin: 0 !important;
+      .tag {
+        margin-bottom: 0;
+        text-transform: uppercase;
+        .fas,
+        .far {
+          margin-left: 5px;
+        }
+        &.is-white {
+          border: 1px solid $grey-light;
+        }
+      }
+    }
+  }
+
+  .job-post-tags .left {
+  }
+
+  .job-post-tags .right {
   }
 }
 
@@ -23,48 +78,19 @@
   }
 }
 
+$company-header-image-size: 20px;
+
 .job-post-image {
-  width: 80px;
-  height: 80px;
+  width: $company-header-image-size;
+  height: $company-header-image-size;
 }
 
 .job-post-image img {
   border-radius: $radius;
-  width: 80px;
-  height: 80px;
-}
-
-.job-post-body {
-  margin-left: $size-7;
-  flex-grow: 1;
+  width: $company-header-image-size;
+  height: $company-header-image-size;
 }
 
 .job-post-body-more-info {
   margin: 4px 0 5px 0;
-}
-
-.job-post-tags {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  .tags {
-    margin: 0 !important;
-    .tag {
-      margin-bottom: 0;
-      text-transform: uppercase;
-      .fas,
-      .far {
-        margin-left: 5px;
-      }
-      &.is-white {
-        border: 1px solid $grey-light;
-      }
-    }
-  }
-}
-
-.job-post-tags .left {
-}
-
-.job-post-tags .right {
 }

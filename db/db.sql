@@ -85,12 +85,12 @@ CREATE TABLE public.job (
 
 CREATE FUNCTION public.__remoted_get_jobs(_limit integer, _offset integer) RETURNS SETOF public.job
     LANGUAGE sql
-    AS $$
-select *
-from job u
-order by published_at desc
-limit _limit offset _offset
-
+    AS $$
+select *
+from job u
+order by published_at desc
+limit _limit offset _offset
+
 $$;
 
 
@@ -101,7 +101,7 @@ $$;
 CREATE TABLE public.company (
     id integer NOT NULL,
     public_id character varying(100) NOT NULL,
-    name character varying(50) NOT NULL,
+    name character varying(100) NOT NULL,
     display_name character varying(50) NOT NULL,
     created_at timestamp with time zone DEFAULT now(),
     image_url character varying(300)

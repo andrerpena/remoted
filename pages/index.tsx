@@ -15,6 +15,7 @@ export const getJobsQuery = gql`
       title
       descriptionHtml
       tags
+      publishedAt
       company {
         displayName
         imageUrl
