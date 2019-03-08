@@ -7,6 +7,7 @@
 
 .job-post-header {
   border-top: $border-default;
+
   a {
     color: $black;
   }
@@ -20,7 +21,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    font-size: 0.8em;
+    font-size: 0.9em;
     color: $grey;
 
     .job-post-image {
@@ -32,17 +33,19 @@
     .company-name {
       font-weight: bold;
       margin-left: $size-7;
+      margin-right: $size-8;
       white-space: nowrap;
     }
 
     .post-info {
-      margin-left: $size-8;
       white-space: nowrap;
     }
   }
 
   .job-title {
     margin-top: $size-8;
+    // font-family: "Fredoka One", cursive;
+    font-weight: bold;
   }
 
   .job-info {
@@ -51,10 +54,16 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    font-size: 0.8em;
+    font-size: 0.9em;
+    color: $grey-dark;
+
     .info-block {
       margin-right: $size-8;
       margin-bottom: $size-8;
+
+      &.salary {
+        color: #5fba7d;
+      }
     }
   }
 
@@ -64,16 +73,20 @@
     justify-content: space-between;
     margin-top: $size-8;
     margin-bottom: -$size-8;
+
     .tags {
       margin: 0 !important;
+
       .tag {
         margin-right: $size-8;
         margin-bottom: $size-8;
         text-transform: uppercase;
+
         .fas,
         .far {
           margin-left: 5px;
         }
+
         &.is-white {
           border: 1px solid $grey-light;
         }
@@ -91,6 +104,7 @@
 .job-post-extension {
   display: none;
   padding: $size-7;
+
   &.open {
     display: block;
   }

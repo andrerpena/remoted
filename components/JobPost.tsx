@@ -60,10 +60,10 @@ export class JobPost extends React.Component<Job, JobListState> {
           {(salaryText || locationText) && (
             <div className="job-info">
               {salaryText && (
-                <span className="info-block">💰 {salaryText}</span>
+                <span className="info-block salary">{salaryText}</span>
               )}
               {locationText && (
-                <span className="info-block">🌏 {locationText}</span>
+                <span className="info-block location">{locationText}</span>
               )}
             </div>
           )}
