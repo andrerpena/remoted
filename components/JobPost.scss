@@ -19,6 +19,7 @@
   .company-header {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     font-size: 0.8em;
     color: $grey;
 
@@ -31,15 +32,30 @@
     .company-name {
       font-weight: bold;
       margin-left: $size-7;
+      white-space: nowrap;
     }
 
     .post-info {
       margin-left: $size-8;
+      white-space: nowrap;
     }
   }
 
   .job-title {
     margin-top: $size-8;
+  }
+
+  .job-info {
+    margin-top: $size-8;
+    margin-bottom: -$size-8;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    font-size: 0.8em;
+    .info-block {
+      margin-right: $size-8;
+      margin-bottom: $size-8;
+    }
   }
 
   .job-post-tags {

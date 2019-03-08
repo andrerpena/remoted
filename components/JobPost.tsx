@@ -3,6 +3,8 @@ import "./JobPost.scss";
 import * as Showdown from "showdown";
 import { Job } from "../graphql-types";
 import { timeAgo } from "../lib/time";
+import { getSalaryText } from "../lib/salary";
+import { getLocationText } from "../lib/location";
 
 interface JobListState {
   open: boolean;
@@ -35,6 +37,9 @@ export class JobPost extends React.Component<Job, JobListState> {
     const companyName = company ? company.displayName : "";
     const companyUrl = company ? company.imageUrl : "";
 
+    const salaryText = getSalaryText(this.props);
+    const locationText = getLocationText(this.props);
+
     return (
       <li className="job-post" onClick={this.handleClick}>
         <div className="box-white-content job-post-header">
@@ -46,12 +51,22 @@ export class JobPost extends React.Component<Job, JobListState> {
               <a href="#">{companyName}</a>
             </span>
             <span className="post-info">
-              · Posted on Stackoverflow {timeAgo(new Date(publishedAt))} ago
+              Posted on Stackoverflow {timeAgo(new Date(publishedAt))} ago
             </span>
           </div>
           <div className="job-title">
             <h5 className="title is-5">{title}</h5>
           </div>
+          {(salaryText || locationText) && (
+            <div className="job-info">
+              {salaryText && (
+                <span className="info-block">💰 {salaryText}</span>
+              )}
+              {locationText && (
+                <span className="info-block">🌏 {locationText}</span>
+              )}
+            </div>
+          )}
           <div className="job-post-tags">
             <div className="tags left">
               {tags.map(t => (

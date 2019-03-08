@@ -20,6 +20,14 @@ export const getJobsQuery = gql`
         displayName
         imageUrl
       }
+      locationRaw
+      locationRequired
+      locationPreferred
+      locationPreferredTimeZone
+      locationPreferredTimeZoneTolerance
+      salaryMin
+      salaryMax
+      salaryCurrency
     }
   }
 `;
