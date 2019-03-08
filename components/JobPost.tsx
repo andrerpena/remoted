@@ -7,6 +7,33 @@ import { getSalaryText } from "../lib/salary";
 import { getLocationText } from "../lib/location";
 import { buildAbsoluteUrl } from "../lib/url";
 
+export const ApplyPanel: React.FunctionComponent<{
+  url: string;
+  onClose: () => void;
+}> = props => {
+  return (
+    <div className="apply">
+      <div className="columns is-mobile">
+        <div className="column is-three-fifths">
+          <a
+            className="button is-primary"
+            target="_blank"
+            href={buildAbsoluteUrl(props.url)}
+          >
+            👍 Apply for this job
+          </a>
+        </div>
+        fa
+        <div className="column">
+          <a className="button is-light" onClick={props.onClose}>
+            Nevermind
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 interface JobListState {
   open: boolean;
 }
@@ -89,48 +116,14 @@ export class JobPost extends React.Component<Job, JobListState> {
           </div>
         </div>
         <div className={`job-post-extension ${this.state.open ? "open" : ""}`}>
-          <div className="apply">
-            <div className="columns is-mobile">
-              <div className="column is-three-fifths">
-                <a
-                  className="button is-primary"
-                  target="_blank"
-                  href={buildAbsoluteUrl(url)}
-                >
-                  👍 Apply to this job
-                </a>
-              </div>
-              <div className="column">
-                <a className="button is-light" onClick={this.handleClick}>
-                  ❌ Close
-                </a>
-              </div>
-            </div>
-          </div>
+          <ApplyPanel url={url} onClose={this.handleClick} />
           <div
             className="description markdown"
             dangerouslySetInnerHTML={{
               __html: descriptionHtml
             }}
           />
-          <div className="apply">
-            <div className="columns">
-              <div className="column is-three-fifths">
-                <a
-                  className="button is-primary"
-                  target="_blank"
-                  href={buildAbsoluteUrl(url)}
-                >
-                  👍 Apply to this job
-                </a>
-              </div>
-              <div className="column">
-                <a className="button is-light" onClick={this.handleClick}>
-                  ❌ Close
-                </a>
-              </div>
-            </div>
-          </div>
+          <ApplyPanel url={url} onClose={this.handleClick} />
         </div>
       </li>
     );
