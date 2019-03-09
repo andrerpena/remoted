@@ -27,8 +27,9 @@
 
 .job-title {
   margin-top: $size-8;
-  // font-family: "Fredoka One", cursive;
-  font-weight: bold;
+  a:hover {
+    text-decoration: underline;
+  }
 }
 
 .job-post-tags {

@@ -7,6 +7,7 @@ import { NavBar } from "../components/NavBar";
 import { JobList } from "../components/JobList";
 import { MiniHero } from "../components/MiniHero";
 import { Job } from "../graphql-types";
+import { withRouter, WithRouterProps } from "next/router";
 import "../styles/common.scss";
 import "../styles/job.scss";
 import "../styles/markdown.scss";
@@ -36,7 +37,7 @@ export const getJobsQuery = gql`
   }
 `;
 
-export default () => (
+export default withRouter((props: WithRouterProps) => (
   <div>
     <Meta />
     <NavBar />
@@ -48,7 +49,9 @@ export default () => (
               <h5 className="title is-5">Today</h5>
             </div>
             <Query<{ jobs: Job[] }> query={getJobsQuery} variables={undefined}>
-              {({ data }) => (data ? <JobList jobs={data.jobs} /> : null)}
+              {({ data }) =>
+                data ? <JobList router={props.router} jobs={data.jobs} /> : null
+              }
             </Query>
           </div>
         </div>
@@ -61,4 +64,4 @@ export default () => (
       </div>
     </div>
   </div>
-);
+));

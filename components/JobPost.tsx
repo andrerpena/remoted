@@ -10,6 +10,8 @@ import { JobInfo } from "./Salary";
 import { JobTags } from "./JobTags";
 import { JobDescription } from "./JobDescription";
 import { JobApply } from "./JobApply";
+import { SingletonRouter } from "next/router";
+import Link from "next/link";
 
 interface JobListState {
   open: boolean;
@@ -17,6 +19,7 @@ interface JobListState {
 
 interface JobPostProps {
   job: Job;
+  router?: SingletonRouter;
 }
 
 export class JobPost extends React.Component<JobPostProps, JobListState> {
@@ -69,7 +72,11 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
             publishedAt={publishedAt}
           />
           <div className="job-title">
-            <h5 className="title is-5">{title}</h5>
+            <Link href={buildRelativeJobUrl(id)}>
+              <a className="title is-5" onClick={e => e.stopPropagation()}>
+                {title}
+              </a>
+            </Link>
           </div>
           <JobInfo salaryText={salaryText} locationText={locationText} />
           <JobTags tags={tags} />

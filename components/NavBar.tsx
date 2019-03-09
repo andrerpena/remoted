@@ -10,7 +10,7 @@ export const NavBar = () => (
   >
     <div className="container">
       <div className="navbar-brand">
-        <a className="navbar-item" href="https://bulma.io">
+        <a className="navbar-item" href="/">
           <Logo />
         </a>
         <a
@@ -32,9 +32,7 @@ export const NavBar = () => (
         <div className="navbar-end">
           <a className="navbar-item">🧡 Saved</a>
           <a className="navbar-item">💻 CLI</a>
-
           <a className="navbar-item">🤖 API</a>
-
           <div className="navbar-item has-dropdown is-hoverable">
             <a className="navbar-link">More</a>
 

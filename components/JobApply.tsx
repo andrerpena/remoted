@@ -15,7 +15,7 @@ export const JobApply: React.FunctionComponent<{
             target="_blank"
             href={buildAbsoluteUrl(props.applyUrl)}
           >
-            👍 Apply for this job
+            👍 Apply
           </a>
         </div>
         <div className="column">
