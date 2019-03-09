@@ -104,7 +104,6 @@
 
 .job-post-extension {
   display: none;
-  padding: $size-5 $size-6;
 
   &.open {
     display: block;
@@ -137,6 +136,8 @@ $company-header-image-size: 20px;
 }
 
 .job-view {
-  .description-wrapper {
+  .job-view-header {
+    padding-bottom: $size-3;
+    border-bottom: $border-default;
   }
 }

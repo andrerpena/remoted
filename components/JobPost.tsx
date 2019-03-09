@@ -74,7 +74,11 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
           <JobInfo salaryText={salaryText} locationText={locationText} />
           <JobTags tags={tags} />
         </div>
-        <div className={`job-post-extension ${this.state.open ? "open" : ""}`}>
+        <div
+          className={`job-post-extension box-white-content ${
+            this.state.open ? "open" : ""
+          }`}
+        >
           <JobApply
             applyUrl={url}
             permalink={buildRelativeJobUrl(id)}

@@ -31,16 +31,18 @@ export const JobView = (props: JobViewProps) => {
   const locationText = getLocationText(props.job);
   return (
     <div className="job-view box-white-content">
-      <CompanyHeader
-        companyName={companyName}
-        companyUrl={companyUrl || ""}
-        publishedAt={publishedAt}
-      />
-      <div className="job-title">
-        <h5 className="title is-5">{title}</h5>
+      <div className="job-view-header">
+        <CompanyHeader
+          companyName={companyName}
+          companyUrl={companyUrl || ""}
+          publishedAt={publishedAt}
+        />
+        <div className="job-title">
+          <h5 className="title is-5">{title}</h5>
+        </div>
+        <JobInfo salaryText={salaryText} locationText={locationText} />
+        <JobTags tags={tags} />
       </div>
-      <JobInfo salaryText={salaryText} locationText={locationText} />
-      <JobTags tags={tags} />
       <JobDescription html={descriptionHtml} />
     </div>
   );
