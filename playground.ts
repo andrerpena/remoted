@@ -1,12 +1,13 @@
 import { config } from "dotenv";
+
 config();
-import { uploadFromUrl } from "./lib/storage";
+import { buildDb } from "./server/db/build-db";
+import { getJob } from "./server/graphql/services/job-service";
 
-console.log("cool");
-
-uploadFromUrl(
-  "dev/remoted/companies/company-z",
-  "https://www.gravatar.com/avatar/94f82044a85148fec3e5443253dfaaca?s=32&d=identicon&r=PG"
-).then(data => {
-  console.log(data);
+buildDb().then(async db => {
+  const job = await getJob(
+    db,
+    "8fnpy-remote-senior-mobile-developer-emoney-advisor"
+  );
+  console.log(job);
 });

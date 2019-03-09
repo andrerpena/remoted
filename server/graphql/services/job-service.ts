@@ -13,11 +13,12 @@ import { convertToHtml } from "../../lib/markdown";
 import { Job, JobInput } from "../../../graphql-types";
 import { generateSlug, makeId } from "../../lib/id";
 import { normalizeUrl } from "../../../lib/url";
+import { Nullable } from "../../../lib/types";
 
 export async function getJob(
   db: RemotedDatabase,
-  publicId?: string,
-  url?: string
+  publicId?: Nullable<string>,
+  url?: Nullable<string>
 ): Promise<Job | null> {
   let dbJob = await db.job.findOne({
     or: [

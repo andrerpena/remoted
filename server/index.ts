@@ -3,6 +3,7 @@ import * as express from "express";
 import { fromExpressRequest } from "./lib/url";
 import { apolloServer } from "./graphql/apollo-server";
 import { config } from "dotenv";
+
 config();
 
 const port = parseInt(process.env.PORT || "3000", 10);
@@ -15,6 +16,10 @@ nextServer.prepare().then(() => {
 
   app.get("/a", (req, res) => {
     nextServer.render(req, res, "/about", req.query);
+  });
+
+  app.get("/job/:public_id", (req, res) => {
+    nextServer.render(req, res, "/job", { publicId: req.params.public_id });
   });
 
   apolloServer.applyMiddleware({ app });

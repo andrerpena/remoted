@@ -1,4 +1,3 @@
-import "../styles/common.scss";
 import "./NavBar.scss";
 import { Logo } from "./Logo";
 import * as React from "react";

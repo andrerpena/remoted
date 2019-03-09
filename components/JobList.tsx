@@ -3,13 +3,13 @@ import "./JobList.scss";
 import { JobPost } from "./JobPost";
 import { Job } from "../graphql-types";
 
-export interface JobBoardProps {
+export interface JobListProps {
   jobs: Job[];
 }
-export const JobBoard = (props: JobBoardProps) => (
+export const JobList = (props: JobListProps) => (
   <ul className="job-list">
     {props.jobs.map(j => (
-      <JobPost {...j} />
+      <JobPost job={j} />
     ))}
   </ul>
 );

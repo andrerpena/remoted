@@ -187,4 +187,31 @@ describe("job-service", () => {
       expect(data.map(d => d.title)).toEqual(["dev job 1", "dev job 0"]);
     });
   });
+  describe("getJob", () => {
+    it("should work", async () => {
+      const company = await addCompany(db, {
+        displayName: "c-1",
+        url: "URL"
+      });
+      const insertedJob = await addJob(db, {
+        title: `dev job 1`,
+        description: "This is a job",
+        publishedAt: new Date().toISOString(),
+        companyId: company.id,
+        tags: ["react"],
+        url: `URL`,
+        source: "stackoverflow"
+      });
+      const id = insertedJob!.id;
+      console.log(id);
+      const job = await getJob(db, id);
+      expect(job).toMatchObject({
+        description: "This is a job",
+        descriptionHtml: "<p>This is a job</p>",
+        tags: ["react"],
+        title: "dev job 1",
+        url: "URL"
+      });
+    });
+  });
 });

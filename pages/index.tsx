@@ -4,9 +4,12 @@ import { Query } from "react-apollo";
 import { gql } from "apollo-boost";
 import { Meta } from "../components/Meta";
 import { NavBar } from "../components/NavBar";
-import { JobBoard } from "../components/JobList";
+import { JobList } from "../components/JobList";
 import { MiniHero } from "../components/MiniHero";
 import { Job } from "../graphql-types";
+import "../styles/common.scss";
+import "../styles/job.scss";
+import "../styles/markdown.scss";
 
 export const getJobsQuery = gql`
   query getJobs($offset: Int, $limit: Int) {
@@ -45,7 +48,7 @@ export default () => (
               <h5 className="title is-5">Today</h5>
             </div>
             <Query<{ jobs: Job[] }> query={getJobsQuery} variables={undefined}>
-              {({ data }) => (data ? <JobBoard jobs={data.jobs} /> : null)}
+              {({ data }) => (data ? <JobList jobs={data.jobs} /> : null)}
             </Query>
           </div>
         </div>

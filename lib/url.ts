@@ -6,3 +6,7 @@ export function normalizeUrl(url: string) {
 export function buildAbsoluteUrl(url: string) {
   return `https://${url}`;
 }
+
+export function buildRelativeJobUrl(publicId: string) {
+  return `/job/${publicId}`;
+}

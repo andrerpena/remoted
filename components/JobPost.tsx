@@ -2,45 +2,27 @@ import * as React from "react";
 import "./JobPost.scss";
 import * as Showdown from "showdown";
 import { Job } from "../graphql-types";
-import { timeAgo } from "../lib/time";
 import { getSalaryText } from "../lib/salary";
 import { getLocationText } from "../lib/location";
-import { buildAbsoluteUrl } from "../lib/url";
-
-export const ApplyPanel: React.FunctionComponent<{
-  url: string;
-  onClose: () => void;
-}> = props => {
-  return (
-    <div className="apply">
-      <div className="columns is-mobile">
-        <div className="column is-three-fifths">
-          <a
-            className="button is-primary"
-            target="_blank"
-            href={buildAbsoluteUrl(props.url)}
-          >
-            👍 Apply for this job
-          </a>
-        </div>
-        <div className="column">
-          <a className="button is-light" onClick={props.onClose}>
-            ❌ Nevermind
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-};
+import { buildRelativeJobUrl } from "../lib/url";
+import { CompanyHeader } from "./CompanyHeader";
+import { JobInfo } from "./Salary";
+import { JobTags } from "./JobTags";
+import { JobDescription } from "./JobDescription";
+import { JobApply } from "./JobApply";
 
 interface JobListState {
   open: boolean;
 }
 
-export class JobPost extends React.Component<Job, JobListState> {
+interface JobPostProps {
+  job: Job;
+}
+
+export class JobPost extends React.Component<JobPostProps, JobListState> {
   converter: Showdown.Converter;
 
-  constructor(props: Job) {
+  constructor(props: JobPostProps) {
     super(props);
     this.state = {
       open: false
@@ -61,18 +43,19 @@ export class JobPost extends React.Component<Job, JobListState> {
 
   render() {
     const {
+      id,
       title,
       descriptionHtml,
       tags,
       company,
       publishedAt,
       url
-    } = this.props;
+    } = this.props.job;
     const companyName = company ? company.displayName : "";
     const companyUrl = company ? company.imageUrl : "";
 
-    const salaryText = getSalaryText(this.props);
-    const locationText = getLocationText(this.props);
+    const salaryText = getSalaryText(this.props.job);
+    const locationText = getLocationText(this.props.job);
 
     return (
       <li className="job-post">
@@ -80,49 +63,29 @@ export class JobPost extends React.Component<Job, JobListState> {
           className="box-white-content job-post-header"
           onClick={this.handleClick}
         >
-          <div className="company-header">
-            <figure className="job-post-image">
-              <img src={companyUrl as string} />
-            </figure>
-            <span className="company-name">
-              <a href="#">{companyName}</a>
-            </span>
-            <span className="post-info">
-              Posted on Stackoverflow {timeAgo(new Date(publishedAt))} ago
-            </span>
-          </div>
+          <CompanyHeader
+            companyName={companyName}
+            companyUrl={companyUrl || ""}
+            publishedAt={publishedAt}
+          />
           <div className="job-title">
             <h5 className="title is-5">{title}</h5>
           </div>
-          {(salaryText || locationText) && (
-            <div className="job-info">
-              {salaryText && (
-                <span className="info-block salary">{salaryText}</span>
-              )}
-              {locationText && (
-                <span className="info-block location">{locationText}</span>
-              )}
-            </div>
-          )}
-          <div className="job-post-tags">
-            <div className="tags left">
-              {tags.map(t => (
-                <span key={t} className="tag is-white">
-                  {t}
-                </span>
-              ))}
-            </div>
-          </div>
+          <JobInfo salaryText={salaryText} locationText={locationText} />
+          <JobTags tags={tags} />
         </div>
         <div className={`job-post-extension ${this.state.open ? "open" : ""}`}>
-          <ApplyPanel url={url} onClose={this.handleClick} />
-          <div
-            className="description markdown"
-            dangerouslySetInnerHTML={{
-              __html: descriptionHtml
-            }}
+          <JobApply
+            applyUrl={url}
+            permalink={buildRelativeJobUrl(id)}
+            onClose={this.handleClick}
           />
-          <ApplyPanel url={url} onClose={this.handleClick} />
+          <JobDescription html={descriptionHtml} />
+          <JobApply
+            applyUrl={url}
+            permalink={buildRelativeJobUrl(id)}
+            onClose={this.handleClick}
+          />
         </div>
       </li>
     );
