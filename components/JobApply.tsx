@@ -1,5 +1,4 @@
 import * as React from "react";
-import { buildAbsoluteUrl } from "../lib/url";
 
 export const JobApply: React.FunctionComponent<{
   applyUrl: string;
@@ -13,7 +12,7 @@ export const JobApply: React.FunctionComponent<{
           <a
             className="button is-primary"
             target="_blank"
-            href={buildAbsoluteUrl(props.applyUrl)}
+            href={props.applyUrl}
           >
             👍 Apply
           </a>

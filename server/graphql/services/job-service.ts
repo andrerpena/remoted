@@ -12,9 +12,9 @@ import { insertDbRecord } from "../../db/services/db-helpers";
 import { convertToHtml } from "../../lib/markdown";
 import { Job, JobInput } from "../../../graphql-types";
 import { generateSlug, makeId } from "../../lib/id";
-import { normalizeUrl } from "../../../lib/url";
 import { Nullable } from "../../../lib/types";
 import { isSourceValid } from "../../../lib/sources";
+import { removeQueryString } from "../../../lib/url";
 
 export async function getJob(
   db: RemotedDatabase,
@@ -43,7 +43,7 @@ export async function addJob(
 ): Promise<Job | null> {
   let normalizedUrl;
   try {
-    normalizedUrl = normalizeUrl(jobInput.url);
+    normalizedUrl = removeQueryString(jobInput.url);
   } catch (error) {
     // Let's just ignore
     normalizedUrl = jobInput.url;

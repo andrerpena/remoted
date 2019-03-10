@@ -1,24 +1,24 @@
-import { normalizeUrl } from "../url";
+import { removeQueryString } from "../url";
 
 describe("url", () => {
-  describe("normalizeUrl", () => {
-    it("should just null when string is not valid", () => {
-      expect(() => normalizeUrl("banana")).toThrow();
-    });
-    it("should work", () => {
-      const x = normalizeUrl(
-        "https://stackoverflow.com/jobs/243210/open-source-engineer-falco-sysdig?a=1jz2mYJONKs8&so=p&pg=1&offset=-1&total=349&r=true"
+  describe("removeQueryString", () => {
+    it("should work when there is no query string", () => {
+      const url = removeQueryString(
+        "https://stackoverflow.com/questions/2540969/remove-querystring-from-url"
       );
-      expect(x).toEqual(
-        "stackoverflow.com/jobs/243210/open-source-engineer-falco-sysdig"
+      expect(url).toEqual(
+        "https://stackoverflow.com/questions/2540969/remove-querystring-from-url"
       );
     });
-    it("should work without method", () => {
-      expect(() =>
-        normalizeUrl(
-          "stackoverflow.com/jobs/243210/open-source-engineer-falco-sysdig?a=1jz2mYJONKs8&so=p&pg=1&offset=-1&total=349&r=true"
-        )
-      ).toThrow();
+    it("should work when there is a query string", () => {
+      const url = removeQueryString(
+        "https://stackoverflow.com/jobs?med=site-ui&ref=jobs-tab"
+      );
+      expect(url).toEqual("https://stackoverflow.com/jobs");
+    });
+    it("should work when there is no URL", () => {
+      const url = removeQueryString("");
+      expect(url).toEqual("");
     });
   });
 });
