@@ -6,6 +6,7 @@ import { CompanyHeader } from "./CompanyHeader";
 import { JobInfo } from "./Salary";
 import { JobTags } from "./JobTags";
 import { JobDescription } from "./JobDescription";
+import { getSourceDisplayName } from "../lib/sources";
 
 export interface JobViewProps {
   job: Job;
@@ -15,9 +16,17 @@ export const JobView = (props: JobViewProps) => {
   if (!props.job) {
     return <div>Not found</div>;
   }
-  const { title, descriptionHtml, tags, company, publishedAt } = props.job;
+  const {
+    title,
+    descriptionHtml,
+    tags,
+    company,
+    publishedAt,
+    source
+  } = props.job;
   const companyName = company ? company.displayName : "";
   const companyUrl = company ? company.imageUrl : "";
+  const postedOn = source ? getSourceDisplayName(source.name) : "";
 
   const salaryText = getSalaryText(props.job);
   const locationText = getLocationText(props.job);
@@ -28,9 +37,10 @@ export const JobView = (props: JobViewProps) => {
           companyName={companyName}
           companyUrl={companyUrl || ""}
           publishedAt={publishedAt}
+          postedOn={postedOn}
         />
         <div className="job-title">
-          <h5 className="title is-5">{title}</h5>
+          <h4 className="title is-4">{title}</h4>
         </div>
         <JobInfo salaryText={salaryText} locationText={locationText} />
         <JobTags tags={tags} />

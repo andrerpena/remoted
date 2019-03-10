@@ -14,6 +14,7 @@ import { Job, JobInput } from "../../../graphql-types";
 import { generateSlug, makeId } from "../../lib/id";
 import { normalizeUrl } from "../../../lib/url";
 import { Nullable } from "../../../lib/types";
+import { isSourceValid } from "../../../lib/sources";
 
 export async function getJob(
   db: RemotedDatabase,
@@ -62,7 +63,7 @@ export async function addJob(
   }
 
   // validate the source
-  if (!whiteListedSources.includes(jobInput.source)) {
+  if (!isSourceValid(jobInput.source)) {
     throw new Error(`Invalid source: ${jobInput.source}`);
   }
 
@@ -188,5 +189,3 @@ export function generateJobPublicId(jobTitle: string, companyName: string) {
   const companyNameSlug = generateSlug(companyName);
   return `${id}-remote-${jobTitleSlug}-${companyNameSlug}`;
 }
-
-export const whiteListedSources = ["stackoverflow"];

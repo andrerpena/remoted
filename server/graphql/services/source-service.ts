@@ -1,14 +1,14 @@
 import { DbJob, DbSource, RemotedDatabase } from "../../db/model";
 import { Source, UpdateSourceInput } from "../../../graphql-types";
-import { whiteListedSources } from "./job-service";
 import { insertDbRecord } from "../../db/services/db-helpers";
+import { isSourceValid } from "../../../lib/sources";
 
 export async function updateSource(
   db: RemotedDatabase,
   sourceInput: UpdateSourceInput
 ) {
   // validate the source
-  if (!whiteListedSources.includes(sourceInput.name)) {
+  if (!isSourceValid(sourceInput.name)) {
     throw new Error(`Invalid source: ${sourceInput.name}`);
   }
   let dbSource = (await db.source.findOne({

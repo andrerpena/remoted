@@ -29,6 +29,9 @@ export const getJobQuery = gql`
       salaryMin
       salaryMax
       salaryCurrency
+      source {
+        name
+      }
     }
   }
 `;

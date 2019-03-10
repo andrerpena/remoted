@@ -12,6 +12,7 @@ import { JobDescription } from "./JobDescription";
 import { JobApply } from "./JobApply";
 import { SingletonRouter } from "next/router";
 import Link from "next/link";
+import { getSourceDisplayName } from "../lib/sources";
 
 interface JobListState {
   open: boolean;
@@ -52,13 +53,16 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
       tags,
       company,
       publishedAt,
-      url
+      url,
+      source
     } = this.props.job;
     const companyName = company ? company.displayName : "";
     const companyUrl = company ? company.imageUrl : "";
 
     const salaryText = getSalaryText(this.props.job);
     const locationText = getLocationText(this.props.job);
+
+    const postedOn = source ? getSourceDisplayName(source.name) : "";
 
     return (
       <li className="job-post">
@@ -70,6 +74,7 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
             companyName={companyName}
             companyUrl={companyUrl || ""}
             publishedAt={publishedAt}
+            postedOn={postedOn}
           />
           <div className="job-title">
             <Link href={buildRelativeJobUrl(id)}>

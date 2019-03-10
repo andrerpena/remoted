@@ -2,6 +2,7 @@ import * as React from "react";
 import { timeAgo } from "../lib/time";
 
 export interface CompanyHeaderProps {
+  postedOn: string;
   companyUrl: string;
   companyName: string;
   publishedAt: string;
@@ -19,7 +20,7 @@ export const CompanyHeader: React.FunctionComponent<CompanyHeaderProps> = (
         <a href="#">{props.companyName}</a>
       </span>
       <span className="post-info">
-        Posted on Stackoverflow {timeAgo(new Date(props.publishedAt))} ago
+        Posted on {props.postedOn} {timeAgo(new Date(props.publishedAt))} ago
       </span>
     </div>
   );
