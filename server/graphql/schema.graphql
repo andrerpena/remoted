@@ -25,6 +25,7 @@ type Job {
   salaryCurrency: String
   salaryEquity: Boolean
   url: String!
+  source: Source
 }
 
 type Company {

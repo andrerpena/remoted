@@ -16,7 +16,7 @@ beforeEach(async () => {
   return clearDb(db);
 });
 
-describe("source-service", () => {
+describe("source-service.ts", () => {
   describe("updateSource", () => {
     it("default behavior", async () => {
       const source = await updateSource(db, {

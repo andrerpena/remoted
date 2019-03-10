@@ -1,4 +1,4 @@
-import { DbSource, RemotedDatabase } from "../../db/model";
+import { DbJob, DbSource, RemotedDatabase } from "../../db/model";
 import { Source, UpdateSourceInput } from "../../../graphql-types";
 import { whiteListedSources } from "./job-service";
 import { insertDbRecord } from "../../db/services/db-helpers";
@@ -30,11 +30,24 @@ export async function updateSource(
   return getSourceFromDbSource(dbSource);
 }
 
-export function getSourceFromDbSource(dbSource: DbSource): Source {
+export function getSourceFromDbSource(dbSource: DbSource): Source | null {
   return {
     name: dbSource.name,
-    lastUpdatedAt: dbSource.last_updated_at.toISOString(),
+    lastUpdatedAt: dbSource.last_updated_at
+      ? dbSource.last_updated_at.toISOString()
+      : "",
     lastUpdateMessage: dbSource.last_update_message,
     lastUpdateMessageDetails: dbSource.last_update_message_details
   };
+}
+
+export async function getSourceByJobPublicId(
+  db: RemotedDatabase,
+  jobPublicId: string
+): Promise<Source | null> {
+  const dbJob = (await db.job.findOne({ public_id: jobPublicId })) as DbJob;
+  const dbSource = (await db.source.findOne({
+    id: dbJob.source_id
+  })) as DbSource;
+  return getSourceFromDbSource(dbSource);
 }

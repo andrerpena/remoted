@@ -12,7 +12,10 @@ import {
   getCompanyByJobPublicId,
   getCompanyUrls
 } from "./services/company-service";
-import { updateSource } from "./services/source-service";
+import {
+  getSourceByJobPublicId,
+  updateSource
+} from "./services/source-service";
 
 const typeDefs = gql(importSchema("server/graphql/schema.graphql"));
 
@@ -53,6 +56,10 @@ const resolvers: Resolvers = {
     company: async _parent => {
       const db = await buildDb();
       return getCompanyByJobPublicId(db, _parent.id);
+    },
+    source: async _parent => {
+      const db = await buildDb();
+      return getSourceByJobPublicId(db, _parent.id);
     }
   },
   Company: {

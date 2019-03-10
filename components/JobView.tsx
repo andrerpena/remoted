@@ -15,15 +15,7 @@ export const JobView = (props: JobViewProps) => {
   if (!props.job) {
     return <div>Not found</div>;
   }
-  const {
-    id,
-    title,
-    descriptionHtml,
-    tags,
-    company,
-    publishedAt,
-    url
-  } = props.job;
+  const { title, descriptionHtml, tags, company, publishedAt } = props.job;
   const companyName = company ? company.displayName : "";
   const companyUrl = company ? company.imageUrl : "";
 
