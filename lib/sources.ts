@@ -1,4 +1,5 @@
 export const sources: { [key: string]: string } = {
+  "we-work-remotely": "WeWorkRemotely",
   stackoverflow: "Stackoverflow"
 };
 
