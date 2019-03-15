@@ -30,27 +30,11 @@ export const NavBar = () => (
         <div className="navbar-start" />
 
         <div className="navbar-end">
-          <a className="navbar-item">🧡 Saved</a>
-          <a className="navbar-item">💻 CLI</a>
           <a className="navbar-item">🤖 API</a>
-          <div className="navbar-item has-dropdown is-hoverable">
-            <a className="navbar-link">More</a>
-
-            <div className="navbar-dropdown">
-              <a className="navbar-item" />
-              <a className="navbar-item" />
-              <hr className="navbar-divider" />
-              <a className="navbar-item">Report an issue</a>
-            </div>
-          </div>
-          <div className="navbar-item">
-            <div className="buttons">
-              <a className="button is-primary">
-                <strong>Sign up</strong>
-              </a>
-              <a className="button is-light">Log in</a>
-            </div>
-          </div>
+          <a className="navbar-item">💻 CLI</a>
+          <a className="navbar-item">📊 Stats</a>
+          <a className="navbar-item">🎯 Sources </a>
+          <a className="navbar-item">📖 About </a>
         </div>
       </div>
     </div>

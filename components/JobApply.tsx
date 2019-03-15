@@ -8,23 +8,13 @@ export const JobApply: React.FunctionComponent<{
   return (
     <div className="apply">
       <div className="columns is-mobile">
-        <div className="column is-half">
+        <div className="column is-full">
           <a
             className="button is-primary"
             target="_blank"
             href={props.applyUrl}
           >
-            👍 Apply
-          </a>
-        </div>
-        <div className="column">
-          <a className="button is-light" href={props.permalink}>
-            🔗 Permalink
-          </a>
-        </div>
-        <div className="column">
-          <a className="button is-light" onClick={props.onClose}>
-            ❌ Nevermind
+            👍 Apply for this job
           </a>
         </div>
       </div>

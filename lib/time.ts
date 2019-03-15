@@ -1,4 +1,4 @@
-export function timeAgo(date: Date, now: Date) {
+export function timeAgo(date: Date, now: Date = new Date()) {
   var seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
   var interval = Math.floor(seconds / (60 * 60 * 24 * 30 * 12));
