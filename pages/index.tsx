@@ -4,7 +4,7 @@ import { Query } from "react-apollo";
 import { gql } from "apollo-boost";
 import { Meta } from "../components/Meta";
 import { NavBar } from "../components/NavBar";
-import { JobList } from "../components/JobList";
+import { JobListCollection } from "../components/JobList";
 import { MiniHero } from "../components/MiniHero";
 import { Job } from "../graphql-types";
 import { withRouter, WithRouterProps } from "next/router";
@@ -47,16 +47,13 @@ export default withRouter((props: WithRouterProps) => (
     <div className="container">
       <div className="columns">
         <div className="column is-two-thirds">
-          <div className="box-white">
-            <div className="box-white-header">
-              <h5 className="title is-5">Today</h5>
-            </div>
-            <Query<{ jobs: Job[] }> query={getJobsQuery} variables={undefined}>
-              {({ data }) =>
-                data ? <JobList router={props.router} jobs={data.jobs} /> : null
-              }
-            </Query>
-          </div>
+          <Query<{ jobs: Job[] }> query={getJobsQuery} variables={undefined}>
+            {({ data }) =>
+              data ? (
+                <JobListCollection router={props.router} jobs={data.jobs} />
+              ) : null
+            }
+          </Query>
         </div>
         <div className="column">
           <MiniHero />
