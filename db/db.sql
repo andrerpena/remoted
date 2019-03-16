@@ -75,7 +75,8 @@ CREATE TABLE public.job (
     salary_raw character varying(200),
     salary_currency character varying(10),
     url character varying(300),
-    source_id integer NOT NULL
+    source_id integer NOT NULL,
+    location_tags character varying(100)[]
 );
 
 
@@ -85,12 +86,64 @@ CREATE TABLE public.job (
 
 CREATE FUNCTION public.__remoted_get_jobs(_limit integer, _offset integer) RETURNS SETOF public.job
     LANGUAGE sql
-    AS $$
-select *
-from job u
-order by published_at desc
-limit _limit offset _offset
-
+    AS $$
+select *
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from job u
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+order by published_at desc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+limit _limit offset _offset
+
+
 $$;
 
 
@@ -242,7 +295,8 @@ CREATE TABLE public.source (
     name character varying(100),
     last_updated_at timestamp with time zone,
     last_update_message text,
-    last_update_message_details text
+    last_update_message_details text,
+    display_name character varying(100)
 );
 
 
