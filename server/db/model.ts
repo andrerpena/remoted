@@ -5,8 +5,6 @@ import { PartialBy } from "../../lib/type-helpers";
 import { Nullable } from "../../lib/types";
 
 export interface RemotedDatabase extends massive.Database {
-  __remoted_get_jobs: (limit: number, offset: number) => Promise<DbJob[]>;
-
   job: Writable;
   company: Writable;
   company_url: Writable;
@@ -43,6 +41,7 @@ export interface DbJob {
   location_preferred: Nullable<string>;
   location_preferred_timezone: Nullable<number>;
   location_preferred_timezone_tolerance: Nullable<number>;
+  location_tag: Nullable<string>;
   salary_raw: Nullable<string>;
   salary_exact: Nullable<number>;
   salary_min: Nullable<number>;

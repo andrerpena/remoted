@@ -4,13 +4,13 @@ import { config } from "dotenv";
 
 config();
 import { RemotedDatabase } from "../../server/db/model";
-import { clearDb } from "../../server/lib/db-ci-helpers";
 import { addCompany } from "../../server/graphql/services/company-service";
 import {
   getJobs,
   addJob,
   getJob
 } from "../../server/graphql/services/job-service";
+import { clearDb } from "../../server/lib/db-ci-helpers";
 
 let db: RemotedDatabase;
 
@@ -32,36 +32,35 @@ describe("job-service", () => {
       });
       const job = await addJob(db, {
         title: "developer",
-        description: "hello",
+        description: "hello us only",
         companyId: company.id,
         publishedAt: new Date().toISOString(),
         tags: ["react"],
         url: "URL",
         source: "stackoverflow"
       });
-      expect(job).toEqual(
-        expect.objectContaining({
-          createdAt: expect.any(String),
-          description: "hello",
-          descriptionHtml: "<p>hello</p>",
-          id: expect.any(String),
-          locationPreferred: null,
-          locationPreferredTimeZone: null,
-          locationPreferredTimeZoneTolerance: null,
-          locationRaw: null,
-          locationRequired: null,
-          publishedAt: expect.any(String),
-          salaryCurrency: null,
-          salaryEquity: null,
-          salaryExact: null,
-          salaryMax: null,
-          salaryMin: null,
-          salaryRaw: null,
-          tags: ["react"],
-          title: "developer",
-          url: "URL"
-        })
-      );
+      expect(job).toMatchObject({
+        createdAt: expect.any(String),
+        description: "hello us only",
+        descriptionHtml: "<p>hello us only</p>",
+        id: expect.any(String),
+        locationPreferred: null,
+        locationPreferredTimeZone: null,
+        locationPreferredTimeZoneTolerance: null,
+        locationRaw: null,
+        locationRequired: null,
+        locationTag: "us-only",
+        publishedAt: expect.any(String),
+        salaryCurrency: null,
+        salaryEquity: null,
+        salaryExact: null,
+        salaryMax: null,
+        salaryMin: null,
+        salaryRaw: null,
+        tags: ["react"],
+        title: "developer",
+        url: "URL"
+      });
       // tag
       const jobTags = await db.query("select * from job_tag");
       expect(jobTags.length).toEqual(1);
@@ -122,23 +121,25 @@ describe("job-service", () => {
         throw new Error("job was not supposed to be null");
       }
       expect(job.url).toEqual(
-        "stackoverflow.com/jobs/243210/open-source-engineer-falco-sysdig"
+        "https://stackoverflow.com/jobs/243210/open-source-engineer-falco-sysdig"
       );
       const existingJob = await getJob(db, job.id);
       if (!existingJob) {
         throw new Error("existingJob was not supposed to be null");
       }
       expect(existingJob.url).toEqual(
-        "stackoverflow.com/jobs/243210/open-source-engineer-falco-sysdig"
+        "https://stackoverflow.com/jobs/243210/open-source-engineer-falco-sysdig"
       );
     });
   });
   describe("getJobs", () => {
+    let companyPublicId = "";
     beforeEach(async () => {
       const company = await addCompany(db, {
         displayName: "c-1",
         url: "URL"
       });
+      companyPublicId = company.id;
       for (let i = 0; i < 10; i++) {
         await addJob(db, {
           title: `dev job ${i}`,
@@ -156,7 +157,7 @@ describe("job-service", () => {
       const data = await getJobs(db, 10, 0);
       expect(Array.isArray(data)).toBe(true);
       expect(data.length).toBe(10);
-      expect(data[0]).toEqual({
+      expect(data[0]).toMatchObject({
         createdAt: expect.any(String),
         description: "This is a job",
         descriptionHtml: "<p>This is a job</p>",
@@ -195,6 +196,29 @@ describe("job-service", () => {
       const data = await getJobs(db, 10, 8);
       expect(Array.isArray(data)).toBe(true);
       expect(data.map(d => d.title)).toEqual(["dev job 1", "dev job 0"]);
+    });
+
+    it("should work when you specify the tag", async () => {
+      const data = await getJobs(db, 10, 0);
+      expect(data.length).toEqual(10);
+
+      const data2 = await getJobs(db, 10, 0, "tag-that-does-not-exist");
+      expect(data2.length).toEqual(0);
+    });
+
+    it("should work US is excluded", async () => {
+      const data = await getJobs(db, 10, 0, null, true);
+      expect(data.length).toEqual(10);
+
+      await addJob(db, {
+        title: `dev job`,
+        description: "This is a job",
+        publishedAt: new Date().toISOString(),
+        companyId: companyPublicId,
+        tags: ["react"],
+        url: `URL`,
+        source: "stackoverflow"
+      });
     });
   });
   describe("getJob", () => {

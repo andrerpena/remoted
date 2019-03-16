@@ -15,6 +15,7 @@ import { generateSlug, makeId } from "../../lib/id";
 import { Nullable } from "../../../lib/types";
 import { isSourceValid } from "../../../lib/sources";
 import { removeQueryString } from "../../../lib/url";
+import { extractLocationTag } from "../../../lib/location";
 
 export async function getJob(
   db: RemotedDatabase,
@@ -85,7 +86,8 @@ export async function addJob(
     sanitizedTags: jobInput.tags,
     companyId: dbCompany.id,
     sourceId: dbSource.id,
-    normalizedUrl: normalizedUrl
+    normalizedUrl: normalizedUrl,
+    locationTag: extractLocationTag(jobInput.title, jobInput.description)
   });
 
   const dbJob = await (insertDbRecord(db.job, dbJobInput) as Promise<DbJob>);
@@ -116,10 +118,30 @@ export async function addJob(
 export async function getJobs(
   db: RemotedDatabase,
   limit: number,
-  offset: number
+  offset: number,
+  hasTag?: Nullable<string>,
+  excludeUs?: Nullable<boolean>,
+  excludeNorthAmerica?: Nullable<boolean>,
+  excludeEurope?: Nullable<boolean>,
+  excludeUk?: Nullable<boolean>,
+  excludeJobsWithoutSalary?: Nullable<boolean>,
+  excludeStackoverflow?: Nullable<boolean>,
+  excludeWeWorkRemotely?: Nullable<boolean>
 ): Promise<Job[]> {
-  const dbJobs = await db.__remoted_get_jobs(limit, offset);
-  return dbJobs.map(j => {
+  // create function "__remoted_get_jobs"(_limit integer, _offset integer, _hastag character varying, _excludeus boolean, _excludenorthamerica boolean, _excludeeurope boolean, _excludeuk boolean, _excludewithoutsalary boolean, _excludestackoverflow boolean, _excludeweworkremotely boolean) returns SETOF job
+  const dbJobs = await db.__remoted_get_jobs(
+    limit,
+    offset,
+    hasTag,
+    excludeUs,
+    excludeNorthAmerica,
+    excludeEurope,
+    excludeUk,
+    excludeJobsWithoutSalary,
+    excludeStackoverflow,
+    excludeWeWorkRemotely
+  );
+  return dbJobs.map((j: DbJob) => {
     return getJobFromDbJob(j);
   });
 }
@@ -139,6 +161,7 @@ export function getJobFromDbJob(dbJob: DbJob): Job {
     locationPreferredTimeZone: dbJob.location_preferred_timezone,
     locationPreferredTimeZoneTolerance:
       dbJob.location_preferred_timezone_tolerance,
+    locationTag: dbJob.location_tag,
     salaryRaw: dbJob.salary_raw,
     salaryExact: dbJob.salary_exact,
     salaryMin: dbJob.salary_min,
@@ -157,6 +180,7 @@ export interface GetDbJobInputFromJobInputOptions {
   companyId: number;
   sourceId: number;
   normalizedUrl: string;
+  locationTag: Nullable<string>;
 }
 
 export function getDbJobInputFromJobInput(
@@ -179,6 +203,7 @@ export function getDbJobInputFromJobInput(
     location_preferred_timezone: jobInput.locationPreferredTimezone || null,
     location_preferred_timezone_tolerance:
       jobInput.locationPreferredTimezoneTolerance || null,
+    location_tag: options.locationTag,
     salary_raw: jobInput.salaryRaw || null,
     salary_exact: jobInput.salaryExact || null,
     salary_min: jobInput.salaryMin || null,

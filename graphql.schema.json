@@ -254,6 +254,14 @@
             "deprecationReason": null
           },
           {
+            "name": "locationTag",
+            "description": "",
+            "args": [],
+            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "salaryRaw",
             "description": "",
             "args": [],

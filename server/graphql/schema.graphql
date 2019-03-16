@@ -18,6 +18,7 @@ type Job {
   locationPreferred: String
   locationPreferredTimeZone: Int
   locationPreferredTimeZoneTolerance: Int
+  locationTag: String
   salaryRaw: String
   salaryExact: Int
   salaryMin: Int

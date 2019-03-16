@@ -95,6 +95,8 @@ export interface Job {
 
   locationPreferredTimeZoneTolerance?: Maybe<number>;
 
+  locationTag?: Maybe<string>;
+
   salaryRaw?: Maybe<string>;
 
   salaryExact?: Maybe<number>;
@@ -318,6 +320,8 @@ export namespace JobResolvers {
       Context
     >;
 
+    locationTag?: LocationTagResolver<Maybe<string>, TypeParent, Context>;
+
     salaryRaw?: SalaryRawResolver<Maybe<string>, TypeParent, Context>;
 
     salaryExact?: SalaryExactResolver<Maybe<number>, TypeParent, Context>;
@@ -397,6 +401,11 @@ export namespace JobResolvers {
   > = Resolver<R, Parent, Context>;
   export type LocationPreferredTimeZoneToleranceResolver<
     R = Maybe<number>,
+    Parent = Job,
+    Context = {}
+  > = Resolver<R, Parent, Context>;
+  export type LocationTagResolver<
+    R = Maybe<string>,
     Parent = Job,
     Context = {}
   > = Resolver<R, Parent, Context>;

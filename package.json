@@ -77,6 +77,7 @@
     "jest": "^23.6.0",
     "jest-cli": "^24.1.0",
     "nodemon": "^1.18.7",
+    "pg-monitor": "^1.1.0",
     "prettier": "1.15.3",
     "pretty-quick": "^1.8.0",
     "ts-jest": "^23.10.5",

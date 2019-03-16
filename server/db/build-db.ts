@@ -2,17 +2,19 @@ import * as massive from "massive";
 import { readConfig } from "../config";
 import { RemotedDatabase } from "./model";
 
-let db: Promise<RemotedDatabase>;
-let testDb: Promise<RemotedDatabase>;
+let db: RemotedDatabase;
+let testDb: RemotedDatabase;
 
 export async function buildDb(): Promise<RemotedDatabase> {
   if (db) return db;
-  db = massive(readConfig().connection) as Promise<RemotedDatabase>;
+  db = (await massive(readConfig().connection)) as RemotedDatabase;
   return db;
 }
 
 export async function buildTestDb(): Promise<RemotedDatabase> {
   if (testDb) return testDb;
-  testDb = massive(readConfig().testConnection) as Promise<RemotedDatabase>;
+  testDb = (await massive(readConfig().testConnection)) as RemotedDatabase;
+  // Uncomment to activate monitoring
+  // monitor.attach(testDb.driverConfig);
   return testDb;
 }
