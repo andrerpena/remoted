@@ -48,7 +48,8 @@
     "tools:fake": "cross-env NODE_ENV=development ts-node --project tsconfig.server.json ./tools/fake.ts",
     "test": "jest --config=jest.unit.config.js --detectOpenHandles",
     "generate": "gql-gen --config codegen.yml",
-    "playground": "ts-node --project tsconfig.server.json ./playground.ts"
+    "playground": "ts-node --project tsconfig.server.json ./playground.ts",
+    "fix-shit": "ts-node --project tsconfig.server.json ./fix-shit.ts"
   },
   "devDependencies": {
     "@types/aws-sdk": "^2.7.0",

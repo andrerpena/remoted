@@ -91,18 +91,23 @@ export async function addJob(
   const dbJob = await (insertDbRecord(db.job, dbJobInput) as Promise<DbJob>);
 
   const tags: string[] = [];
-  const tagsSplit = dbJobInput.tags.split(" ");
-  for (let i = 0; i < tagsSplit.length; i++) {
-    const tagName = tagsSplit[i];
-    let dbTag = (await db.tag.findOne({ name: tagName })) as DbTag;
-    if (!dbTag) {
-      dbTag = (await db.tag.insert({
-        name: tagName,
-        relevance: 1
-      } as DbTag)) as DbTag;
+  if (dbJobInput.tags) {
+    const tagsSplit = dbJobInput.tags.split(" ");
+    for (let i = 0; i < tagsSplit.length; i++) {
+      const tagName = tagsSplit[i];
+      let dbTag = (await db.tag.findOne({ name: tagName })) as DbTag;
+      if (!dbTag) {
+        dbTag = (await db.tag.insert({
+          name: tagName,
+          relevance: 1
+        } as DbTag)) as DbTag;
+      }
+      tags.push(dbTag.name);
+      await db.job_tag.insert({
+        job_id: dbJob.id,
+        tag_id: dbTag.id
+      } as DbJobTag);
     }
-    tags.push(dbTag.name);
-    await db.job_tag.insert({ job_id: dbJob.id, tag_id: dbTag.id } as DbJobTag);
   }
 
   return getJobFromDbJob(dbJob);
