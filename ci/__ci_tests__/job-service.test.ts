@@ -62,6 +62,16 @@ describe("job-service", () => {
           url: "URL"
         })
       );
+      // tag
+      const jobTags = await db.query("select * from job_tag");
+      expect(jobTags.length).toEqual(1);
+      const tags = await db.query("select * from tag");
+      expect(tags.length).toEqual(1);
+      expect(tags[0]).toEqual(
+        expect.objectContaining({
+          name: "react"
+        })
+      );
     });
     it("add the same job twice with the same URL should not end with 2 jobs", async () => {
       const company = await addCompany(db, {
