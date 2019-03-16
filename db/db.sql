@@ -76,74 +76,55 @@ CREATE TABLE public.job (
     salary_currency character varying(10),
     url character varying(300),
     source_id integer NOT NULL,
-    location_tags character varying(100)[]
+    location_tag character varying(100)
 );
 
 
 --
--- Name: __remoted_get_jobs(integer, integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: __remoted_get_jobs(integer, integer, character varying, boolean, boolean, boolean, boolean, boolean, boolean, boolean); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION public.__remoted_get_jobs(_limit integer, _offset integer) RETURNS SETOF public.job
+CREATE FUNCTION public.__remoted_get_jobs(_limit integer, _offset integer, _hastag character varying, _excludeus boolean, _excludenorthamerica boolean, _excludeeurope boolean, _excludeuk boolean, _excludewithoutsalary boolean, _excludestackoverflow boolean, _excludeweworkremotely boolean) RETURNS SETOF public.job
     LANGUAGE sql
     AS $$
 select *
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 from job u
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  where (
+    (_hasTag is null or exists (
+      select t.id from job_tag jt join "tag" t on jt.tag_id = t.id
+      where jt.job_id = u.id and t.name = _hasTag
+    ))
+      and (
+        location_tag is null
+        or (
+          (_excludeUs is false or location_tag != 'us-only')
+          and
+          (_excludeEurope is false or not location_tag != 'europe-only')
+          and
+          (_excludeNorthAmerica is false or not location_tag != 'north-america-only')
+          and
+          (_excludeUk is false or not location_tag != 'uk-only')
+        )
+      )
+    and (
+        _excludeWithoutSalary is false or
+          u.salary_min is not null
+          or u.salary_max is not null
+          or u.salary_exact is not null
+    )
+    and (
+      _excludeStackoverflow is false or not exists(
+        select s.id from source s where id = u.id and s.name <> 'stackoverflow'
+        )
+      )
+        and (
+      _excludeWeWorkRemotely is false or not exists(
+        select s.id from source s where id = u.id and s.name <> 'we-work-remotely'
+        )
+      )
+  )
 order by published_at desc
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 limit _limit offset _offset
-
-
 $$;
 
 
