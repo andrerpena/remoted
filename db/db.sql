@@ -48,87 +48,6 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: job; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.job (
-    id integer NOT NULL,
-    public_id character varying(300) NOT NULL,
-    title character varying(300) NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    published_at timestamp with time zone NOT NULL,
-    company_id integer NOT NULL,
-    location_required character varying(100),
-    location_preferred character varying(100),
-    location_preferred_timezone smallint,
-    location_preferred_timezone_tolerance smallint,
-    company_name character varying(100) NOT NULL,
-    company_display_name character varying(100) NOT NULL,
-    salary_exact integer,
-    salary_min integer,
-    salary_max integer,
-    salary_equity boolean,
-    description text NOT NULL,
-    description_html text NOT NULL,
-    tags character varying(200) NOT NULL,
-    location_raw character varying(200),
-    salary_raw character varying(200),
-    salary_currency character varying(10),
-    url character varying(300),
-    source_id integer NOT NULL,
-    location_tag character varying(100)
-);
-
-
---
--- Name: __remoted_get_jobs(integer, integer, character varying, boolean, boolean, boolean, boolean, boolean, boolean, boolean); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.__remoted_get_jobs(_limit integer, _offset integer, _hastag character varying, _excludeus boolean, _excludenorthamerica boolean, _excludeeurope boolean, _excludeuk boolean, _excludewithoutsalary boolean, _excludestackoverflow boolean, _excludeweworkremotely boolean) RETURNS SETOF public.job
-    LANGUAGE sql
-    AS $$
-select *
-from job u
-  where (
-    (_hasTag is null or exists (
-      select t.id from job_tag jt join "tag" t on jt.tag_id = t.id
-      where jt.job_id = u.id and t.name = _hasTag
-    ))
-    and (
-        location_tag is null
-        or (
-          (_excludeUs is not true or location_tag != 'us-only')
-          and
-          (_excludeEurope is not true or not location_tag != 'europe-only')
-          and
-          (_excludeNorthAmerica is not true or not location_tag != 'north-america-only')
-          and
-          (_excludeUk is not true or not location_tag != 'uk-only')
-        )
-      )
-    and (
-        _excludeWithoutSalary is not true or
-          u.salary_min is not null
-          or u.salary_max is not null
-          or u.salary_exact is not null
-    )
-    and (
-      _excludeStackoverflow is not true or not exists(
-        select s.id from source s where id = u.id and s.name <> 'stackoverflow'
-        )
-      )
-        and (
-      _excludeWeWorkRemotely is not true or not exists(
-        select s.id from source s where id = u.id and s.name <> 'we-work-remotely'
-        )
-      )
-  )
-order by published_at desc
-limit _limit offset _offset
-$$;
-
-
---
 -- Name: company; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -215,6 +134,39 @@ CREATE SEQUENCE public.google_places_textsearch_cache_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
+
+
+--
+-- Name: job; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.job (
+    id integer NOT NULL,
+    public_id character varying(300) NOT NULL,
+    title character varying(300) NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    published_at timestamp with time zone NOT NULL,
+    company_id integer NOT NULL,
+    location_required character varying(100),
+    location_preferred character varying(100),
+    location_preferred_timezone smallint,
+    location_preferred_timezone_tolerance smallint,
+    company_name character varying(100) NOT NULL,
+    company_display_name character varying(100) NOT NULL,
+    salary_exact integer,
+    salary_min integer,
+    salary_max integer,
+    salary_equity boolean,
+    description text NOT NULL,
+    description_html text NOT NULL,
+    tags character varying(200) NOT NULL,
+    location_raw character varying(200),
+    salary_raw character varying(200),
+    salary_currency character varying(10),
+    url character varying(300),
+    source_id integer NOT NULL,
+    location_tag character varying(100)
+);
 
 
 --
