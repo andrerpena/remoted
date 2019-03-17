@@ -1,4 +1,4 @@
-export function buildRelativeJobUrl(publicId: string) {
+export function buildInternalJobUrl(publicId: string) {
   return `/job/${publicId}`;
 }
 

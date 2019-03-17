@@ -109,8 +109,10 @@
   &.open {
     display: block;
   }
+}
 
-  .apply a {
+.job-apply {
+  a {
     display: block;
   }
 }
@@ -138,7 +140,9 @@ $company-header-image-size: 20px;
 
 .job-view {
   .job-view-header {
-    padding-bottom: $size-3;
-    border-bottom: $border-default;
+    .title {
+      margin-bottom: 1rem;
+    }
   }
+  padding-bottom: $size-3;
 }

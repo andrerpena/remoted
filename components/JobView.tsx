@@ -7,6 +7,7 @@ import { JobInfo } from "./Salary";
 import { JobTags } from "./JobTags";
 import { JobDescription } from "./JobDescription";
 import { getSourceDisplayName } from "../lib/sources";
+import { JobApply } from "./JobApply";
 
 export interface JobViewProps {
   job: Job;
@@ -22,7 +23,8 @@ export const JobView = (props: JobViewProps) => {
     tags,
     company,
     publishedAt,
-    source
+    source,
+    url
   } = props.job;
   const companyName = company ? company.displayName : "";
   const companyUrl = company ? company.imageUrl : "";
@@ -40,12 +42,13 @@ export const JobView = (props: JobViewProps) => {
           postedOn={postedOn}
         />
         <div className="job-title">
-          <h4 className="title is-4">{title}</h4>
+          <h3 className="title is-3">{title}</h3>
         </div>
         <JobInfo salaryText={salaryText} locationText={locationText} />
         <JobTags tags={tags} />
       </div>
       <JobDescription html={descriptionHtml} />
+      <JobApply applyUrl={url} permalink={"/"} buttonClass={"is-primary"} />
     </div>
   );
 };
