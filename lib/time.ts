@@ -66,22 +66,24 @@ export function bucketize<T>(
     title: "Last 7 days",
     data: []
   };
-  for (let item of items) {
-    const date = getDate(item);
-    const difference = getTimeDifferenceInDays(now, date);
-    if (difference <= 1) {
-      bucket24Hours.data.push(item);
-      continue;
+  if (items) {
+    for (let item of items) {
+      const date = getDate(item);
+      const difference = getTimeDifferenceInDays(now, date);
+      if (difference <= 1) {
+        bucket24Hours.data.push(item);
+        continue;
+      }
+      if (difference <= 7) {
+        bucketLast7Days.data.push(item);
+        continue;
+      }
+      if (difference <= 30) {
+        bucketLast30Days.data.push(item);
+        continue;
+      }
+      bucketOlder.data.push(item);
     }
-    if (difference <= 7) {
-      bucketLast7Days.data.push(item);
-      continue;
-    }
-    if (difference <= 30) {
-      bucketLast30Days.data.push(item);
-      continue;
-    }
-    bucketOlder.data.push(item);
   }
   const result: Array<TimeBucket<T>> = [];
   if (bucket24Hours.data.length) {

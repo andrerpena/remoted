@@ -1,8 +1,9 @@
 type Query {
-  jobs(offset: Int, limit: Int): [Job]
-  job(id: String, urlReference: String): Job
-  company(id: String, urlReference: String): Company
-  sources: [Source]
+  getJobs(offset: Int, limit: Int): [Job]
+  getJob(id: String, urlReference: String): Job
+  getTagCountGroups(tagGroups: [TagCountGroupInput!]!): [TagCountGroup]
+  getCompany(id: String, urlReference: String): Company
+  getSources: [Source]
 }
 type Job {
   id: String!
@@ -27,6 +28,21 @@ type Job {
   salaryEquity: Boolean
   url: String!
   source: Source
+}
+
+input TagCountGroupInput {
+  name: String!
+  tags: [String!]!
+}
+
+type TagCount {
+  name: String!
+  count: Int!
+}
+
+type TagCountGroup {
+  name: String!
+  tags: [TagCount!]!
 }
 
 type Company {

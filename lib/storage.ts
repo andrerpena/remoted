@@ -10,9 +10,6 @@ export function updateAwsCredentials() {
   const bucket = process.env.S3_BUCKET;
 
   if (!accessKeyId || !secretAccessKey || !bucket) {
-    console.log(accessKeyId);
-    console.log(secretAccessKey);
-    console.log(bucket);
     throw Error("Could not find AWS credentials");
   }
 

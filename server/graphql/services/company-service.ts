@@ -156,7 +156,6 @@ export async function updateCompanyImageUrl(
     `${serverConfig.storageCompanyHost}/${public_id}`,
     imageUrl
   );
-  console.log(`${serverConfig.storageHost}/${public_id}`);
   const fullFileKey = location.Key;
   const processedFileKey = fullFileKey.substring(
     fullFileKey.lastIndexOf("/") + 1

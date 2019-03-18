@@ -48,7 +48,7 @@ export const JobView = (props: JobViewProps) => {
         <JobTags tags={tags} />
       </div>
       <JobDescription html={descriptionHtml} />
-      <JobApply applyUrl={url} permalink={"/"} buttonClass={"is-primary"} />
+      <JobApply applyUrl={url} permalink={"/"} />
     </div>
   );
 };

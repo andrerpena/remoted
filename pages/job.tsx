@@ -10,7 +10,7 @@ import { MiniHero } from "../components/MiniHero";
 
 export const getJobQuery = gql`
   query getJob($jobId: String) {
-    job(id: $jobId) {
+    getJob(id: $jobId) {
       id
       title
       url

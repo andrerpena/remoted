@@ -1,5 +1,11 @@
 export type Maybe<T> = T | null;
 
+export interface TagCountGroupInput {
+  name: string;
+
+  tags: string[];
+}
+
 export interface JobInput {
   title: string;
 
@@ -59,13 +65,15 @@ export interface UpdateSourceInput {
 // ====================================================
 
 export interface Query {
-  jobs?: Maybe<(Maybe<Job>)[]>;
+  getJobs?: Maybe<(Maybe<Job>)[]>;
 
-  job?: Maybe<Job>;
+  getJob?: Maybe<Job>;
 
-  company?: Maybe<Company>;
+  getTagCountGroups?: Maybe<(Maybe<TagCountGroup>)[]>;
 
-  sources?: Maybe<(Maybe<Source>)[]>;
+  getCompany?: Maybe<Company>;
+
+  getSources?: Maybe<(Maybe<Source>)[]>;
 }
 
 export interface Job {
@@ -136,6 +144,17 @@ export interface Source {
   lastUpdateMessageDetails?: Maybe<string>;
 }
 
+export interface TagCountGroup {
+  name: string;
+  tags: TagCount[];
+}
+
+export interface TagCount {
+  name: string;
+
+  count: number;
+}
+
 export interface Mutation {
   addJob?: Maybe<Job>;
 
@@ -148,17 +167,20 @@ export interface Mutation {
 // Arguments
 // ====================================================
 
-export interface JobsQueryArgs {
+export interface GetJobsQueryArgs {
   offset?: Maybe<number>;
 
   limit?: Maybe<number>;
 }
-export interface JobQueryArgs {
+export interface GetJobQueryArgs {
   id?: Maybe<string>;
 
   urlReference?: Maybe<string>;
 }
-export interface CompanyQueryArgs {
+export interface GetTagCountGroupsQueryArgs {
+  tagGroups: TagCountGroupInput[];
+}
+export interface GetCompanyQueryArgs {
   id?: Maybe<string>;
 
   urlReference?: Maybe<string>;
@@ -226,50 +248,68 @@ export type DirectiveResolverFn<TResult, TArgs = {}, TContext = {}> = (
 
 export namespace QueryResolvers {
   export interface Resolvers<Context = {}, TypeParent = {}> {
-    jobs?: JobsResolver<Maybe<(Maybe<Job>)[]>, TypeParent, Context>;
+    getJobs?: GetJobsResolver<Maybe<(Maybe<Job>)[]>, TypeParent, Context>;
 
-    job?: JobResolver<Maybe<Job>, TypeParent, Context>;
+    getJob?: GetJobResolver<Maybe<Job>, TypeParent, Context>;
 
-    company?: CompanyResolver<Maybe<Company>, TypeParent, Context>;
+    getTagCountGroups?: GetTagCountGroupsResolver<
+      Maybe<(Maybe<TagCountGroup>)[]>,
+      TypeParent,
+      Context
+    >;
 
-    sources?: SourcesResolver<Maybe<(Maybe<Source>)[]>, TypeParent, Context>;
+    getCompany?: GetCompanyResolver<Maybe<Company>, TypeParent, Context>;
+
+    getSources?: GetSourcesResolver<
+      Maybe<(Maybe<Source>)[]>,
+      TypeParent,
+      Context
+    >;
   }
 
-  export type JobsResolver<
+  export type GetJobsResolver<
     R = Maybe<(Maybe<Job>)[]>,
     Parent = {},
     Context = {}
-  > = Resolver<R, Parent, Context, JobsArgs>;
-  export interface JobsArgs {
+  > = Resolver<R, Parent, Context, GetJobsArgs>;
+  export interface GetJobsArgs {
     offset?: Maybe<number>;
 
     limit?: Maybe<number>;
   }
 
-  export type JobResolver<R = Maybe<Job>, Parent = {}, Context = {}> = Resolver<
-    R,
-    Parent,
-    Context,
-    JobArgs
-  >;
-  export interface JobArgs {
+  export type GetJobResolver<
+    R = Maybe<Job>,
+    Parent = {},
+    Context = {}
+  > = Resolver<R, Parent, Context, GetJobArgs>;
+  export interface GetJobArgs {
     id?: Maybe<string>;
 
     urlReference?: Maybe<string>;
   }
 
-  export type CompanyResolver<
+  export type GetTagCountGroupsResolver<
+    R = Maybe<(Maybe<TagCountGroup>)[]>,
+    Parent = {},
+    Context = {}
+  > = Resolver<R, Parent, Context, GetTagCountGroupsArgs>;
+  export interface GetTagCountGroupsArgs {
+    tagGroups: TagCountGroupInput[];
+  }
+
+  export type GetCompanyResolver<
     R = Maybe<Company>,
     Parent = {},
     Context = {}
-  > = Resolver<R, Parent, Context, CompanyArgs>;
-  export interface CompanyArgs {
+  > = Resolver<R, Parent, Context, GetCompanyArgs>;
+  export interface GetCompanyArgs {
     id?: Maybe<string>;
 
     urlReference?: Maybe<string>;
   }
 
-  export type SourcesResolver<
+  export type GetSourcesResolver<
     R = Maybe<(Maybe<Source>)[]>,
     Parent = {},
     Context = {}
@@ -532,6 +572,44 @@ export namespace SourceResolvers {
   > = Resolver<R, Parent, Context>;
 }
 
+export namespace TagCountGroupResolvers {
+  export interface Resolvers<Context = {}, TypeParent = TagCountGroup> {
+    name?: NameResolver<string, TypeParent, Context>;
+
+    tags?: TagsResolver<TagCount[], TypeParent, Context>;
+  }
+
+  export type NameResolver<
+    R = string,
+    Parent = TagCountGroup,
+    Context = {}
+  > = Resolver<R, Parent, Context>;
+  export type TagsResolver<
+    R = TagCount[],
+    Parent = TagCountGroup,
+    Context = {}
+  > = Resolver<R, Parent, Context>;
+}
+
+export namespace TagCountResolvers {
+  export interface Resolvers<Context = {}, TypeParent = TagCount> {
+    name?: NameResolver<string, TypeParent, Context>;
+
+    count?: CountResolver<number, TypeParent, Context>;
+  }
+
+  export type NameResolver<
+    R = string,
+    Parent = TagCount,
+    Context = {}
+  > = Resolver<R, Parent, Context>;
+  export type CountResolver<
+    R = number,
+    Parent = TagCount,
+    Context = {}
+  > = Resolver<R, Parent, Context>;
+}
+
 export namespace MutationResolvers {
   export interface Resolvers<Context = {}, TypeParent = {}> {
     addJob?: AddJobResolver<Maybe<Job>, TypeParent, Context>;
@@ -607,6 +685,8 @@ export interface IResolvers<Context = {}> {
   Job?: JobResolvers.Resolvers<Context>;
   Company?: CompanyResolvers.Resolvers<Context>;
   Source?: SourceResolvers.Resolvers<Context>;
+  TagCountGroup?: TagCountGroupResolvers.Resolvers<Context>;
+  TagCount?: TagCountResolvers.Resolvers<Context>;
   Mutation?: MutationResolvers.Resolvers<Context>;
 }
 

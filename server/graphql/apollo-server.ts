@@ -16,6 +16,7 @@ import {
   getSourceByJobPublicId,
   updateSource
 } from "./services/source-service";
+import { getTagCountGroups } from "./services/tag-service";
 
 const typeDefs = gql(importSchema("server/graphql/schema.graphql"));
 
@@ -25,17 +26,21 @@ type Resolvers = IResolvers & {
 
 const resolvers: Resolvers = {
   Query: {
-    jobs: async (_parent, args) => {
+    getJobs: async (_parent, args) => {
       const db = await buildDb();
       return getJobs(db, args.limit || PAGE_SIZE, args.offset || 0);
     },
-    company: async (_parent, args) => {
+    getCompany: async (_parent, args) => {
       const db = await buildDb();
       return getCompany(db, args.id, args.urlReference);
     },
-    job: async (_parent, args) => {
+    getJob: async (_parent, args) => {
       const db = await buildDb();
       return getJob(db, args.id, args.urlReference);
+    },
+    getTagCountGroups: async (_parent, args) => {
+      const db = await buildDb();
+      return getTagCountGroups(db, args.tagGroups);
     }
   },
   Mutation: {

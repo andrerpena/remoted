@@ -26,3 +26,16 @@ body {
 .box-white-content {
   padding: $size-4 $size-5;
 }
+
+.tag-box {
+  .box-white-header {
+    padding-bottom: 0;
+  }
+  .tag {
+    border: 1px solid #b5b5b5;
+    text-transform: uppercase;
+    &:first-child {
+      border-right: 0;
+    }
+  }
+}

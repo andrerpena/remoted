@@ -19,7 +19,7 @@ export const JobList = (props: JobListProps) => (
       </div>
       <ul className="job-list">
         {props.jobs.map(j => (
-          <JobPost job={j} router={props.router} />
+          <JobPost key={j.id} job={j} router={props.router} />
         ))}
       </ul>
     </div>
@@ -36,7 +36,12 @@ export const JobListCollection = (props: JobListCollectionProps) => {
   return (
     <>
       {buckets.map(b => (
-        <JobList jobs={b.data} title={b.title} router={props.router} />
+        <JobList
+          key={b.title}
+          jobs={b.data}
+          title={b.title}
+          router={props.router}
+        />
       ))}
     </>
   );
