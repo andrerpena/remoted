@@ -33,7 +33,6 @@ export const NavBar = () => (
           <a className="navbar-item">🤖 API</a>
           <a className="navbar-item">💻 CLI</a>
           <a className="navbar-item">📊 Stats</a>
-          <a className="navbar-item">🎯 Sources </a>
           <a className="navbar-item">📖 About </a>
         </div>
       </div>
