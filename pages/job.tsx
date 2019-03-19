@@ -47,23 +47,17 @@ const JobPage = function(props: JobPageProps) {
       <NavBar />
       <div className="container">
         <div className="columns">
-          <div className="column is-two-thirds">
+          <div className="column is-full">
             <div className="box-white">
-              <Query<{ job: Job }>
+              <Query<{ getJob: Job }>
                 query={getJobQuery}
                 variables={{
                   jobId: props.id
                 }}
               >
-                {({ data }) => (data ? <JobView job={data.job} /> : null)}
+                {({ data }) => (data ? <JobView job={data.getJob} /> : null)}
               </Query>
             </div>
-          </div>
-          <div className="column">
-            <MiniHero />
-            <div className="box-white">Subscribe</div>
-            <div className="box-white">My favorite tags</div>
-            <div className="box-white">Top tags</div>
           </div>
         </div>
       </div>
