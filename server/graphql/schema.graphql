@@ -1,8 +1,8 @@
 type Query {
   getJobs(offset: Int, limit: Int): [Job]
-  getJob(id: String, urlReference: String): Job
+  getJob(id: String, url: String): Job
   getTagCountGroups(tagGroups: [TagCountGroupInput!]!): [TagCountGroup]
-  getCompany(id: String, urlReference: String): Company
+  getCompany(id: String, url: String): Company
   getSources: [Source]
 }
 type Job {

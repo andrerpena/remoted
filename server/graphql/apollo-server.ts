@@ -32,11 +32,11 @@ const resolvers: Resolvers = {
     },
     getCompany: async (_parent, args) => {
       const db = await buildDb();
-      return getCompany(db, args.id, args.urlReference);
+      return getCompany(db, args.id, args.url);
     },
     getJob: async (_parent, args) => {
       const db = await buildDb();
-      return getJob(db, args.id, args.urlReference);
+      return getJob(db, args.id, args.url);
     },
     getTagCountGroups: async (_parent, args) => {
       const db = await buildDb();

@@ -146,6 +146,7 @@ export interface Source {
 
 export interface TagCountGroup {
   name: string;
+
   tags: TagCount[];
 }
 
@@ -175,7 +176,7 @@ export interface GetJobsQueryArgs {
 export interface GetJobQueryArgs {
   id?: Maybe<string>;
 
-  urlReference?: Maybe<string>;
+  url?: Maybe<string>;
 }
 export interface GetTagCountGroupsQueryArgs {
   tagGroups: TagCountGroupInput[];
@@ -183,7 +184,7 @@ export interface GetTagCountGroupsQueryArgs {
 export interface GetCompanyQueryArgs {
   id?: Maybe<string>;
 
-  urlReference?: Maybe<string>;
+  url?: Maybe<string>;
 }
 export interface AddJobMutationArgs {
   input: JobInput;
@@ -286,7 +287,7 @@ export namespace QueryResolvers {
   export interface GetJobArgs {
     id?: Maybe<string>;
 
-    urlReference?: Maybe<string>;
+    url?: Maybe<string>;
   }
 
   export type GetTagCountGroupsResolver<
@@ -306,7 +307,7 @@ export namespace QueryResolvers {
   export interface GetCompanyArgs {
     id?: Maybe<string>;
 
-    urlReference?: Maybe<string>;
+    url?: Maybe<string>;
   }
 
   export type GetSourcesResolver<
