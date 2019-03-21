@@ -10,6 +10,7 @@ import "../styles/common.scss";
 import "../styles/job.scss";
 import "../styles/markdown.scss";
 import { getJobsQuery } from "./index-queries";
+import { SearchTags } from "../components/SearchTag";
 
 export default withRouter((props: WithRouterProps) => (
   <div>
@@ -21,6 +22,7 @@ export default withRouter((props: WithRouterProps) => (
     >
       {({ data }) => (
         <div className="container">
+          <SearchTags />
           <div className="columns">
             <div className="column is-full">
               <JobListCollection

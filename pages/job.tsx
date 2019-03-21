@@ -6,7 +6,6 @@ import { Job } from "../graphql-types";
 import * as Next from "next";
 import { Meta } from "../components/Meta";
 import { NavBar } from "../components/NavBar";
-import { MiniHero } from "../components/MiniHero";
 
 export const getJobQuery = gql`
   query getJob($jobId: String) {
