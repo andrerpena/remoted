@@ -2,6 +2,7 @@ type Query {
   getJobs(offset: Int, limit: Int): [Job]
   getJob(id: String, url: String): Job
   getTagCountGroups(tagGroups: [TagCountGroupInput!]!): [TagCountGroup]
+  getTags(text: String): [TagCount]
   getCompany(id: String, url: String): Company
   getSources: [Source]
 }

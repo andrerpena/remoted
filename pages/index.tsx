@@ -1,6 +1,6 @@
 import * as React from "react";
 import "./index.scss";
-import { Query } from "react-apollo";
+import { ApolloConsumer, Query } from "react-apollo";
 import { Meta } from "../components/Meta";
 import { NavBar } from "../components/NavBar";
 import { JobListCollection } from "../components/JobList";
@@ -9,8 +9,9 @@ import { withRouter, WithRouterProps } from "next/router";
 import "../styles/common.scss";
 import "../styles/job.scss";
 import "../styles/markdown.scss";
-import { getJobsQuery } from "./index-queries";
-import { SearchTags } from "../components/SearchTag";
+import { TagSearchBox } from "../components/TagSearchBox";
+import { getJobsQuery } from "../queries/getJobs";
+import { getTagsQuery } from "../queries/getTags";
 
 export default withRouter((props: WithRouterProps) => (
   <div>
@@ -22,7 +23,18 @@ export default withRouter((props: WithRouterProps) => (
     >
       {({ data }) => (
         <div className="container">
-          <SearchTags />
+          <ApolloConsumer>
+            {client => {
+              const getTags = async (text: string) => {
+                const queryResult = await client.query({
+                  query: getTagsQuery,
+                  variables: { text }
+                });
+                return queryResult.data.getTags;
+              };
+              return <TagSearchBox getTags={getTags} />;
+            }}
+          </ApolloConsumer>
           <div className="columns">
             <div className="column is-full">
               <JobListCollection

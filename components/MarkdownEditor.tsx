@@ -2,16 +2,12 @@ import * as React from "react";
 import "react-mde/lib/styles/scss/react-mde-all.scss";
 import * as Showdown from "showdown";
 import ReactMde from "react-mde";
-import { FieldRenderProps } from "react-final-form";
 
 export interface MarkdownEditorState {
   tab: "write" | "preview";
 }
 
-export class MarkdownEditor extends React.Component<
-  FieldRenderProps,
-  MarkdownEditorState
-> {
+export class MarkdownEditor extends React.Component<any, MarkdownEditorState> {
   converter: Showdown.Converter;
 
   handleValueChange = (value: string) => {
@@ -25,7 +21,7 @@ export class MarkdownEditor extends React.Component<
     this.setState({ tab });
   };
 
-  constructor(props: FieldRenderProps) {
+  constructor(props: any) {
     super(props);
     this.state = {
       tab: "write"
@@ -50,7 +46,7 @@ export class MarkdownEditor extends React.Component<
         generateMarkdownPreview={markdown =>
           Promise.resolve(this.converter.makeHtml(markdown))
         }
-        currentTab={"write"}
+        selectedTab={"write"}
       />
     );
   }

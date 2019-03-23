@@ -16,7 +16,7 @@ import {
   getSourceByJobPublicId,
   updateSource
 } from "./services/source-service";
-import { getTagCountGroups } from "./services/tag-service";
+import { getTagCountGroups, getTags } from "./services/tag-service";
 
 const typeDefs = gql(importSchema("server/graphql/schema.graphql"));
 
@@ -29,6 +29,10 @@ const resolvers: Resolvers = {
     getJobs: async (_parent, args) => {
       const db = await buildDb();
       return getJobs(db, args.limit || PAGE_SIZE, args.offset || 0);
+    },
+    getTags: async (_parent, args) => {
+      const db = await buildDb();
+      return getTags(db, args.text || "");
     },
     getCompany: async (_parent, args) => {
       const db = await buildDb();

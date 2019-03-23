@@ -3,6 +3,7 @@ import { Writable } from "massive";
 import { AnyObject } from "massive";
 import { PartialBy } from "../../lib/type-helpers";
 import { Nullable } from "../../lib/types";
+import { TagCount } from "../../graphql-types";
 
 export interface RemotedDatabase extends massive.Database {
   job: Writable;
@@ -12,6 +13,7 @@ export interface RemotedDatabase extends massive.Database {
   tag: Writable;
   job_tag: Writable;
   source: Writable;
+  getTags: (options: any) => Promise<TagCount[]>;
 }
 
 export interface DbCompany extends AnyObject<any> {

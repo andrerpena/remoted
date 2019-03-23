@@ -71,6 +71,8 @@ export interface Query {
 
   getTagCountGroups?: Maybe<(Maybe<TagCountGroup>)[]>;
 
+  getTags?: Maybe<(Maybe<TagCount>)[]>;
+
   getCompany?: Maybe<Company>;
 
   getSources?: Maybe<(Maybe<Source>)[]>;
@@ -181,6 +183,9 @@ export interface GetJobQueryArgs {
 export interface GetTagCountGroupsQueryArgs {
   tagGroups: TagCountGroupInput[];
 }
+export interface GetTagsQueryArgs {
+  text?: Maybe<string>;
+}
 export interface GetCompanyQueryArgs {
   id?: Maybe<string>;
 
@@ -259,6 +264,8 @@ export namespace QueryResolvers {
       Context
     >;
 
+    getTags?: GetTagsResolver<Maybe<(Maybe<TagCount>)[]>, TypeParent, Context>;
+
     getCompany?: GetCompanyResolver<Maybe<Company>, TypeParent, Context>;
 
     getSources?: GetSourcesResolver<
@@ -297,6 +304,15 @@ export namespace QueryResolvers {
   > = Resolver<R, Parent, Context, GetTagCountGroupsArgs>;
   export interface GetTagCountGroupsArgs {
     tagGroups: TagCountGroupInput[];
+  }
+
+  export type GetTagsResolver<
+    R = Maybe<(Maybe<TagCount>)[]>,
+    Parent = {},
+    Context = {}
+  > = Resolver<R, Parent, Context, GetTagsArgs>;
+  export interface GetTagsArgs {
+    text?: Maybe<string>;
   }
 
   export type GetCompanyResolver<

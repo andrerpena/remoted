@@ -1,5 +1,9 @@
 import { RemotedDatabase } from "../../db/model";
-import { TagCountGroup, TagCountGroupInput } from "../../../graphql-types";
+import {
+  TagCount,
+  TagCountGroup,
+  TagCountGroupInput
+} from "../../../graphql-types";
 
 export async function getTagCountGroups(
   db: RemotedDatabase,
@@ -16,4 +20,11 @@ export async function getTagCountGroups(
     });
   }
   return result;
+}
+
+export async function getTags(
+  db: RemotedDatabase,
+  text: string
+): Promise<TagCount[]> {
+  return db.getTags({ _text: text + "%" });
 }
