@@ -41,7 +41,7 @@ export class TagSearchBox extends React.Component<
     // Suggestions also need to be provided to the Autosuggest,
     // and they are initially empty because the Autosuggest is closed.
     this.state = {
-      value: props.initialValue,
+      value: props.initialValue || "",
       suggestions: []
     };
   }
