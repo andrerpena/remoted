@@ -174,6 +174,8 @@ export interface GetJobsQueryArgs {
   offset?: Maybe<number>;
 
   limit?: Maybe<number>;
+
+  hasTag?: Maybe<string>;
 }
 export interface GetJobQueryArgs {
   id?: Maybe<string>;
@@ -284,6 +286,8 @@ export namespace QueryResolvers {
     offset?: Maybe<number>;
 
     limit?: Maybe<number>;
+
+    hasTag?: Maybe<string>;
   }
 
   export type GetJobResolver<

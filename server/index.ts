@@ -3,6 +3,7 @@ import * as express from "express";
 import { fromExpressRequest } from "./lib/url";
 import { apolloServer } from "./graphql/apollo-server";
 import { config } from "dotenv";
+import { extractTagFromPath } from "../lib/url";
 
 config();
 
@@ -14,15 +15,20 @@ const nextRequestHandler = nextServer.getRequestHandler();
 nextServer.prepare().then(() => {
   const app = express();
 
-  app.get("/a", (req, res) => {
-    nextServer.render(req, res, "/about", req.query);
-  });
-
   app.get("/job/:public_id", (req, res) => {
     nextServer.render(req, res, "/job", { publicId: req.params.public_id });
   });
 
   apolloServer.applyMiddleware({ app });
+
+  app.get("/:path", (req, res) => {
+    const path = req.params.path;
+    const tag = extractTagFromPath(path);
+    if (tag) {
+      return nextServer.render(req, res, "/", { tag });
+    }
+    return nextRequestHandler(req, res, fromExpressRequest(req));
+  });
 
   app.get("*", (req, res) => {
     return nextRequestHandler(req, res, fromExpressRequest(req));

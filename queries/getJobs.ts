@@ -1,8 +1,8 @@
 import { gql } from "apollo-boost";
 
 export const getJobsQuery = gql`
-  query getJobs($offset: Int, $limit: Int) {
-    getJobs(offset: $offset, limit: $limit) {
+  query getJobs($offset: Int, $limit: Int, $hasTag: String) {
+    getJobs(offset: $offset, limit: $limit, hasTag: $hasTag) {
       id
       title
       url

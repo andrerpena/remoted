@@ -1,4 +1,4 @@
-import { removeQueryString } from "../url";
+import { extractTagFromPath, removeQueryString } from "../url";
 
 describe("url", () => {
   describe("removeQueryString", () => {
@@ -19,6 +19,20 @@ describe("url", () => {
     it("should work when there is no URL", () => {
       const url = removeQueryString("");
       expect(url).toEqual("");
+    });
+  });
+  describe("extractTagFromPath", () => {
+    it("should work when Regex matches", () => {
+      const tag = extractTagFromPath("remote-reactjs-jobs");
+      expect(tag).toEqual("reactjs");
+    });
+    it("should work with dashes", () => {
+      const tag = extractTagFromPath("remote-amazon-web-service-jobs");
+      expect(tag).toEqual("amazon-web-service");
+    });
+    it("should return null when it does not match", () => {
+      const tag = extractTagFromPath("remote2-amazon-web-service-jobs");
+      expect(tag).toEqual(null);
     });
   });
 });

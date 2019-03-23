@@ -1,12 +1,13 @@
 import Autosuggest, {
   ChangeEvent,
   InputProps,
+  SuggestionSelectedEventData,
   SuggestionsFetchRequestedParams
 } from "react-autosuggest";
 import "./TagSearchBox.scss";
 import * as React from "react";
 
-export interface TahOption {
+export interface TagOption {
   name: string;
   jobs: number;
 }
@@ -14,20 +15,22 @@ export interface TahOption {
 // When suggestion is clicked, Autosuggest needs to populate the input
 // based on the clicked suggestion. Teach Autosuggest how to calculate the
 // input value for every given suggestion.
-const getSuggestionValue = (suggestion: TahOption) => suggestion.name;
+const getSuggestionValue = (suggestion: TagOption) => suggestion.name;
 
 // Use your imagination to render suggestions.
-const renderSuggestion = (suggestion: TahOption) => (
+const renderSuggestion = (suggestion: TagOption) => (
   <div>{suggestion.name}</div>
 );
 
 export interface TagSearchBoxProps {
-  getTags: (text: string) => Promise<Array<TahOption>>;
+  initialValue: string;
+  getTags: (text: string) => Promise<Array<TagOption>>;
+  onSelectTag: (tag: string) => void;
 }
 
 export class TagSearchBox extends React.Component<
   TagSearchBoxProps,
-  { value: string; suggestions: TahOption[] }
+  { value: string; suggestions: TagOption[] }
 > {
   constructor(props: TagSearchBoxProps) {
     super(props);
@@ -38,7 +41,7 @@ export class TagSearchBox extends React.Component<
     // Suggestions also need to be provided to the Autosuggest,
     // and they are initially empty because the Autosuggest is closed.
     this.state = {
-      value: "",
+      value: props.initialValue,
       suggestions: []
     };
   }
@@ -47,6 +50,9 @@ export class TagSearchBox extends React.Component<
     this.setState({
       value: newValue
     });
+    // if (newValue) {
+    //   this.props.onSelectTag(newValue);
+    // }
   };
 
   // Autosuggest will call this function every time you need to update suggestions.
@@ -69,10 +75,7 @@ export class TagSearchBox extends React.Component<
     });
   };
 
-  onBlur = (
-    _event: React.FormEvent<any>,
-    _params?: Autosuggest.BlurEvent<TahOption>
-  ): void => {
+  onBlur = (): void => {
     console.log(this.state.value);
     console.log(this.state.suggestions);
     if (
@@ -81,20 +84,30 @@ export class TagSearchBox extends React.Component<
       ).length === 0
     ) {
       this.setState({
-        value: ""
+        value: this.state.suggestions.length
+          ? this.state.suggestions[0].name
+          : ""
       });
     }
+  };
+
+  onSuggestionSelected = (
+    _event: React.FormEvent,
+    data: SuggestionSelectedEventData<TagOption>
+  ) => {
+    this.props.onSelectTag(data.suggestion.name);
   };
 
   render() {
     const { value, suggestions } = this.state;
 
     // Autosuggest will pass through all these props to the input.
-    const inputProps: InputProps<TahOption> = {
-      placeholder: "Type a programming language",
+    const inputProps: InputProps<TagOption> = {
+      placeholder: "Search tags. Ex: reactjs",
       value,
       onChange: this.onChange,
-      onBlur: this.onBlur
+      onBlur: this.onBlur,
+      className: "input is-medium"
     };
 
     // Finally, render it!
@@ -106,6 +119,8 @@ export class TagSearchBox extends React.Component<
         getSuggestionValue={getSuggestionValue}
         renderSuggestion={renderSuggestion}
         inputProps={inputProps}
+        highlightFirstSuggestion={true}
+        onSuggestionSelected={this.onSuggestionSelected}
       />
     );
   }
