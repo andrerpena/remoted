@@ -2,6 +2,7 @@ import { ApolloConsumer } from "react-apollo";
 import { getTagsQuery } from "../queries/getTags";
 import { TagSearchBox } from "./TagSearchBox";
 import * as React from "react";
+import { TagHero } from "./TagHero";
 
 export interface TagSearchBoxWrapperProps {
   tag: string;
@@ -10,7 +11,7 @@ export interface TagSearchBoxWrapperProps {
 
 export function TagSearchBoxWrapper(props: TagSearchBoxWrapperProps) {
   return (
-    <div className="tag-search-box-wrapper">
+    <div className="banner-wrapper">
       <ApolloConsumer>
         {client => {
           const getTags = async (text: string) => {
@@ -21,11 +22,14 @@ export function TagSearchBoxWrapper(props: TagSearchBoxWrapperProps) {
             return queryResult.data.getTags;
           };
           return (
-            <TagSearchBox
-              getTags={getTags}
-              initialValue={props.tag}
-              onSelectTag={props.onSelectTag}
-            />
+            <>
+              <TagHero tag={props.tag} />
+              <TagSearchBox
+                getTags={getTags}
+                initialValue={props.tag}
+                onSelectTag={props.onSelectTag}
+              />
+            </>
           );
         }}
       </ApolloConsumer>

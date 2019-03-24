@@ -1,5 +1,26 @@
 @import "../styles/variables";
 
-.tag-search-box-wrapper {
+.banner-wrapper {
   margin-bottom: $size-4;
+}
+
+.banner {
+  .banner-header {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+
+    .banner-title {
+      font-family: "Fredoka One";
+    }
+
+    .fab,
+    .fa {
+      font-size: 40px;
+      margin: $size-5 $size-6;
+    }
+  }
 }
