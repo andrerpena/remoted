@@ -1,5 +1,8 @@
 import { ApolloClient, InMemoryCache, HttpLink } from "apollo-boost";
 import fetch from "isomorphic-unfetch";
+import getConfig from "next/config";
+
+const { publicRuntimeConfig } = getConfig();
 
 declare var process: {
   browser: boolean;
@@ -18,15 +21,10 @@ function create(initialState: any) {
     connectToDevTools: process.browser,
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
     link: new HttpLink({
-      uri: "http://localhost:3000/graphql", // Server URL (must be absolute)
+      uri: publicRuntimeConfig.graphqlEndPoint, // Server URL (must be absolute)
       credentials: "same-origin" // Additional fetch() options like `credentials` or `headers`
     }),
-    cache: new InMemoryCache().restore(initialState || {}),
-    defaultOptions: {
-      query: {
-        fetchPolicy: "no-cache"
-      }
-    }
+    cache: new InMemoryCache().restore(initialState || {})
   });
 }
 
