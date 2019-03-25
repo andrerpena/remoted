@@ -21,7 +21,12 @@ function create(initialState: any) {
       uri: "http://localhost:3000/graphql", // Server URL (must be absolute)
       credentials: "same-origin" // Additional fetch() options like `credentials` or `headers`
     }),
-    cache: new InMemoryCache().restore(initialState || {})
+    cache: new InMemoryCache().restore(initialState || {}),
+    defaultOptions: {
+      query: {
+        fetchPolicy: "no-cache"
+      }
+    }
   });
 }
 
