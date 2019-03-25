@@ -25,12 +25,18 @@
     .fas,
     .fa {
       font-size: 40px;
+    }
+
+    cursor: pointer;
+
+    > * {
       margin: $size-5 $size-6;
     }
   }
 
   .tag-search-box {
     padding: $size-6;
+
     > div {
       position: relative;
     }
