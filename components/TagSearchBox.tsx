@@ -28,10 +28,8 @@ export interface TagSearchBoxProps {
   onSelectTag: (tag: string) => void;
 }
 
-export class TagSearchBox extends React.Component<
-  TagSearchBoxProps,
-  { value: string; suggestions: TagOption[] }
-> {
+export class TagSearchBox extends React.Component<TagSearchBoxProps,
+  { value: string; suggestions: TagOption[] }> {
   constructor(props: TagSearchBoxProps) {
     super(props);
 
@@ -58,8 +56,8 @@ export class TagSearchBox extends React.Component<
   // Autosuggest will call this function every time you need to update suggestions.
   // You already implemented this logic above, so just use it.
   onSuggestionsFetchRequested = async ({
-    value
-  }: SuggestionsFetchRequestedParams) => {
+                                         value
+                                       }: SuggestionsFetchRequestedParams) => {
     const { getTags } = this.props;
 
     const suggestions = await getTags(value);
@@ -112,16 +110,18 @@ export class TagSearchBox extends React.Component<
 
     // Finally, render it!
     return (
-      <Autosuggest
-        suggestions={suggestions}
-        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-        getSuggestionValue={getSuggestionValue}
-        renderSuggestion={renderSuggestion}
-        inputProps={inputProps}
-        highlightFirstSuggestion={true}
-        onSuggestionSelected={this.onSuggestionSelected}
-      />
+      <div className="tag-search-box">
+        <Autosuggest
+          suggestions={suggestions}
+          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          getSuggestionValue={getSuggestionValue}
+          renderSuggestion={renderSuggestion}
+          inputProps={inputProps}
+          highlightFirstSuggestion={true}
+          onSuggestionSelected={this.onSuggestionSelected}
+        />
+      </div>
     );
   }
 }

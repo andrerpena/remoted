@@ -10,7 +10,7 @@ import "../styles/common.scss";
 import "../styles/job.scss";
 import "../styles/markdown.scss";
 import { getJobsQuery } from "../queries/getJobs";
-import { TagSearchBoxWrapper } from "../components/TagSearchBoxWrapper";
+import { BannerWrapper } from "../components/BannerWrapper";
 import * as Next from "next";
 import { navigateToTag } from "../lib/client/navigation";
 
@@ -31,7 +31,7 @@ const IndexPage = (props: IndexPageProps) => {
       >
         {({ data }) => (
           <div className="container">
-            <TagSearchBoxWrapper
+            <BannerWrapper
               tag={props.tag}
               onSelectTag={tag => navigateToTag(tag)}
             />
