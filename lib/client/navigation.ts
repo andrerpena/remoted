@@ -1,7 +1,8 @@
 import Router from "next/router";
+import { linkToTag } from "../url";
 
 export function navigateToTag(tag: string) {
-  navigateTo(`/remote-${tag}-jobs`, {});
+  navigateTo(linkToTag(tag), {});
 }
 
 export function navigateTo(path: string, query: any) {

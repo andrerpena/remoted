@@ -1,5 +1,8 @@
-export function buildInternalJobUrl(publicId: string) {
+export function linkToJob(publicId: string) {
   return `/job/${publicId}`;
+}
+export function linkToTag(tag: string) {
+  return `/remote-${tag}-jobs`;
 }
 
 export function removeQueryString(url: string) {

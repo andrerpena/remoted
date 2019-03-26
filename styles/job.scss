@@ -27,9 +27,6 @@
 
 .job-title {
   margin-top: $size-6;
-  a:hover {
-    text-decoration: underline;
-  }
 }
 
 .job-post-tags {
@@ -46,6 +43,7 @@
       margin-right: $size-8;
       margin-bottom: $size-8;
       text-transform: uppercase;
+      text-decoration: none;
 
       .fas,
       .far {
@@ -54,6 +52,10 @@
 
       &.is-white {
         border: 1px solid $grey-light;
+      }
+
+      &:hover {
+        background-color: $white-ter;
       }
     }
   }

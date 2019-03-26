@@ -4,7 +4,7 @@ import * as Showdown from "showdown";
 import { Job } from "../graphql-types";
 import { getSalaryText } from "../lib/salary";
 import { getLocationText } from "../lib/location";
-import { buildInternalJobUrl } from "../lib/url";
+import { linkToJob } from "../lib/url";
 import { CompanyHeader } from "./CompanyHeader";
 import { JobInfo } from "./Salary";
 import { JobTags } from "./JobTags";
@@ -77,8 +77,8 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
             postedOn={postedOn}
           />
           <div className="job-title">
-            <Link href={buildInternalJobUrl(id)}>
-              <a className="title is-5" onClick={e => e.stopPropagation()}>
+            <Link href={linkToJob(id)}>
+              <a className="title is-5" onClick={e => e.preventDefault()}>
                 {title}
               </a>
             </Link>
@@ -91,11 +91,11 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
             this.state.open ? "open" : ""
           }`}
         >
-          <JobApply applyUrl={url} permalink={buildInternalJobUrl(id)} />
+          <JobApply applyUrl={url} permalink={linkToJob(id)} />
           <JobDescription html={descriptionHtml} />
           <JobApply
             applyUrl={url}
-            permalink={buildInternalJobUrl(id)}
+            permalink={linkToJob(id)}
             buttonClass={"is-primary"}
           />
         </div>
