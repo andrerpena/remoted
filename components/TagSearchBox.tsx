@@ -28,18 +28,11 @@ export interface TagSearchBoxProps {
   onSelectTag: (tag: string) => void;
 }
 
-export class TagSearchBox extends React.Component<
-  TagSearchBoxProps,
-  { value: string; suggestions: TagOption[] }
-> {
+export class TagSearchBox extends React.Component<TagSearchBoxProps,
+  { value: string; suggestions: TagOption[] }> {
   constructor(props: TagSearchBoxProps) {
     super(props);
 
-    // Autosuggest is a controlled component.
-    // This means that you need to provide an input value
-    // and an onChange handler that updates this value (see below).
-    // Suggestions also need to be provided to the Autosuggest,
-    // and they are initially empty because the Autosuggest is closed.
     this.state = {
       value: props.initialValue || "",
       suggestions: []
@@ -50,25 +43,19 @@ export class TagSearchBox extends React.Component<
     this.setState({
       value: newValue
     });
-    // if (newValue) {
-    //   this.props.onSelectTag(newValue);
-    // }
   };
 
-  // Autosuggest will call this function every time you need to update suggestions.
-  // You already implemented this logic above, so just use it.
   onSuggestionsFetchRequested = async ({
-    value
-  }: SuggestionsFetchRequestedParams) => {
+                                         value
+                                       }: SuggestionsFetchRequestedParams) => {
     const { getTags } = this.props;
 
     const suggestions = await getTags(value.toLowerCase());
     this.setState({
-      suggestions: suggestions
+      suggestions: processTags(suggestions, value.toLowerCase())
     });
   };
 
-  // Autosuggest will call this function every time you need to clear suggestions.
   onSuggestionsClearRequested = () => {
     this.setState({
       suggestions: []
@@ -101,7 +88,6 @@ export class TagSearchBox extends React.Component<
   render() {
     const { value, suggestions } = this.state;
 
-    // Autosuggest will pass through all these props to the input.
     const inputProps: InputProps<TagOption> = {
       placeholder: "Search tags. Ex: reactjs",
       value,
@@ -125,5 +111,25 @@ export class TagSearchBox extends React.Component<
         />
       </div>
     );
+  }
+}
+
+export function processTags(options: TagOption[], currentText: string): TagOption[] {
+  try {
+    if (!options || !options.length) {
+      return [];
+    }
+
+    const result = [];
+    const exactMatch = options.filter(i => i.name.toLowerCase() === currentText.toLowerCase());
+    if (exactMatch.length) {
+      result.push(exactMatch[0]);
+    }
+    return [
+      ...result,
+      ...options.filter(t => t.name.toLowerCase() !== currentText.toLowerCase())
+    ].slice(0, 5);
+  } catch {
+    return options;
   }
 }
