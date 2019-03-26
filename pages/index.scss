@@ -7,7 +7,7 @@
 .banner {
   background-color: $white;
   border-radius: $radius;
-  margin-bottom: $size-5;
+  margin-bottom: $column-gap;
 
   .banner-header {
     display: flex;
@@ -39,6 +39,10 @@
 
     > div {
       position: relative;
+    }
+
+    .field {
+      margin: 0;
     }
   }
 }

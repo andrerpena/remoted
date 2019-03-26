@@ -28,8 +28,10 @@ export interface TagSearchBoxProps {
   onSelectTag: (tag: string) => void;
 }
 
-export class TagSearchBox extends React.Component<TagSearchBoxProps,
-  { value: string; suggestions: TagOption[] }> {
+export class TagSearchBox extends React.Component<
+  TagSearchBoxProps,
+  { value: string; suggestions: TagOption[] }
+> {
   constructor(props: TagSearchBoxProps) {
     super(props);
 
@@ -46,8 +48,8 @@ export class TagSearchBox extends React.Component<TagSearchBoxProps,
   };
 
   onSuggestionsFetchRequested = async ({
-                                         value
-                                       }: SuggestionsFetchRequestedParams) => {
+    value
+  }: SuggestionsFetchRequestedParams) => {
     const { getTags } = this.props;
 
     const suggestions = await getTags(value.toLowerCase());
@@ -86,6 +88,7 @@ export class TagSearchBox extends React.Component<TagSearchBoxProps,
   };
 
   render() {
+    const { onSelectTag } = this.props;
     const { value, suggestions } = this.state;
 
     const inputProps: InputProps<TagOption> = {
@@ -95,6 +98,20 @@ export class TagSearchBox extends React.Component<TagSearchBoxProps,
       onBlur: this.onBlur,
       className: "input is-medium"
     };
+
+    const renderInputComponent = (inputProps: InputProps<TagOption>) => (
+      <div className="field has-addons">
+        <div className="control is-expanded">
+          <input {...inputProps as any} />
+        </div>
+        <div className="control">
+          <a className="button is-medium" onClick={() => onSelectTag(value)}>
+            {" "}
+            <i className="fas fa-search" />{" "}
+          </a>
+        </div>
+      </div>
+    );
 
     // Finally, render it!
     return (
@@ -108,20 +125,26 @@ export class TagSearchBox extends React.Component<TagSearchBoxProps,
           inputProps={inputProps}
           highlightFirstSuggestion={true}
           onSuggestionSelected={this.onSuggestionSelected}
+          renderInputComponent={renderInputComponent}
         />
       </div>
     );
   }
 }
 
-export function processTags(options: TagOption[], currentText: string): TagOption[] {
+export function processTags(
+  options: TagOption[],
+  currentText: string
+): TagOption[] {
   try {
     if (!options || !options.length) {
       return [];
     }
 
     const result = [];
-    const exactMatch = options.filter(i => i.name.toLowerCase() === currentText.toLowerCase());
+    const exactMatch = options.filter(
+      i => i.name.toLowerCase() === currentText.toLowerCase()
+    );
     if (exactMatch.length) {
       result.push(exactMatch[0]);
     }
