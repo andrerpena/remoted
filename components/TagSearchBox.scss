@@ -1,3 +1,5 @@
+@import "../styles/variables";
+
 .autosuggest__container {
   position: relative;
 }
@@ -47,9 +49,20 @@
 
 .react-autosuggest__suggestion {
   cursor: pointer;
-  padding: 10px 20px;
+  padding: $size-7;
+  .tag-name {
+    font-weight: bold;
+  }
+  .tag-count {
+    margin: $size-7;
+    color: $grey-lighter;
+  }
 }
 
 .react-autosuggest__suggestion--highlighted {
-  background-color: #ddd;
+  background-color: $grey-lighter;
+  .tag-count {
+    margin: $size-7;
+    color: $grey;
+  }
 }

@@ -9,18 +9,13 @@ import * as React from "react";
 
 export interface TagOption {
   name: string;
-  jobs: number;
+  count: number;
 }
 
 // When suggestion is clicked, Autosuggest needs to populate the input
 // based on the clicked suggestion. Teach Autosuggest how to calculate the
 // input value for every given suggestion.
 const getSuggestionValue = (suggestion: TagOption) => suggestion.name;
-
-// Use your imagination to render suggestions.
-const renderSuggestion = (suggestion: TagOption) => (
-  <div>{suggestion.name}</div>
-);
 
 export interface TagSearchBoxProps {
   initialValue: string;
@@ -113,6 +108,13 @@ export class TagSearchBox extends React.Component<
       </div>
     );
 
+    const renderSuggestion = (suggestion: TagOption) => (
+      <div>
+        <span className="tag-name">{suggestion.name}</span>
+        <span className="tag-count">{suggestion.count} active jobs</span>
+      </div>
+    );
+
     // Finally, render it!
     return (
       <div className="tag-search-box">
@@ -121,11 +123,11 @@ export class TagSearchBox extends React.Component<
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
           getSuggestionValue={getSuggestionValue}
-          renderSuggestion={renderSuggestion}
           inputProps={inputProps}
           highlightFirstSuggestion={true}
           onSuggestionSelected={this.onSuggestionSelected}
           renderInputComponent={renderInputComponent}
+          renderSuggestion={renderSuggestion}
         />
       </div>
     );
