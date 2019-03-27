@@ -27,6 +27,9 @@
 
 .job-title {
   margin-top: $size-6;
+  a:hover {
+    text-decoration: underline;
+  }
 }
 
 .job-post-tags {
@@ -148,4 +151,7 @@ $company-header-image-size: 20px;
     }
   }
   padding-bottom: $size-3;
+  .job-apply {
+    margin-top: $size-7;
+  }
 }

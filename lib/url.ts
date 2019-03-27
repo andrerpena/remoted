@@ -1,8 +1,8 @@
 export function linkToJob(publicId: string) {
-  return `/job/${publicId}`;
+  return `/job/${encodeURIComponent(publicId)}`;
 }
 export function linkToTag(tag: string) {
-  return `/remote-${tag}-jobs`;
+  return `/remote-${encodeURIComponent(tag)}-jobs`;
 }
 
 export function removeQueryString(url: string) {

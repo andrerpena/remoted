@@ -78,7 +78,7 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
           />
           <div className="job-title">
             <Link href={linkToJob(id)}>
-              <a className="title is-5" onClick={e => e.preventDefault()}>
+              <a className="title is-5" onClick={e => e.stopPropagation()}>
                 {title}
               </a>
             </Link>
