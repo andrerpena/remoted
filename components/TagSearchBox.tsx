@@ -100,7 +100,10 @@ export class TagSearchBox extends React.Component<
           <input {...inputProps as any} />
         </div>
         <div className="control">
-          <a className="button is-medium" onClick={() => onSelectTag(value)}>
+          <a
+            className="button is-medium"
+            onClick={() => (value ? onSelectTag(value) : null)}
+          >
             {" "}
             <i className="fas fa-search" />{" "}
           </a>
