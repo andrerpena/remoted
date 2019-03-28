@@ -15,7 +15,7 @@ export function Banner(props: BannerProps) {
   const prefix = icon ? icon.prefix || "fab" : "";
   const tagElement = icon ? (
     <i
-      className={`${prefix} fa-${icon.icon}`}
+      className={`${prefix} fa-${icon.icon} title-tag-icon`}
       style={icon.color ? { color: icon.color } : {}}
     />
   ) : null;
@@ -29,7 +29,11 @@ export function Banner(props: BannerProps) {
   const bannerHeader = tag ? (
     <div className="banner-header" onClick={() => setShowSearchBar(true)}>
       {tagElement}
-      <span className="banner-title">Remote {tag} jobs</span>
+      <span className="banner-title">
+        <span>Remote</span>
+        <span className="title-tag">{tag}</span>
+        <span>jobs</span>
+      </span>
     </div>
   ) : null;
 
