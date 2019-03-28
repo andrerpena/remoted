@@ -18,7 +18,8 @@ export function Banner(props: BannerProps) {
       className={`${prefix} fa-${icon.icon} title-tag-icon`}
       style={icon.color ? { color: icon.color } : {}}
     />
-  ) : null;
+  ) : //) : <i className="fas fa-location-arrow title-tag-icon title-tag-icon-default"/>;
+  null;
 
   let [showSearchBar, setShowSearchBar] = React.useState(false);
 
