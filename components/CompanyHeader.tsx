@@ -11,10 +11,11 @@ export interface CompanyHeaderProps {
 export const CompanyHeader: React.FunctionComponent<CompanyHeaderProps> = (
   props: CompanyHeaderProps
 ) => {
+  console.log(props.companyUrl);
   return (
     <div className="company-header">
       <figure className="job-post-image">
-        <img src={props.companyUrl as string} />
+        {props.companyUrl && <img src={props.companyUrl as string} />}
       </figure>
       <span className="company-name">
         <a href="#">{props.companyName}</a>
