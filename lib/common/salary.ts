@@ -1,4 +1,4 @@
-import { Job } from "../graphql-types";
+import { Job } from "../../graphql-types";
 
 function format(number: number) {
   return number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,"); // 12,345.67

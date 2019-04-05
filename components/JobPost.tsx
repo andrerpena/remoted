@@ -2,9 +2,9 @@ import * as React from "react";
 import "./JobPost.scss";
 import * as Showdown from "showdown";
 import { Job } from "../graphql-types";
-import { getSalaryText } from "../lib/salary";
-import { getLocationText } from "../lib/location";
-import { linkToJob } from "../lib/url";
+import { getSalaryText } from "../lib/common/salary";
+import { getLocationText } from "../lib/common/location";
+import { linkToJob } from "../lib/common/url";
 import { CompanyHeader } from "./CompanyHeader";
 import { JobInfo } from "./Salary";
 import { JobTags } from "./JobTags";
@@ -12,7 +12,7 @@ import { JobDescription } from "./JobDescription";
 import { JobApply } from "./JobApply";
 import { SingletonRouter } from "next/router";
 import Link from "next/link";
-import { getSourceDisplayName } from "../lib/sources";
+import { getSourceDisplayName } from "../lib/common/sources";
 
 interface JobListState {
   open: boolean;

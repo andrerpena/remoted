@@ -5,7 +5,7 @@ import { config } from "dotenv";
 config();
 import { addJob } from "../../server/graphql/services/job-service";
 import { RemotedDatabase } from "../../server/db/model";
-import { clearDb } from "../../server/lib/db-ci-helpers";
+import { clearDb } from "../../lib/server/db-ci-helpers";
 import { addCompany } from "../../server/graphql/services/company-service";
 import { getTags } from "../../server/graphql/services/tag-service";
 

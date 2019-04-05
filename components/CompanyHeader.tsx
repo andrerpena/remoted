@@ -1,5 +1,5 @@
 import * as React from "react";
-import { timeAgo } from "../lib/time";
+import { timeAgo } from "../lib/common/time";
 
 export interface CompanyHeaderProps {
   postedOn: string;

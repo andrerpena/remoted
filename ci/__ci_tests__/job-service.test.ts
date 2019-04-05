@@ -10,7 +10,7 @@ import {
   addJob,
   getJob
 } from "../../server/graphql/services/job-service";
-import { clearDb } from "../../server/lib/db-ci-helpers";
+import { clearDb } from "../../lib/server/db-ci-helpers";
 
 let db: RemotedDatabase;
 

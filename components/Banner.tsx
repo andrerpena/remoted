@@ -1,4 +1,4 @@
-import { getIconForTag } from "../lib/tag-icons";
+import { getIconForTag } from "../lib/common/tag-icons";
 import { TagSearchBox } from "./TagSearchBox";
 import * as React from "react";
 import { ApolloConsumer } from "react-apollo";

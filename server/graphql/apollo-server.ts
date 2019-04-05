@@ -3,7 +3,7 @@ import { ApolloServer, gql } from "apollo-server-express";
 import { Request } from "express";
 import { Context } from "./context";
 import { buildDb } from "../db/build-db";
-import { PAGE_SIZE } from "../constants";
+import { PAGE_SIZE } from "../../lib/common/constants";
 import { addJob, getJob, getJobs } from "./services/job-service";
 import { IResolvers } from "../../graphql-types";
 import {

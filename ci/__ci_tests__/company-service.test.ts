@@ -8,7 +8,7 @@ import {
   addCompany,
   getCompanyUrls
 } from "../../server/graphql/services/company-service";
-import { clearDb } from "../../server/lib/db-ci-helpers";
+import { clearDb } from "../../lib/server/db-ci-helpers";
 
 let db: RemotedDatabase;
 

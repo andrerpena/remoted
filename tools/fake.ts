@@ -1,6 +1,6 @@
 import { buildDb } from "../server/db/build-db";
 import { RemotedDatabase } from "../server/db/model";
-import { clearDb } from "../server/lib/db-ci-helpers";
+import { clearDb } from "../lib/server/db-ci-helpers";
 import * as colors from "colors";
 import { config } from "dotenv";
 import { addCompany } from "../server/graphql/services/company-service";

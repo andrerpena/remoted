@@ -22,8 +22,11 @@ const tagIconMap: TagIconMap = {
   java: { tags: ["java"], color: "#517C90" },
   docker: { tags: ["docker"], color: "#0AA0D2" },
   android: { tags: ["android"], color: "#A4C639" },
-  "gem": { tags: ["ruby", "ruby-on-rails"], color: "#CC0000", prefix: "fas" },
-  apple: { tags: ["ios", "apple", "swift", "objective-c", "macos"], color: "#A1ABB1" },
+  gem: { tags: ["ruby", "ruby-on-rails"], color: "#CC0000", prefix: "fas" },
+  apple: {
+    tags: ["ios", "apple", "swift", "objective-c", "macos"],
+    color: "#A1ABB1"
+  },
   aws: { tags: ["amazon-web-services", "amazon-redshift"], color: "#FF9900" },
   js: { tags: ["javascript", "js"], color: "#F7DF1E" },
   ember: { tags: ["ember", "ember.js", "emberjs"], color: "#DB492F" },
@@ -31,14 +34,36 @@ const tagIconMap: TagIconMap = {
   angular: { tags: ["angularjs", "angular", "angular.js"], color: "#DD0031" },
   vuejs: { tags: ["vue", "vuejs", "vue.js"], color: "#41B281" },
   python: { tags: ["python"], color: "#366C9C" },
-  microsoft: { tags: ["microsoft", "azure", ".net", "asp.net", "windows"], color: "#00A6E4" },
+  microsoft: {
+    tags: ["microsoft", "azure", ".net", "asp.net", "windows"],
+    color: "#00A6E4"
+  },
   linux: { tags: ["linux", "unix", "bash"] },
   php: { tags: ["php", "laravel"], color: "#7377AD" },
-  "node-js": { tags: ["node", "nodejs", "node.js", "express", "hapi", "koa", "webpack"], color: "#22AE5A" },
+  "node-js": {
+    tags: ["node", "nodejs", "node.js", "express", "hapi", "koa", "webpack"],
+    color: "#22AE5A"
+  },
   css3: { tags: ["css", "css3", "css-3"], color: "#0C6FB2" },
   html5: { tags: ["html", "html5"], color: "#DD4B25" },
   ubuntu: { tags: ["ubuntu"], color: "#DE4815" },
-  database: { tags: ["database", "mysql", "redis", "elasticsearch", "sql-server", "sqlserver", "oracle", "postgresql", "sql", "sqlite", "mongodb"], prefix: "fas", color: "#4489C8" },
+  database: {
+    tags: [
+      "database",
+      "mysql",
+      "redis",
+      "elasticsearch",
+      "sql-server",
+      "sqlserver",
+      "oracle",
+      "postgresql",
+      "sql",
+      "sqlite",
+      "mongodb"
+    ],
+    prefix: "fas",
+    color: "#4489C8"
+  }
 };
 
 const processedTagIconMap: ProcessedTagIconMap = {};

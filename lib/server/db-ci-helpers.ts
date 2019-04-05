@@ -1,4 +1,4 @@
-import { RemotedDatabase } from "../db/model";
+import { RemotedDatabase } from "../../server/db/model";
 
 export async function clearDb(db: RemotedDatabase): Promise<void> {
   if (process.env.NODE_ENV === "production") {

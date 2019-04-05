@@ -1,6 +1,6 @@
 import * as aws from "aws-sdk";
 import * as http from "https";
-import * as url from "url";
+import { parse } from "url";
 import { ManagedUpload } from "aws-sdk/lib/s3/managed_upload";
 import * as mime from "mime-types";
 
@@ -22,7 +22,7 @@ export async function uploadFromUrl(
 ): Promise<ManagedUpload.SendData> {
   updateAwsCredentials();
   return new Promise((accept, reject) => {
-    http.get(url.parse(imageUrl), res => {
+    http.get(parse(imageUrl), res => {
       const contentType = res.headers["content-type"];
       let extension: string;
       const defaultExtension = "png";

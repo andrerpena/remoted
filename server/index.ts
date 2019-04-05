@@ -1,9 +1,9 @@
 import * as next from "next";
 import * as express from "express";
-import { fromExpressRequest } from "./lib/url";
+import { fromExpressRequest } from "../lib/server/url";
 import { apolloServer } from "./graphql/apollo-server";
 import { config } from "dotenv";
-import { extractTagFromPath } from "../lib/url";
+import { extractTagFromPath } from "../lib/common/url";
 
 config();
 

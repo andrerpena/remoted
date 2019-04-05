@@ -3,7 +3,7 @@ import "./JobList.scss";
 import { JobPost } from "./JobPost";
 import { Job } from "../graphql-types";
 import { SingletonRouter } from "next-server/router";
-import { bucketize } from "../lib/time";
+import { bucketize } from "../lib/common/time";
 
 export interface JobListProps {
   jobs: Job[];
@@ -29,10 +29,15 @@ export const JobList = (props: JobListProps) => (
 export interface JobListCollectionProps {
   jobs: Job[];
   router?: SingletonRouter;
+  onLoadMore: () => void;
+  loading: boolean;
+  thereIsMore: boolean;
 }
 
 export const JobListCollection = (props: JobListCollectionProps) => {
   const buckets = bucketize(props.jobs, job => new Date(job.publishedAt));
+  const { onLoadMore, loading } = props;
+  const onClick = () => (loading ? undefined : onLoadMore());
   return (
     <>
       {buckets.map(b => (
@@ -43,6 +48,11 @@ export const JobListCollection = (props: JobListCollectionProps) => {
           router={props.router}
         />
       ))}
+      {props.thereIsMore && (
+        <a className="button is-primary is-fullwidth" onClick={onClick}>
+          Load more
+        </a>
+      )}
     </>
   );
 };

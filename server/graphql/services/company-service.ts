@@ -5,11 +5,11 @@ import {
   DbJob,
   RemotedDatabase
 } from "../../db/model";
-import { generateSlug, makeId } from "../../lib/id";
+import { generateSlug, makeId } from "../../../lib/server/id";
 import { Company, CompanyInput } from "../../../graphql-types";
-import { Nullable } from "../../../lib/types";
-import { uploadFromUrl } from "../../../lib/storage";
-import { serverConfig } from "../../../lib/serverConfig";
+import { Nullable } from "../../../lib/common/types";
+import { uploadFromUrl } from "../../../lib/common/storage";
+import { serverConfig } from "../../../lib/common/serverConfig";
 
 export function generateCompanyPublicId(companyName: string) {
   const id = makeId();

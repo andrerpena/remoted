@@ -1,8 +1,8 @@
 import * as massive from "massive";
 import { Writable } from "massive";
 import { AnyObject } from "massive";
-import { PartialBy } from "../../lib/type-helpers";
-import { Nullable } from "../../lib/types";
+import { PartialBy } from "../../lib/common/type-helpers";
+import { Nullable } from "../../lib/common/types";
 import { TagCount } from "../../graphql-types";
 
 export interface RemotedDatabase extends massive.Database {

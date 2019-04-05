@@ -1,5 +1,5 @@
 import { config as dotenv } from "dotenv";
-import { readEnvVariable } from "../server/lib/env";
+import { readEnvVariable } from "../server/env";
 
 dotenv();
 

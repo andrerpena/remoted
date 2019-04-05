@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Nullable } from "../lib/types";
+import { Nullable } from "../lib/common/types";
 
 export class JobInfo extends React.Component<{
   salaryText?: Nullable<string>;

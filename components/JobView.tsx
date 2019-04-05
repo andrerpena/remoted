@@ -1,12 +1,12 @@
 import * as React from "react";
 import { Job } from "../graphql-types";
-import { getSalaryText } from "../lib/salary";
-import { getLocationText } from "../lib/location";
+import { getSalaryText } from "../lib/common/salary";
+import { getLocationText } from "../lib/common/location";
 import { CompanyHeader } from "./CompanyHeader";
 import { JobInfo } from "./Salary";
 import { JobTags } from "./JobTags";
 import { JobDescription } from "./JobDescription";
-import { getSourceDisplayName } from "../lib/sources";
+import { getSourceDisplayName } from "../lib/common/sources";
 import { JobApply } from "./JobApply";
 
 export interface JobViewProps {

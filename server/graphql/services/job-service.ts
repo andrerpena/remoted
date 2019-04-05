@@ -9,13 +9,13 @@ import {
   RemotedDatabase
 } from "../../db/model";
 import { insertDbRecord } from "../../db/services/db-helpers";
-import { convertToHtml } from "../../lib/markdown";
+import { convertToHtml } from "../../../lib/server/markdown";
 import { Job, JobInput } from "../../../graphql-types";
-import { generateSlug, makeId } from "../../lib/id";
-import { Nullable } from "../../../lib/types";
-import { isSourceValid } from "../../../lib/sources";
-import { removeQueryString } from "../../../lib/url";
-import { extractLocationTag } from "../../../lib/location";
+import { generateSlug, makeId } from "../../../lib/server/id";
+import { Nullable } from "../../../lib/common/types";
+import { isSourceValid } from "../../../lib/common/sources";
+import { removeQueryString } from "../../../lib/common/url";
+import { extractLocationTag } from "../../../lib/common/location";
 
 export async function getJob(
   db: RemotedDatabase,

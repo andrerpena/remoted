@@ -1,5 +1,5 @@
 import Router from "next/router";
-import { linkToTag } from "../url";
+import { linkToTag } from "../common/url";
 
 export function navigateToTag(tag: string) {
   navigateTo(linkToTag(tag), {});

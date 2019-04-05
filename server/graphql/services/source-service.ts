@@ -1,7 +1,7 @@
 import { DbJob, DbSource, RemotedDatabase } from "../../db/model";
 import { Source, UpdateSourceInput } from "../../../graphql-types";
 import { insertDbRecord } from "../../db/services/db-helpers";
-import { isSourceValid } from "../../../lib/sources";
+import { isSourceValid } from "../../../lib/common/sources";
 
 export async function updateSource(
   db: RemotedDatabase,

@@ -1,5 +1,5 @@
 import * as massive from "massive";
-import { readEnvVariable } from "./lib/env";
+import { readEnvVariable } from "../lib/server/env";
 
 export interface Config {
   connection: massive.ConnectionInfo;
