@@ -48,8 +48,9 @@ export const JobListCollection = (props: JobListCollectionProps) => {
           router={props.router}
         />
       ))}
-      {props.thereIsMore && (
+      {props.thereIsMore && !props.loading && (
         <a className="button is-primary is-fullwidth" onClick={onClick}>
+          <i className="fas fa-space fa-arrow-down" />
           Load more
         </a>
       )}
