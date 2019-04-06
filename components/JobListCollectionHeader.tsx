@@ -3,14 +3,15 @@ import * as React from "react";
 import { ApolloConsumer } from "react-apollo";
 import { getTagsQuery } from "../queries/getTags";
 import { SearchBox } from "./SearchBox";
+import { FilterData } from "../lib/common/url";
 
-export interface BannerProps {
+export interface JobListCollectionHeaderProps {
   tag: string;
-  onSelectTag: (tag: string) => void;
+  onFilter: (searchData: FilterData) => void;
 }
 
-export function Header(props: BannerProps) {
-  const { tag, onSelectTag } = props;
+export function JobListCollectionHeader(props: JobListCollectionHeaderProps) {
+  const { tag, onFilter } = props;
   const icon = getIconForTag(tag);
   const prefix = icon ? icon.prefix || "fab" : "";
   const tagElement = icon ? (
@@ -49,7 +50,7 @@ export function Header(props: BannerProps) {
           return queryResult.data.getTags;
         };
         return (
-          <SearchBox getTags={getTags} tag={tag} onSelectTag={onSelectTag} />
+          <SearchBox getTags={getTags} tag={tag} onFilter={onFilter} />
         );
       }}
     </ApolloConsumer>

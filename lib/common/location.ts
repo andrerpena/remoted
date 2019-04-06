@@ -6,6 +6,11 @@ export function getLocationText(job: Job) {
   }
 }
 
+export const US_ONLY = "us-only";
+export const NORTH_AMERICA_ONLY = "north-america-only";
+export const EUROPE_ONLY = "europe-only";
+export const UK_ONLY = "uk-only";
+
 export function getAllCombinations(
   array1: string[],
   array2: string[]
@@ -52,7 +57,7 @@ export function extractLocationTag(
     jobDescription
   );
   if (usOnly) {
-    return "us-only";
+    return US_ONLY;
   }
 
   const northAmericaOnly = checkLocation(
@@ -61,7 +66,7 @@ export function extractLocationTag(
     jobDescription
   );
   if (northAmericaOnly) {
-    return "north-america-only";
+    return NORTH_AMERICA_ONLY;
   }
 
   const europeOnly = checkLocation(
@@ -70,7 +75,7 @@ export function extractLocationTag(
     jobDescription
   );
   if (europeOnly) {
-    return "europe-only";
+    return EUROPE_ONLY;
   }
 
   const ukOnly = checkLocation(
@@ -79,7 +84,7 @@ export function extractLocationTag(
     jobDescription
   );
   if (ukOnly) {
-    return "uk-only";
+    return UK_ONLY;
   }
 
   return null;

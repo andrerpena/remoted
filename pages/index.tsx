@@ -11,10 +11,10 @@ import "../styles/job.scss";
 import "../styles/markdown.scss";
 import { getJobsQuery } from "../queries/getJobs";
 import * as Next from "next";
-import { navigateToTag } from "../lib/client/navigation";
+import { navigateToFilter } from "../lib/client/navigation";
 import { PAGE_SIZE } from "../lib/common/constants";
 import { filterPageData, isThereMore } from "../lib/common/pagination";
-import { Header } from "../components/Header";
+import { JobListCollectionHeader } from "../components/JobListCollectionHeader";
 
 export interface IndexPageProps extends WithRouterProps {
   tag: string;
@@ -37,7 +37,7 @@ const IndexPage = (props: IndexPageProps) => {
       >
         {({ data, fetchMore, loading }) => (
           <div className="container">
-            <Header tag={props.tag} onSelectTag={tag => navigateToTag(tag)} />
+            <JobListCollectionHeader tag={props.tag} onFilter={filter => navigateToFilter(filter)} />
             <div className="columns">
               <div className="column is-full">
                 <JobListCollection

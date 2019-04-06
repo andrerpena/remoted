@@ -2,11 +2,13 @@ import * as React from "react";
 import { TagOption, TagSearchBox } from "./TagSearchBox";
 import { Checkbox } from "./Checkbox";
 import { CheckBoxFilterBox } from "./CheckBoxFilterBox";
+import { EUROPE_ONLY, NORTH_AMERICA_ONLY, UK_ONLY, US_ONLY } from "../lib/common/location";
+import { FilterData } from "../lib/common/url";
 
 export interface SearchBoxProps {
   tag: string;
   getTags: (text: string) => Promise<Array<TagOption>>;
-  onSelectTag: (tag: string) => void;
+  onFilter: (searchData: FilterData) => void;
 }
 
 export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
@@ -22,16 +24,35 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
   // location
   const [us, toggleUs] = React.useState(true);
   const [northAmerica, toggleNorthAmerica] = React.useState(true);
+  const [europe, toggleEurope] = React.useState(true);
   const [uk, toggleUk] = React.useState(true);
 
   // Compensation
   const [withoutCompensation, toggleWithoutCompensation] = React.useState(true);
 
   const onSelectTag = (tag: string) => {
-    if (!open) {
-      props.onSelectTag(tag);
-    }
     setTag(tag);
+    if (!open) {
+      onFilter(tag);
+    }
+  };
+
+  const onFilter = (tag: string) => {
+    const filterData = buildFilterData(tag);
+    props.onFilter(filterData);
+  };
+
+  const buildFilterData: (tag: string) => FilterData = (tag: string) => {
+    return {
+      tag: tag,
+      excludeSources: [],
+      excludeLocations: [
+        !us ? US_ONLY : null,
+        !northAmerica ? NORTH_AMERICA_ONLY : null,
+        !europe ? EUROPE_ONLY : null,
+        !uk ? UK_ONLY : null
+      ]
+    };
   };
 
   return (
@@ -43,7 +64,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
       />
       <div className="show-more-filters-wrapper">
         <div className="show-more-filters" onClick={() => setOpen(!open)}>
-          <i className={`fas ${!open ? "fa-arrow-down" : "fa-arrow-up"}`} />{" "}
+          <i className={`fas ${!open ? "fa-arrow-down" : "fa-arrow-up"}`}/>{" "}
           More filters
         </div>
         {open && (
@@ -68,19 +89,25 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
               <div className="column is-one-third">
                 <CheckBoxFilterBox title="🌏 Location">
                   <Checkbox
-                    id="us"
+                    id={US_ONLY}
                     label="US only"
                     checked={us}
                     onChange={toggleUs}
                   />
                   <Checkbox
-                    id="northamerica"
+                    id={NORTH_AMERICA_ONLY}
                     label="North America only"
                     checked={northAmerica}
                     onChange={toggleNorthAmerica}
                   />
                   <Checkbox
-                    id="uk"
+                    id={EUROPE_ONLY}
+                    label="Europe only"
+                    checked={europe}
+                    onChange={toggleEurope}
+                  />
+                  <Checkbox
+                    id={UK_ONLY}
                     label="UK only"
                     checked={uk}
                     onChange={toggleUk}
@@ -98,12 +125,12 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
                 </CheckBoxFilterBox>
               </div>
               <div className="filter-box">
-                <div className="filter-box-title" />
+                <div className="filter-box-title"/>
               </div>
             </div>
             <div className="button-bar">
               <a className="button is-primary">
-                <i className="fas fa-search" /> Apply filters
+                <i className="fas fa-search"/> Apply filters
               </a>
             </div>
           </div>

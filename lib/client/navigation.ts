@@ -1,8 +1,8 @@
 import Router from "next/router";
-import { linkToTag } from "../common/url";
+import { FilterData, linkToTag } from "../common/url";
 
-export function navigateToTag(tag: string) {
-  navigateTo(linkToTag(tag), {});
+export function navigateToFilter(filter: FilterData) {
+  navigateTo(linkToTag(filter.tag), {});
 }
 
 export function navigateTo(path: string, query: any) {

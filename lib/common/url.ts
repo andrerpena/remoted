@@ -1,6 +1,13 @@
+export interface FilterData {
+  tag: string,
+  excludeLocations: (string | null)[],
+  excludeSources: (string | null)[]
+}
+
 export function linkToJob(publicId: string) {
   return `/job/${encodeURIComponent(publicId)}`;
 }
+
 export function linkToTag(tag: string) {
   return `/remote-${encodeURIComponent(tag)}-jobs`;
 }
