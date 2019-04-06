@@ -92,6 +92,11 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
                 <div className="filter-box-title" />
               </div>
             </div>
+            <div className="button-bar">
+              <a className="button is-primary">
+                <i className="fas fa-search" /> Apply filters
+              </a>
+            </div>
           </div>
         )}
       </div>

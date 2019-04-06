@@ -143,13 +143,20 @@ body {
       .filter-box-wrapper {
         .filter-box {
           padding: 0 $size-5;
-
           .filter-box-title {
             font-weight: bold;
             padding-bottom: $size-9;
           }
-
           .checkbox-list {
+          }
+        }
+        .button-bar {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          padding-bottom: $size-6;
+          .fas {
+            padding-right: $size-8;
           }
         }
       }
