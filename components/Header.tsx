@@ -9,7 +9,7 @@ export interface BannerProps {
   onSelectTag: (tag: string) => void;
 }
 
-export function Banner(props: BannerProps) {
+export function Header(props: BannerProps) {
   const { tag, onSelectTag } = props;
   const icon = getIconForTag(tag);
   const prefix = icon ? icon.prefix || "fab" : "";

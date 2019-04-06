@@ -14,7 +14,7 @@ import * as Next from "next";
 import { navigateToTag } from "../lib/client/navigation";
 import { PAGE_SIZE } from "../lib/common/constants";
 import { filterPageData, isThereMore } from "../lib/common/pagination";
-import { Banner } from "../components/Banner";
+import { Header } from "../components/Header";
 
 export interface IndexPageProps extends WithRouterProps {
   tag: string;
@@ -37,7 +37,7 @@ const IndexPage = (props: IndexPageProps) => {
       >
         {({ data, fetchMore, loading }) => (
           <div className="container">
-            <Banner tag={props.tag} onSelectTag={tag => navigateToTag(tag)} />
+            <Header tag={props.tag} onSelectTag={tag => navigateToTag(tag)} />
             <div className="columns">
               <div className="column is-full">
                 <JobListCollection
