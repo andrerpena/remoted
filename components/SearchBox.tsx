@@ -13,6 +13,8 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
   props: SearchBoxProps
 ) => {
   const [open, setOpen] = React.useState(false);
+  const [tag, setTag] = React.useState(props.tag || "");
+
   // sources
   const [stackoverflow, toggleStackoverflow] = React.useState(true);
   const [weWorkRemotely, toggleWeWorkRemotely] = React.useState(true);
@@ -25,12 +27,19 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
   // Compensation
   const [withoutCompensation, toggleWithoutCompensation] = React.useState(true);
 
+  const onSelectTag = (tag: string) => {
+    if (!open) {
+      props.onSelectTag(tag);
+    }
+    setTag(tag);
+  };
+
   return (
     <div className="search-box">
       <TagSearchBox
-        initialValue={props.tag}
+        initialValue={tag}
         getTags={props.getTags}
-        onSelectTag={props.onSelectTag}
+        onSelectTag={onSelectTag}
       />
       <div className="show-more-filters-wrapper">
         <div className="show-more-filters" onClick={() => setOpen(!open)}>

@@ -23,15 +23,25 @@ export interface TagSearchBoxProps {
   onSelectTag: (tag: string) => void;
 }
 
+export interface TextSearchBoxProps {
+  value: string;
+  selectedSuggestion: string;
+  suggestions: TagOption[];
+}
+
+// Important behavior:
+// When you click a suggestion, clear suggestions happens but no onBlur
+// When you click out, the onBlur happens but no suggestion selection
 export class TagSearchBox extends React.Component<
   TagSearchBoxProps,
-  { value: string; suggestions: TagOption[] }
+  TextSearchBoxProps
 > {
   constructor(props: TagSearchBoxProps) {
     super(props);
 
     this.state = {
       value: props.initialValue || "",
+      selectedSuggestion: "",
       suggestions: []
     };
   }
@@ -60,18 +70,20 @@ export class TagSearchBox extends React.Component<
   };
 
   onBlur = (): void => {
-    console.log(this.state.value);
-    console.log(this.state.suggestions);
-    if (
-      this.state.suggestions.filter(
-        x => x.name.toLowerCase() === this.state.value.toLowerCase()
-      ).length === 0
-    ) {
-      this.setState({
-        value: this.state.suggestions.length
+    if (this.state.value !== this.state.selectedSuggestion) {
+      // In this case, the selection is invalid because this.state.value !== this.state.selectedSuggestion
+      // Hence I need to either fix the selection if possible or clear it
+      if (
+        this.state.suggestions.filter(
+          x => x.name.toLowerCase() === this.state.value.toLowerCase()
+        ).length === 0
+      ) {
+        const tag = this.state.suggestions.length
           ? this.state.suggestions[0].name
-          : ""
-      });
+          : "";
+        this.setState({ value: tag, selectedSuggestion: tag });
+        this.props.onSelectTag(tag);
+      }
     }
   };
 
@@ -79,6 +91,7 @@ export class TagSearchBox extends React.Component<
     _event: React.FormEvent,
     data: SuggestionSelectedEventData<TagOption>
   ) => {
+    this.setState({ selectedSuggestion: data.suggestion.name });
     this.props.onSelectTag(data.suggestion.name);
   };
 
