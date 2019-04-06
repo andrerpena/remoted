@@ -1,8 +1,8 @@
 import { getIconForTag } from "../lib/common/tag-icons";
-import { TagSearchBox } from "./TagSearchBox";
 import * as React from "react";
 import { ApolloConsumer } from "react-apollo";
 import { getTagsQuery } from "../queries/getTags";
+import { SearchBox } from "./SearchBox";
 
 export interface BannerProps {
   tag: string;
@@ -49,11 +49,7 @@ export function Header(props: BannerProps) {
           return queryResult.data.getTags;
         };
         return (
-          <TagSearchBox
-            getTags={getTags}
-            initialValue={tag}
-            onSelectTag={onSelectTag}
-          />
+          <SearchBox getTags={getTags} tag={tag} onSelectTag={onSelectTag} />
         );
       }}
     </ApolloConsumer>
