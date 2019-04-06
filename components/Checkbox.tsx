@@ -16,7 +16,7 @@ export const Checkbox: React.FunctionComponent<CheckboxProps> = (
         type="checkbox"
         id={props.id}
         checked={props.checked}
-        onChange={v => props.onChange(!props.checked)}
+        onChange={() => props.onChange(!props.checked)}
       />
       <label htmlFor={props.id}>{props.label}</label>
     </div>
