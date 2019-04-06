@@ -56,7 +56,7 @@ export function Header(props: BannerProps) {
   );
 
   return (
-    <div className="banner">
+    <div className="header">
       {!showSearchBar && bannerHeader}
       {showSearchBar && tagSearch}
     </div>
