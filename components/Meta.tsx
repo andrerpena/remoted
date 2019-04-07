@@ -1,11 +1,14 @@
 import Head from "next/head";
 import * as React from "react";
-import "../styles/bulma.scss";
 
 export const Meta = () => (
   <>
     <Head>
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+      />
+      <meta name="theme-color" content="#209cee" />
       <link
         href="https://fonts.googleapis.com/css?family=Fredoka+One"
         rel="stylesheet"
