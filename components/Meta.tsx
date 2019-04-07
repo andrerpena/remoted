@@ -1,6 +1,6 @@
 import Head from "next/head";
 import * as React from "react";
-import "../styles/variables.scss";
+import "../styles/bulma.scss";
 
 export const Meta = () => (
   <>
