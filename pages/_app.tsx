@@ -9,6 +9,14 @@ class MyApp extends App<{ apolloClient: ApolloClient<any> }> {
     const { Component, pageProps, apolloClient } = this.props;
     return (
       <Container>
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-WJ9JR3Z"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
         <ApolloProvider client={apolloClient}>
           <Component {...pageProps} />
         </ApolloProvider>
