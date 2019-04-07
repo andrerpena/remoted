@@ -1,5 +1,6 @@
 import Head from "next/head";
 import * as React from "react";
+import "../styles/variables.scss";
 
 export const Meta = () => (
   <>
@@ -8,7 +9,7 @@ export const Meta = () => (
         name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
       />
-      <meta name="theme-color" content="#209cee" />
+      <meta name="theme-color" content="#ff6600" />
       <link
         href="https://fonts.googleapis.com/css?family=Fredoka+One"
         rel="stylesheet"
