@@ -54,11 +54,22 @@ describe("tag-service", () => {
     });
     it("should return all when you pass nothing", async () => {
       const x = await getTags(db, "");
-      expect(x).toEqual([
-        { count: "15", name: "javascript" },
-        { count: "15", name: "react" },
-        { count: "5", name: "typescript" }
-      ]);
+      expect(x).toEqual(
+        expect.arrayContaining([
+          {
+            count: "15",
+            name: "react"
+          },
+          {
+            count: "15",
+            name: "javascript"
+          },
+          {
+            count: "5",
+            name: "typescript"
+          }
+        ])
+      );
     });
   });
 });
