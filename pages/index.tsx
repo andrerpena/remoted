@@ -15,6 +15,7 @@ import { navigateToFilter } from "../lib/client/navigation";
 import { PAGE_SIZE } from "../lib/common/constants";
 import { filterPageData, isThereMore } from "../lib/common/pagination";
 import { JobListCollectionHeader } from "../components/JobListCollectionHeader";
+import { Footer } from "../components/Footer";
 
 export interface IndexPageProps extends WithRouterProps {
   tag: string;
@@ -37,7 +38,10 @@ const IndexPage = (props: IndexPageProps) => {
       >
         {({ data, fetchMore, loading }) => (
           <div className="container">
-            <JobListCollectionHeader tag={props.tag} onFilter={filter => navigateToFilter(filter)} />
+            <JobListCollectionHeader
+              tag={props.tag}
+              onFilter={filter => navigateToFilter(filter)}
+            />
             <div className="columns">
               <div className="column is-full">
                 <JobListCollection
@@ -54,6 +58,7 @@ const IndexPage = (props: IndexPageProps) => {
           </div>
         )}
       </Query>
+      <Footer />
     </div>
   );
 };
