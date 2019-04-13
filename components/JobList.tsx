@@ -38,6 +38,7 @@ export const JobListCollection = (props: JobListCollectionProps) => {
   const buckets = bucketize(props.jobs, job => new Date(job.publishedAt));
   const { onLoadMore, loading } = props;
   const onClick = () => (loading ? undefined : onLoadMore());
+  const text = loading ? "Gimme MORE 🤑" : "Load more";
   return (
     <>
       {buckets.map(b => (
@@ -48,10 +49,10 @@ export const JobListCollection = (props: JobListCollectionProps) => {
           router={props.router}
         />
       ))}
-      {props.thereIsMore && !props.loading && (
+      {props.thereIsMore && (
         <a className="button is-primary is-fullwidth" onClick={onClick}>
           <i className="fas fa-space fa-arrow-down" />
-          Load more
+          {text}
         </a>
       )}
     </>
