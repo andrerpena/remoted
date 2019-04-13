@@ -110,16 +110,16 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
                     onChange={toggleNorthAmerica}
                   />
                   <Checkbox
-                    id={EUROPE_ONLY}
-                    label="Europe only"
-                    checked={europeOnly}
-                    onChange={toggleEurope}
-                  />
-                  <Checkbox
                     id={UK_ONLY}
                     label="UK only"
                     checked={ukOnly}
                     onChange={toggleUk}
+                  />
+                  <Checkbox
+                    id={EUROPE_ONLY}
+                    label="Europe only"
+                    checked={europeOnly}
+                    onChange={toggleEurope}
                   />
                 </CheckBoxFilterBox>
               </div>
