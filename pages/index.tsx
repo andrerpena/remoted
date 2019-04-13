@@ -14,62 +14,9 @@ import * as Next from "next";
 import { navigateToFilter } from "../lib/client/navigation";
 import { PAGE_SIZE } from "../lib/common/constants";
 import { filterPageData, isThereMore } from "../lib/common/pagination";
-import { JobListHeader } from "../components/JobListHeader";
+import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
-
-export interface IndexPageProps extends WithRouterProps {
-  tag: string;
-}
-
-type QueryType = { getJobs: Job[]; getTagCountGroups: TagCountGroup[] };
-
-const IndexPage = (props: IndexPageProps) => {
-  return (
-    <div>
-      <Meta />
-      <NavBar />
-      <Query<QueryType>
-        query={getJobsQuery}
-        variables={{
-          hasTag: props.tag,
-          limit: PAGE_SIZE + 1
-        }}
-        notifyOnNetworkStatusChange={true}
-      >
-        {({ data, fetchMore, loading }) => (
-          <div className="container">
-            <JobListHeader
-              tag={props.tag}
-              onFilter={filter => navigateToFilter(filter)}
-            />
-            <div className="columns">
-              <div className="column is-full">
-                <JobListCollection
-                  router={props.router}
-                  jobs={data ? data.getJobs : []}
-                  onLoadMore={() =>
-                    loadMoreJobs(data ? data.getJobs : [], props.tag, fetchMore)
-                  }
-                  loading={loading}
-                  thereIsMore={isThereMore(data ? data.getJobs : [])}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-      </Query>
-      <Footer />
-    </div>
-  );
-};
-
-IndexPage.getInitialProps = async ({ query }: Next.NextContext) => {
-  return {
-    tag: query.tag
-  };
-};
-
-export default withRouter(IndexPage);
+import { IndexQuery } from "../lib/common/query-types";
 
 function loadMoreJobs(
   allJobs: Job[],
@@ -96,3 +43,50 @@ function loadMoreJobs(
     }
   });
 }
+
+export type IndexPageProps = IndexQuery & WithRouterProps;
+
+type QueryType = { getJobs: Job[]; getTagCountGroups: TagCountGroup[] };
+
+const IndexPage = (props: IndexPageProps) => {
+  return (
+    <div>
+      <Meta />
+      <NavBar />
+      <Query<QueryType>
+        query={getJobsQuery}
+        variables={{
+          hasTag: props.tag,
+          limit: PAGE_SIZE + 1
+        }}
+        notifyOnNetworkStatusChange={true}
+      >
+        {({ data, fetchMore, loading }) => (
+          <div className="container">
+            <Header onFilter={filter => navigateToFilter(filter)} {...props} />
+            <div className="columns">
+              <div className="column is-full">
+                <JobListCollection
+                  router={props.router}
+                  jobs={data ? data.getJobs : []}
+                  onLoadMore={() =>
+                    loadMoreJobs(data ? data.getJobs : [], props.tag, fetchMore)
+                  }
+                  loading={loading}
+                  thereIsMore={isThereMore(data ? data.getJobs : [])}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </Query>
+      <Footer />
+    </div>
+  );
+};
+
+IndexPage.getInitialProps = async ({ query }: Next.NextContext) => {
+  return { ...query };
+};
+
+export default withRouter(IndexPage);

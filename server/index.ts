@@ -25,7 +25,8 @@ nextServer.prepare().then(() => {
     const path = req.params.path;
     const tag = extractTagFromPath(path);
     if (tag) {
-      return nextServer.render(req, res, "/", { tag });
+      console.log(req.query);
+      return nextServer.render(req, res, "/", { tag, ...req.query });
     }
     return nextRequestHandler(req, res, fromExpressRequest(req));
   });

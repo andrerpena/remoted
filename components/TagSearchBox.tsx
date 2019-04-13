@@ -21,6 +21,7 @@ export interface TagSearchBoxProps {
   initialValue: string;
   getTags: (text: string) => Promise<Array<TagOption>>;
   onSelectTag: (tag: string) => void;
+  onFilter: (tag: string) => void;
 }
 
 export interface TextSearchBoxProps {
@@ -91,12 +92,13 @@ export class TagSearchBox extends React.Component<
     _event: React.FormEvent,
     data: SuggestionSelectedEventData<TagOption>
   ) => {
+    console.log("should filter now");
+    this.props.onFilter(data.suggestion.name);
     this.setState({ selectedSuggestion: data.suggestion.name });
-    this.props.onSelectTag(data.suggestion.name);
   };
 
   render() {
-    const { onSelectTag } = this.props;
+    const { onFilter } = this.props;
     const { value, suggestions } = this.state;
 
     const inputProps: InputProps<TagOption> = {
@@ -115,7 +117,7 @@ export class TagSearchBox extends React.Component<
         <div className="control">
           <a
             className="button is-medium"
-            onClick={() => (value ? onSelectTag(value) : null)}
+            onClick={() => (value ? onFilter(value) : null)}
           >
             {" "}
             <i className="fas fa-search" />{" "}

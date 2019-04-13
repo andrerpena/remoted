@@ -4,13 +4,13 @@ import { ApolloConsumer } from "react-apollo";
 import { getTagsQuery } from "../queries/getTags";
 import { SearchBox } from "./SearchBox";
 import { FilterData } from "../lib/common/url";
+import { IndexQuery } from "../lib/common/query-types";
 
-export interface JobListCollectionHeaderProps {
-  tag: string;
+export type JobListCollectionHeaderProps = IndexQuery & {
   onFilter: (searchData: FilterData) => void;
-}
+};
 
-export function JobListHeader(props: JobListCollectionHeaderProps) {
+export function Header(props: JobListCollectionHeaderProps) {
   const { tag, onFilter } = props;
   const icon = getIconForTag(tag);
   const prefix = icon ? icon.prefix || "fab" : "";
@@ -19,14 +19,9 @@ export function JobListHeader(props: JobListCollectionHeaderProps) {
       className={`${prefix} fa-${icon.icon} title-tag-icon`}
       style={icon.color ? { color: icon.color } : {}}
     />
-  ) : //) : <i className="fas fa-location-arrow title-tag-icon title-tag-icon-default"/>;
-  null;
+  ) : null;
 
-  let [showSearchBar, setShowSearchBar] = React.useState(false);
-
-  if (!tag) {
-    showSearchBar = true;
-  }
+  let [showSearchBar, setShowSearchBar] = React.useState(!props.tag);
 
   const bannerHeader = tag ? (
     <div className="banner-header" onClick={() => setShowSearchBar(true)}>
@@ -39,7 +34,7 @@ export function JobListHeader(props: JobListCollectionHeaderProps) {
     </div>
   ) : null;
 
-  const tagSearch = (
+  const searchBar = (
     <ApolloConsumer>
       {client => {
         const getTags = async (text: string) => {
@@ -49,7 +44,14 @@ export function JobListHeader(props: JobListCollectionHeaderProps) {
           });
           return queryResult.data.getTags;
         };
-        return <SearchBox getTags={getTags} tag={tag} onFilter={onFilter} />;
+        return (
+          <SearchBox
+            getTags={getTags}
+            onFilter={onFilter}
+            displaySearchBar={showSearchBar}
+            {...props}
+          />
+        );
       }}
     </ApolloConsumer>
   );
@@ -57,7 +59,7 @@ export function JobListHeader(props: JobListCollectionHeaderProps) {
   return (
     <div className="header">
       {!showSearchBar && bannerHeader}
-      {showSearchBar && tagSearch}
+      {searchBar}
     </div>
   );
 }

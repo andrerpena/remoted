@@ -1,5 +1,5 @@
 export interface FilterData {
-  tag: string;
+  tag?: string;
   query: object;
 }
 
@@ -7,7 +7,7 @@ export function linkToJob(publicId: string) {
   return `/job/${encodeURIComponent(publicId)}`;
 }
 
-export function linkToTag(tag: string) {
+export function linkToTag(tag?: string) {
   if (!tag) {
     return `/`;
   }

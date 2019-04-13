@@ -70,6 +70,7 @@ export const AdvancedSearchBox: React.FunctionComponent<
         initialValue={tag}
         getTags={props.getTags}
         onSelectTag={onSelectTag}
+        onFilter={onSelectTag}
       />
       <div className="show-more-filters-wrapper">
         <div className="show-more-filters" onClick={() => setOpen(!open)}>
