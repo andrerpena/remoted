@@ -51,7 +51,10 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
         <div className="filter-box-wrapper">
           <div className="buttons-wrapper">
             {hasAnyFilter && (
-              <a className="button active" onClick={getFilterHandler(tag)}>
+              <a
+                className="button active clear"
+                onClick={getFilterHandler(tag)}
+              >
                 ❌
               </a>
             )}

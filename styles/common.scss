@@ -140,12 +140,28 @@ body {
         padding: $size-6;
 
         .buttons-wrapper {
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
+          @media screen and (min-width: $tablet) {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+          }
+
+          display: block;
 
           a.button {
-            margin: 0 $size-8;
+            @media screen and (min-width: $tablet) {
+              display: flex;
+              flex-direction: row;
+              justify-content: center;
+              margin: 0 $size-8;
+            }
+            display: block;
+
+            margin-bottom: $size-7;
+
+            &:last-child {
+              margin-bottom: 0;
+            }
 
             -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
             filter: grayscale(100%);
@@ -154,6 +170,12 @@ body {
             &.active {
               filter: none;
               opacity: 1;
+            }
+            &.clear {
+              display: none;
+              @media screen and (min-width: $tablet) {
+                display: block;
+              }
             }
           }
         }
