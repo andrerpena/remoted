@@ -14,8 +14,8 @@ export const Meta = () => (
         {() => {
           // @ts-ignore
           window.dataLayer = window.dataLayer || [];
-          // @ts-ignore
           function gtag() {
+            // @ts-ignore
             dataLayer.push(arguments);
           }
           // @ts-ignore

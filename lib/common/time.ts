@@ -51,19 +51,19 @@ export function bucketize<T>(
   now: Date = new Date()
 ): Array<TimeBucket<T>> {
   const bucket24Hours: TimeBucket<T> = {
-    title: "Last 24 hours",
+    title: "Today",
     data: []
   };
   const bucketLast7Days: TimeBucket<T> = {
-    title: "Last 7 days",
+    title: "This week",
     data: []
   };
   const bucketLast30Days: TimeBucket<T> = {
-    title: "Last 7 days",
+    title: "This month",
     data: []
   };
   const bucketOlder: TimeBucket<T> = {
-    title: "Last 7 days",
+    title: "Older",
     data: []
   };
   if (items) {

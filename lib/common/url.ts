@@ -1,7 +1,6 @@
 export interface FilterData {
-  tag: string,
-  excludeLocations: (string | null)[],
-  excludeSources: (string | null)[]
+  tag: string;
+  query: object;
 }
 
 export function linkToJob(publicId: string) {

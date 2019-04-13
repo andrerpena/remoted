@@ -8,7 +8,7 @@ import { addJob, getJob, getJobs } from "./services/job-service";
 import { IResolvers } from "../../graphql-types";
 import {
   addCompany,
-  getCompany,
+  getCompanyByDisplayName,
   getCompanyByJobPublicId,
   getCompanyUrls
 } from "./services/company-service";
@@ -41,7 +41,7 @@ const resolvers: Resolvers = {
     },
     getCompany: async (_parent, args) => {
       const db = await buildDb();
-      return getCompany(db, args.id, args.url);
+      return getCompanyByDisplayName(db, args.displayName);
     },
     getJob: async (_parent, args) => {
       const db = await buildDb();

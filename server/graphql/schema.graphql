@@ -3,7 +3,7 @@ type Query {
   getJob(id: String, url: String): Job
   getTagCountGroups(tagGroups: [TagCountGroupInput!]!): [TagCountGroup]
   getTags(text: String): [TagCount]
-  getCompany(id: String, url: String): Company
+  getCompany(displayName: String!): Company
   getSources: [Source]
 }
 type Job {

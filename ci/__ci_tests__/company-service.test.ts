@@ -2,10 +2,11 @@ import { buildTestDb } from "../../server/db/build-db";
 import { config } from "dotenv";
 
 config();
-import { RemotedDatabase } from "../../server/db/model";
+import { DbCompany, RemotedDatabase } from "../../server/db/model";
 import {
-  getCompany,
   addCompany,
+  getCompanyByDisplayName,
+  getCompanyByPublicId,
   getCompanyUrls
 } from "../../server/graphql/services/company-service";
 import { clearDb } from "../../lib/server/db-ci-helpers";
@@ -36,14 +37,51 @@ describe("company-service", () => {
         })
       );
     });
-  });
-  describe("getCompany", () => {
-    it("should work with id", async () => {
+    it("should work for multiple companies with the same ID (this will change)", async () => {
       const company = await addCompany(db, {
         displayName: "This is my company",
         url: "SOME_URL"
       });
-      const companyRetrieved = await getCompany(db, company.id);
+      await addCompany(db, {
+        displayName: "This is my company",
+        url: "SOME_URL_2"
+      });
+      await addCompany(db, {
+        displayName: "Another company",
+        url: "SOME_URL_3"
+      });
+      const result = await db.company.find({
+        display_name: company.displayName
+      } as DbCompany);
+      expect(result.length).toEqual(1);
+    });
+  });
+  describe("getCompanyByPublicId", () => {
+    it("should work", async () => {
+      const company = await addCompany(db, {
+        displayName: "This is my company",
+        url: "SOME_URL"
+      });
+      const companyRetrieved = await getCompanyByPublicId(db, company.id);
+      expect(companyRetrieved).toEqual(
+        expect.objectContaining({
+          displayName: "This is my company",
+          id: expect.any(String),
+          name: "this-is-my-company"
+        })
+      );
+    });
+  });
+  describe("getCompanyByDisplayName", () => {
+    it("should work when the company exists", async () => {
+      const company = await addCompany(db, {
+        displayName: "This is my company",
+        url: "SOME_URL"
+      });
+      const companyRetrieved = await getCompanyByDisplayName(
+        db,
+        company.displayName
+      );
       expect(companyRetrieved).toEqual(
         expect.objectContaining({
           displayName: "This is my company",

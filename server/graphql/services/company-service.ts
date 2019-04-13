@@ -7,7 +7,6 @@ import {
 } from "../../db/model";
 import { generateSlug, makeId } from "../../../lib/server/id";
 import { Company, CompanyInput } from "../../../graphql-types";
-import { Nullable } from "../../../lib/common/types";
 import { uploadFromUrl } from "../../../lib/common/storage";
 import { serverConfig } from "../../../lib/common/serverConfig";
 
@@ -23,7 +22,10 @@ export async function addCompany(
 ): Promise<Company> {
   const slug = generateSlug(companyInput.displayName);
 
-  const existingCompany = await getCompany(db, null, companyInput.url);
+  const existingCompany = await getCompanyByDisplayName(
+    db,
+    companyInput.displayName
+  );
   if (existingCompany) {
     return existingCompany;
   }
@@ -102,6 +104,19 @@ export async function getCompanyById(
   return getCompanyFromDbCompany(dbCompany);
 }
 
+export async function getCompanyByDisplayName(
+  db: RemotedDatabase,
+  displayName: string
+): Promise<Company | null> {
+  let dbCompany = await db.company.findOne({
+    display_name: displayName
+  } as DbCompany);
+  if (!dbCompany) {
+    return null;
+  }
+  return getCompanyFromDbCompany(dbCompany);
+}
+
 export async function getCompanyByJobPublicId(
   db: RemotedDatabase,
   jobPublicId: string
@@ -119,26 +134,6 @@ export async function getCompanyByJobPublicId(
     return null;
   }
   return getCompanyFromDbCompany(dbCompany);
-}
-
-export async function getCompany(
-  db: RemotedDatabase,
-  publicId?: Nullable<string>,
-  url?: Nullable<string>
-): Promise<Company | null> {
-  if (publicId) {
-    return getCompanyByPublicId(db, publicId);
-  }
-  // in case it is a reference
-  let dbCompanyUrl = await (db.company_url.findOne({
-    url: url
-  } as DbCompanyUrl) as Promise<DbCompanyUrl>);
-
-  if (!dbCompanyUrl || !dbCompanyUrl.company_id) {
-    return null;
-  }
-
-  return getCompanyById(db, dbCompanyUrl.company_id);
 }
 
 export async function updateCompanyImageUrl(

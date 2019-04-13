@@ -2,8 +2,14 @@ import * as React from "react";
 import { TagOption, TagSearchBox } from "./TagSearchBox";
 import { Checkbox } from "./Checkbox";
 import { CheckBoxFilterBox } from "./CheckBoxFilterBox";
-import { EUROPE_ONLY, NORTH_AMERICA_ONLY, UK_ONLY, US_ONLY } from "../lib/common/location";
+import {
+  EUROPE_ONLY,
+  NORTH_AMERICA_ONLY,
+  UK_ONLY,
+  US_ONLY
+} from "../lib/common/location";
 import { FilterData } from "../lib/common/url";
+import { STACKOVERFLOW, WE_WORK_REMOTELY } from "../lib/common/sources";
 
 export interface SearchBoxProps {
   tag: string;
@@ -22,36 +28,39 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
   const [weWorkRemotely, toggleWeWorkRemotely] = React.useState(true);
 
   // location
-  const [us, toggleUs] = React.useState(true);
-  const [northAmerica, toggleNorthAmerica] = React.useState(true);
-  const [europe, toggleEurope] = React.useState(true);
-  const [uk, toggleUk] = React.useState(true);
+  const [usOnly, toggleUs] = React.useState(true);
+  const [northAmericaOnly, toggleNorthAmerica] = React.useState(true);
+  const [europeOnly, toggleEurope] = React.useState(true);
+  const [ukOnly, toggleUk] = React.useState(true);
 
   // Compensation
-  const [withoutCompensation, toggleWithoutCompensation] = React.useState(true);
+  const [noSalary, toggleNoSalary] = React.useState(true);
 
   const onSelectTag = (tag: string) => {
     setTag(tag);
     if (!open) {
-      onFilter(tag);
+      applyFilters(tag);
     }
   };
 
-  const onFilter = (tag: string) => {
-    const filterData = buildFilterData(tag);
+  const applyFilters = (_tag: string = tag) => {
+    const filterData = buildFilterData(_tag);
     props.onFilter(filterData);
   };
 
   const buildFilterData: (tag: string) => FilterData = (tag: string) => {
     return {
       tag: tag,
-      excludeSources: [],
-      excludeLocations: [
-        !us ? US_ONLY : null,
-        !northAmerica ? NORTH_AMERICA_ONLY : null,
-        !europe ? EUROPE_ONLY : null,
-        !uk ? UK_ONLY : null
-      ]
+      query: {
+        // sources
+        [STACKOVERFLOW]: stackoverflow,
+        [WE_WORK_REMOTELY]: weWorkRemotely,
+        // location
+        [US_ONLY]: usOnly,
+        [NORTH_AMERICA_ONLY]: northAmericaOnly,
+        [UK_ONLY]: ukOnly,
+        [EUROPE_ONLY]: europeOnly
+      }
     };
   };
 
@@ -64,7 +73,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
       />
       <div className="show-more-filters-wrapper">
         <div className="show-more-filters" onClick={() => setOpen(!open)}>
-          <i className={`fas ${!open ? "fa-arrow-down" : "fa-arrow-up"}`}/>{" "}
+          <i className={`fas ${!open ? "fa-arrow-down" : "fa-arrow-up"}`} />{" "}
           More filters
         </div>
         {open && (
@@ -91,25 +100,25 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
                   <Checkbox
                     id={US_ONLY}
                     label="US only"
-                    checked={us}
+                    checked={usOnly}
                     onChange={toggleUs}
                   />
                   <Checkbox
                     id={NORTH_AMERICA_ONLY}
                     label="North America only"
-                    checked={northAmerica}
+                    checked={northAmericaOnly}
                     onChange={toggleNorthAmerica}
                   />
                   <Checkbox
                     id={EUROPE_ONLY}
                     label="Europe only"
-                    checked={europe}
+                    checked={europeOnly}
                     onChange={toggleEurope}
                   />
                   <Checkbox
                     id={UK_ONLY}
                     label="UK only"
-                    checked={uk}
+                    checked={ukOnly}
                     onChange={toggleUk}
                   />
                 </CheckBoxFilterBox>
@@ -119,18 +128,19 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
                   <Checkbox
                     id="compensation"
                     label="Unknown salary"
-                    checked={withoutCompensation}
-                    onChange={toggleWithoutCompensation}
+                    checked={noSalary}
+                    onChange={toggleNoSalary}
                   />
                 </CheckBoxFilterBox>
               </div>
               <div className="filter-box">
-                <div className="filter-box-title"/>
+                <div className="filter-box-title" />
               </div>
             </div>
             <div className="button-bar">
               <a className="button is-primary">
-                <i className="fas fa-search"/> Apply filters
+                <i className="fas fa-search" onClick={() => applyFilters()} />{" "}
+                Apply filters
               </a>
             </div>
           </div>

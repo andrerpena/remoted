@@ -1,6 +1,9 @@
+export const STACKOVERFLOW = "stackoverflow";
+export const WE_WORK_REMOTELY = "we-work-remotely";
+
 export const sources: { [key: string]: string } = {
-  "we-work-remotely": "WeWorkRemotely",
-  stackoverflow: "Stackoverflow"
+  [WE_WORK_REMOTELY]: "WeWorkRemotely",
+  [STACKOVERFLOW]: "Stackoverflow"
 };
 
 export function isSourceValid(source: string): boolean {
