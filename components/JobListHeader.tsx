@@ -10,7 +10,7 @@ export interface JobListCollectionHeaderProps {
   onFilter: (searchData: FilterData) => void;
 }
 
-export function JobListCollectionHeader(props: JobListCollectionHeaderProps) {
+export function JobListHeader(props: JobListCollectionHeaderProps) {
   const { tag, onFilter } = props;
   const icon = getIconForTag(tag);
   const prefix = icon ? icon.prefix || "fab" : "";
@@ -49,9 +49,7 @@ export function JobListCollectionHeader(props: JobListCollectionHeaderProps) {
           });
           return queryResult.data.getTags;
         };
-        return (
-          <SearchBox getTags={getTags} tag={tag} onFilter={onFilter} />
-        );
+        return <SearchBox getTags={getTags} tag={tag} onFilter={onFilter} />;
       }}
     </ApolloConsumer>
   );

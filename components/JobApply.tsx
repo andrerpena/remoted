@@ -9,11 +9,7 @@ export const JobApply: React.FunctionComponent<{
     <div className="job-apply">
       <div className="columns is-mobile">
         <div className="column is-full">
-          <a
-            className={`button "is-light"}`}
-            target="_blank"
-            href={props.applyUrl}
-          >
+          <a className={`button`} target="_blank" href={props.applyUrl}>
             🎯 Apply for this job
           </a>
         </div>

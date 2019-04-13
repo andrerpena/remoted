@@ -38,7 +38,7 @@ export const JobListCollection = (props: JobListCollectionProps) => {
   const buckets = bucketize(props.jobs, job => new Date(job.publishedAt));
   const { onLoadMore, loading } = props;
   const onClick = () => (loading ? undefined : onLoadMore());
-  const text = loading ? "Gimme MORE 🤑" : "Load more";
+  const text = loading ? "Good luck next page! 🤑" : "Load more";
   return (
     <>
       {buckets.map(b => (

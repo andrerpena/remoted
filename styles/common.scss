@@ -141,6 +141,18 @@ body {
       }
 
       .filter-box-wrapper {
+        padding: 0 $size-6 $size-6 $size-6;
+        .buttons-wrapper {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          a.button {
+            margin: 0 $size-8;
+          }
+        }
+      }
+
+      .advanced-filter-box-wrapper {
         .filter-box {
           padding: 0 $size-5;
           .filter-box-title {

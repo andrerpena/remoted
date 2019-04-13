@@ -8,6 +8,9 @@ export function linkToJob(publicId: string) {
 }
 
 export function linkToTag(tag: string) {
+  if (!tag) {
+    return `/`;
+  }
   return `/remote-${encodeURIComponent(tag)}-jobs`;
 }
 
