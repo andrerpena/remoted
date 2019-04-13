@@ -91,7 +91,11 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
             this.state.open ? "open" : ""
           }`}
         >
-          <JobApply applyUrl={url} permalink={linkToJob(id)} />
+          <JobApply
+            applyUrl={url}
+            permalink={linkToJob(id)}
+            buttonClass="is-primary"
+          />
           <JobDescription html={descriptionHtml} />
           <JobApply
             applyUrl={url}

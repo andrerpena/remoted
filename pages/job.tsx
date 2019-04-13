@@ -6,6 +6,7 @@ import { Job } from "../graphql-types";
 import * as Next from "next";
 import { Meta } from "../components/Meta";
 import { NavBar } from "../components/NavBar";
+import { Footer } from "../components/Footer";
 
 export const getJobQuery = gql`
   query getJob($jobId: String) {
@@ -60,6 +61,7 @@ const JobPage = function(props: JobPageProps) {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
