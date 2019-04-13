@@ -74,7 +74,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
       <div className="show-more-filters-wrapper">
         <div className="show-more-filters" onClick={() => setOpen(!open)}>
           <i className={`fas ${!open ? "fa-arrow-down" : "fa-arrow-up"}`} />{" "}
-          More filters
+          {!open ? "More filters" : "Less filters"}
         </div>
         {open && (
           <div className="filter-box-wrapper">
