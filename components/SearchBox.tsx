@@ -3,6 +3,7 @@ import { TagOption, TagSearchBox } from "./TagSearchBox";
 import { FilterData } from "../lib/common/url";
 import { useState } from "react";
 import { IndexQuery } from "../lib/common/query-types";
+import * as classNames from "classnames";
 
 export type SearchBoxProps = IndexQuery & {
   displaySearchBar: boolean;
@@ -24,7 +25,10 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
       console.log("filtered");
       props.onFilter({
         tag: tag,
-        query: { salary, regionfree }
+        query: {
+          salary: salary || undefined,
+          regionfree: regionfree || undefined
+        }
       });
     };
   };
@@ -38,26 +42,28 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
           initialValue={tag}
           getTags={props.getTags}
           onSelectTag={setTag}
-          onFilter={tag => getFilterHandler(tag)()}
+          onFilter={tag =>
+            getFilterHandler(tag, props.regionfree, props.salary)()
+          }
         />
       )}
       <div className="show-more-filters-wrapper">
         <div className="filter-box-wrapper">
           <div className="buttons-wrapper">
             {hasAnyFilter && (
-              <a className="button" onClick={getFilterHandler(tag)}>
+              <a className="button active" onClick={getFilterHandler(tag)}>
                 ❌
               </a>
             )}
-            <a className="button" onClick={getFilterHandler(tag, true, true)}>
-              🌏💰 Region free + Salary
-            </a>
-            <a className="button" onClick={getFilterHandler(tag, true)}>
+            <a
+              className={classNames("button", { active: props.regionfree })}
+              onClick={getFilterHandler(tag, !props.regionfree, props.salary)}
+            >
               🌏 Region free
             </a>
             <a
-              className="button"
-              onClick={getFilterHandler(tag, undefined, true)}
+              className={classNames("button", { active: props.salary })}
+              onClick={getFilterHandler(tag, props.regionfree, !props.salary)}
             >
               💰 Salary
             </a>

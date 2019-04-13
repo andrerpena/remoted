@@ -58,6 +58,7 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 30px;
+    padding-top: $size-5;
 
     @media screen and (max-width: $tablet) {
       flex-direction: column;
@@ -67,13 +68,8 @@ body {
       @media screen and (max-width: $tablet) {
         margin: $size-5 0 0 0;
       }
-      margin: $size-5 $size-6 / 2;
+      margin: 0 $size-6 / 2;
     }
-
-    //.title-tag-icon-default {
-    //  color: $primary;
-    //  font-size: 30px !important;
-    //}
 
     .banner-title {
       @media screen and (max-width: $tablet) {
@@ -83,7 +79,7 @@ body {
       flex-direction: row;
       justify-content: center;
       flex-wrap: wrap;
-      margin: $size-5 $size-6 / 2;
+      margin: 0 $size-6 / 2;
       font-weight: bold;
 
       .title-tag {
@@ -108,7 +104,7 @@ body {
 
   .search-box {
     .tag-search-box {
-      padding: $size-6;
+      padding: $size-6 $size-6 0 $size-6;
 
       > div {
         position: relative;
@@ -141,13 +137,24 @@ body {
       }
 
       .filter-box-wrapper {
-        padding: 0 $size-6 $size-6 $size-6;
+        padding: $size-6;
+
         .buttons-wrapper {
           display: flex;
           flex-direction: row;
           justify-content: center;
+
           a.button {
             margin: 0 $size-8;
+
+            -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+            filter: grayscale(100%);
+            opacity: 0.6;
+
+            &.active {
+              filter: none;
+              opacity: 1;
+            }
           }
         }
       }
@@ -155,18 +162,22 @@ body {
       .advanced-filter-box-wrapper {
         .filter-box {
           padding: 0 $size-5;
+
           .filter-box-title {
             font-weight: bold;
             padding-bottom: $size-9;
           }
+
           .checkbox-list {
           }
         }
+
         .button-bar {
           display: flex;
           flex-direction: row;
           justify-content: center;
           padding-bottom: $size-6;
+
           .fas {
             padding-right: $size-8;
           }

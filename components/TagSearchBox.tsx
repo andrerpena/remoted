@@ -57,7 +57,6 @@ export class TagSearchBox extends React.Component<
     value
   }: SuggestionsFetchRequestedParams) => {
     const { getTags } = this.props;
-
     const suggestions = await getTags(value.toLowerCase());
     this.setState({
       suggestions: processTags(suggestions, value.toLowerCase())
