@@ -30,10 +30,9 @@ export const NavBar = () => (
         <div className="navbar-start" />
 
         <div className="navbar-end">
-          <a className="navbar-item">🤖 API</a>
-          <a className="navbar-item">💻 CLI</a>
-          <a className="navbar-item">📊 Stats</a>
-          <a className="navbar-item">📖 About </a>
+          <a className="navbar-item" href="https://remoted.io/graphql">
+            🤖 GraphQL API
+          </a>
         </div>
       </div>
     </div>
