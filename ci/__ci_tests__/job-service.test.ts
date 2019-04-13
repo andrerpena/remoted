@@ -27,8 +27,7 @@ describe("job-service", () => {
   describe("addJob", () => {
     it("default behavior", async () => {
       const company = await addCompany(db, {
-        displayName: "c-1",
-        url: "URL"
+        displayName: "c-1"
       });
       const job = await addJob(db, {
         title: "developer",
@@ -74,8 +73,7 @@ describe("job-service", () => {
     });
     it("add the same job twice with the same URL should not end with 2 jobs", async () => {
       const company = await addCompany(db, {
-        displayName: "c-1",
-        url: "URL"
+        displayName: "c-1"
       });
       await addJob(db, {
         title: "developer",
@@ -104,8 +102,7 @@ describe("job-service", () => {
     });
     it("should normalize the URL", async () => {
       const company = await addCompany(db, {
-        displayName: "c-1",
-        url: "URL"
+        displayName: "c-1"
       });
       const job = await addJob(db, {
         title: "developer",
@@ -136,8 +133,7 @@ describe("job-service", () => {
     let companyPublicId = "";
     beforeEach(async () => {
       const company = await addCompany(db, {
-        displayName: "c-1",
-        url: "URL"
+        displayName: "c-1"
       });
       companyPublicId = company.id;
       for (let i = 0; i < 10; i++) {
@@ -224,8 +220,7 @@ describe("job-service", () => {
   describe("getJob", () => {
     it("should work", async () => {
       const company = await addCompany(db, {
-        displayName: "c-1",
-        url: "URL"
+        displayName: "c-1"
       });
       const insertedJob = await addJob(db, {
         title: `dev job 1`,

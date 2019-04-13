@@ -8,7 +8,6 @@ import { TagCount } from "../../graphql-types";
 export interface RemotedDatabase extends massive.Database {
   job: Writable;
   company: Writable;
-  company_url: Writable;
   stackoverflow_tags_cache: Writable;
   tag: Writable;
   job_tag: Writable;
@@ -84,5 +83,4 @@ export type DbTagInsert = PartialBy<DbTag, "id">;
 export type DbCompanyUrl = {
   id: number;
   company_id: number;
-  url: string;
 };

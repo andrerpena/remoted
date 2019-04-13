@@ -42,8 +42,7 @@ async function insertCompanies(db: RemotedDatabase): Promise<Company[]> {
   return await Promise.all(
     ["Github", "Zapper", "Elastic", "Auth0"].map(companyName => {
       return addCompany(db, {
-        displayName: companyName,
-        url: "URL"
+        displayName: companyName
       });
     })
   );

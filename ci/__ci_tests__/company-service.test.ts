@@ -6,8 +6,7 @@ import { DbCompany, RemotedDatabase } from "../../server/db/model";
 import {
   addCompany,
   getCompanyByDisplayName,
-  getCompanyByPublicId,
-  getCompanyUrls
+  getCompanyByPublicId
 } from "../../server/graphql/services/company-service";
 import { clearDb } from "../../lib/server/db-ci-helpers";
 
@@ -26,8 +25,7 @@ describe("company-service", () => {
   describe("addCompany", () => {
     it("default behavior", async () => {
       const company = await addCompany(db, {
-        displayName: "This is my company",
-        url: "SOME_URL"
+        displayName: "This is my company"
       });
       expect(company).toEqual(
         expect.objectContaining({
@@ -39,16 +37,13 @@ describe("company-service", () => {
     });
     it("should work for multiple companies with the same ID (this will change)", async () => {
       const company = await addCompany(db, {
-        displayName: "This is my company",
-        url: "SOME_URL"
+        displayName: "This is my company"
       });
       await addCompany(db, {
-        displayName: "This is my company",
-        url: "SOME_URL_2"
+        displayName: "This is my company"
       });
       await addCompany(db, {
-        displayName: "Another company",
-        url: "SOME_URL_3"
+        displayName: "Another company"
       });
       const result = await db.company.find({
         display_name: company.displayName
@@ -59,8 +54,7 @@ describe("company-service", () => {
   describe("getCompanyByPublicId", () => {
     it("should work", async () => {
       const company = await addCompany(db, {
-        displayName: "This is my company",
-        url: "SOME_URL"
+        displayName: "This is my company"
       });
       const companyRetrieved = await getCompanyByPublicId(db, company.id);
       expect(companyRetrieved).toEqual(
@@ -75,8 +69,7 @@ describe("company-service", () => {
   describe("getCompanyByDisplayName", () => {
     it("should work when the company exists", async () => {
       const company = await addCompany(db, {
-        displayName: "This is my company",
-        url: "SOME_URL"
+        displayName: "This is my company"
       });
       const companyRetrieved = await getCompanyByDisplayName(
         db,
@@ -89,16 +82,6 @@ describe("company-service", () => {
           name: "this-is-my-company"
         })
       );
-    });
-  });
-  describe("getCompanyUrls", () => {
-    it("should work", async () => {
-      const company = await addCompany(db, {
-        displayName: "This is my company",
-        url: "SOME_URL"
-      });
-      const urls = await getCompanyUrls(db, company.id);
-      expect(urls).toEqual(["SOME_URL"]);
     });
   });
 });

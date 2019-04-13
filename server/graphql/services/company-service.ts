@@ -1,7 +1,6 @@
 import {
   DbCompany,
   DbCompanyInput,
-  DbCompanyUrl,
   DbJob,
   RemotedDatabase
 } from "../../db/model";
@@ -37,10 +36,6 @@ export async function addCompany(
   };
 
   const dbCompany = await (db.company.insert(company) as Promise<DbCompany>);
-  await db.company_url.insert({
-    company_id: dbCompany.id,
-    url: companyInput.url
-  } as DbCompanyUrl);
 
   if (companyInput.imageUrl) {
     try {
@@ -159,18 +154,4 @@ export async function updateCompanyImageUrl(
     ...dbCompany,
     image_url: processedFileKey
   }) as Promise<DbCompany>;
-}
-
-export async function getCompanyUrls(
-  db: RemotedDatabase,
-  public_id: string
-): Promise<string[]> {
-  const dbCompany = await db.company.findOne({
-    public_id
-  });
-  const companyUrls = (await db.company_url.find({
-    company_id: dbCompany.id
-  })) as DbCompanyUrl[];
-
-  return companyUrls.map(u => u.url);
 }

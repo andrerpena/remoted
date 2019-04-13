@@ -82,37 +82,6 @@ ALTER SEQUENCE public.companies_id_seq OWNED BY public.company.id;
 
 
 --
--- Name: company_url; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.company_url (
-    id integer NOT NULL,
-    url character varying(200) NOT NULL,
-    company_id integer
-);
-
-
---
--- Name: company_url_reference_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.company_url_reference_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: company_url_reference_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.company_url_reference_id_seq OWNED BY public.company_url.id;
-
-
---
 -- Name: google_places_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -147,8 +116,8 @@ CREATE TABLE public.job (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     published_at timestamp with time zone NOT NULL,
     company_id integer NOT NULL,
-    location_required character varying(100),
-    location_preferred character varying(100),
+    location_required character varying(200),
+    location_preferred character varying(200),
     location_preferred_timezone smallint,
     location_preferred_timezone_tolerance smallint,
     company_name character varying(100) NOT NULL,
@@ -295,13 +264,6 @@ ALTER TABLE ONLY public.company ALTER COLUMN id SET DEFAULT nextval('public.comp
 
 
 --
--- Name: company_url id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.company_url ALTER COLUMN id SET DEFAULT nextval('public.company_url_reference_id_seq'::regclass);
-
-
---
 -- Name: job id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -328,14 +290,6 @@ ALTER TABLE ONLY public.source ALTER COLUMN id SET DEFAULT nextval('public.sourc
 
 ALTER TABLE ONLY public.company
     ADD CONSTRAINT companies_pkey PRIMARY KEY (id);
-
-
---
--- Name: company_url company_url_reference_pk; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.company_url
-    ADD CONSTRAINT company_url_reference_pk PRIMARY KEY (id);
 
 
 --
@@ -378,13 +332,6 @@ CREATE UNIQUE INDEX company_public_id_uindex ON public.company USING btree (publ
 
 
 --
--- Name: company_url_url_uindex; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX company_url_url_uindex ON public.company_url USING btree (url);
-
-
---
 -- Name: job_public_id_uindex; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -403,14 +350,6 @@ CREATE UNIQUE INDEX tag_id_uindex ON public.tag USING btree (id);
 --
 
 CREATE UNIQUE INDEX tag_name_uindex ON public.tag USING btree (name);
-
-
---
--- Name: company_url company_url_company_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.company_url
-    ADD CONSTRAINT company_url_company_id_fk FOREIGN KEY (company_id) REFERENCES public.company(id);
 
 
 --

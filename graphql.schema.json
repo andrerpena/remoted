@@ -453,22 +453,6 @@
             "deprecationReason": null
           },
           {
-            "name": "urls",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "imageUrl",
             "description": "",
             "args": [],
@@ -911,16 +895,6 @@
         "inputFields": [
           {
             "name": "displayName",
-            "description": "",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "url",
             "description": "",
             "type": {
               "kind": "NON_NULL",

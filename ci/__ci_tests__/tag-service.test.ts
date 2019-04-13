@@ -24,8 +24,7 @@ describe("tag-service", () => {
   describe("getTags", () => {
     beforeEach(async () => {
       const company = await addCompany(db, {
-        displayName: "c-1",
-        url: "URL"
+        displayName: "c-1"
       });
       for (let i = 0; i < 20; i++) {
         const tags = i < 15 ? ["react", "javascript"] : ["typescript"];

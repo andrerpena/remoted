@@ -47,8 +47,6 @@ export interface JobInput {
 export interface CompanyInput {
   displayName: string;
 
-  url: string;
-
   imageUrl?: Maybe<string>;
 }
 
@@ -130,8 +128,6 @@ export interface Company {
   name: string;
 
   displayName: string;
-
-  urls?: Maybe<string[]>;
 
   imageUrl?: Maybe<string>;
 }
@@ -516,8 +512,6 @@ export namespace CompanyResolvers {
 
     displayName?: DisplayNameResolver<string, TypeParent, Context>;
 
-    urls?: UrlsResolver<Maybe<string[]>, TypeParent, Context>;
-
     imageUrl?: ImageUrlResolver<Maybe<string>, TypeParent, Context>;
   }
 
@@ -533,11 +527,6 @@ export namespace CompanyResolvers {
   > = Resolver<R, Parent, Context>;
   export type DisplayNameResolver<
     R = string,
-    Parent = Company,
-    Context = {}
-  > = Resolver<R, Parent, Context>;
-  export type UrlsResolver<
-    R = Maybe<string[]>,
     Parent = Company,
     Context = {}
   > = Resolver<R, Parent, Context>;

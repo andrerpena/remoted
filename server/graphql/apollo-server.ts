@@ -9,8 +9,7 @@ import { IResolvers } from "../../graphql-types";
 import {
   addCompany,
   getCompanyByDisplayName,
-  getCompanyByJobPublicId,
-  getCompanyUrls
+  getCompanyByJobPublicId
 } from "./services/company-service";
 import {
   getSourceByJobPublicId,
@@ -74,12 +73,6 @@ const resolvers: Resolvers = {
     source: async _parent => {
       const db = await buildDb();
       return getSourceByJobPublicId(db, _parent.id);
-    }
-  },
-  Company: {
-    urls: async _parent => {
-      const db = await buildDb();
-      return getCompanyUrls(db, _parent.id);
     }
   }
 };

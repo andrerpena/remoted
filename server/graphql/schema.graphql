@@ -1,3 +1,8 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
 type Query {
   getJobs(offset: Int, limit: Int, hasTag: String): [Job]
   getJob(id: String, url: String): Job
@@ -6,6 +11,13 @@ type Query {
   getCompany(displayName: String!): Company
   getSources: [Source]
 }
+
+type Mutation {
+  addJob(input: JobInput!): Job
+  addCompany(input: CompanyInput!): Company
+  updateSource(input: UpdateSourceInput!): Source
+}
+
 type Job {
   id: String!
   title: String!
@@ -50,14 +62,7 @@ type Company {
   id: String!
   name: String!
   displayName: String!
-  urls: [String!]
   imageUrl: String
-}
-
-type Mutation {
-  addJob(input: JobInput!): Job
-  addCompany(input: CompanyInput!): Company
-  updateSource(input: UpdateSourceInput!): Source
 }
 
 input JobInput {
@@ -83,7 +88,6 @@ input JobInput {
 
 input CompanyInput {
   displayName: String!
-  url: String!
   imageUrl: String
 }
 
@@ -98,9 +102,4 @@ input UpdateSourceInput {
   name: String!
   updateMessage: String!
   updateMessageDetails: String
-}
-
-schema {
-  query: Query
-  mutation: Mutation
 }
