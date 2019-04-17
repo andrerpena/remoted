@@ -3,6 +3,7 @@ import { Meta } from "../components/Meta";
 import { NavBar } from "../components/NavBar";
 import { Form, Field } from "react-final-form";
 import { MarkdownEditor } from "../components/MarkdownEditor";
+import { getTitleForHire } from "../lib/common/title";
 
 export default class Hire extends React.Component<any> {
   onSubmit = (values: object) => {
@@ -12,7 +13,7 @@ export default class Hire extends React.Component<any> {
   render() {
     return (
       <div>
-        <Meta />
+        <Meta title={getTitleForHire()} />
         <NavBar />
         <div className="container">
           <div className="columns">

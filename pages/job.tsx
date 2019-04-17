@@ -7,6 +7,7 @@ import * as Next from "next";
 import { Meta } from "../components/Meta";
 import { NavBar } from "../components/NavBar";
 import { Footer } from "../components/Footer";
+import { getTitleForJob } from "../lib/common/title";
 
 export const getJobQuery = gql`
   query getJob($jobId: String) {
@@ -43,7 +44,7 @@ export interface JobPageProps {
 const JobPage = function(props: JobPageProps) {
   return (
     <div>
-      <Meta />
+      <Meta title={getTitleForJob()} />
       <NavBar />
       <div className="container">
         <div className="columns">

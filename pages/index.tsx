@@ -17,6 +17,7 @@ import { filterPageData, isThereMore } from "../lib/common/pagination";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { IndexQuery } from "../lib/common/query-types";
+import { getTitleForIndex } from "../lib/common/title";
 
 function loadMoreJobs(
   allJobs: Job[],
@@ -51,7 +52,7 @@ type QueryType = { getJobs: Job[]; getTagCountGroups: TagCountGroup[] };
 const IndexPage = (props: IndexPageProps) => {
   return (
     <div>
-      <Meta />
+      <Meta title={getTitleForIndex(props)} />
       <NavBar />
       <Query<QueryType>
         query={getJobsQuery}
