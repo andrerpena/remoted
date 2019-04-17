@@ -2,4 +2,10 @@
 
 .main-nav {
   margin-bottom: $column-gap;
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  user-select: none;
 }
