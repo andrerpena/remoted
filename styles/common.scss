@@ -140,42 +140,18 @@ body {
         padding: $size-6;
 
         .buttons-wrapper {
-          @media screen and (min-width: $tablet) {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+
+          a.button {
             display: flex;
             flex-direction: row;
             justify-content: center;
-          }
-
-          display: block;
-
-          a.button {
-            @media screen and (min-width: $tablet) {
-              display: flex;
-              flex-direction: row;
-              justify-content: center;
-              margin: 0 $size-8;
-            }
-            display: block;
-
-            margin-bottom: $size-7;
+            margin: 0 $size-8;
 
             &:last-child {
               margin-bottom: 0;
-            }
-
-            -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
-            filter: grayscale(100%);
-            opacity: 0.6;
-
-            &.active {
-              filter: none;
-              opacity: 1;
-            }
-            &.clear {
-              display: none;
-              @media screen and (min-width: $tablet) {
-                display: block;
-              }
             }
           }
         }

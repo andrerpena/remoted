@@ -11,6 +11,8 @@ export type SearchBoxProps = IndexQuery & {
   onFilter: (searchData: FilterData) => void;
 };
 
+const activeButtonClass = "is-primary";
+
 export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
   props: SearchBoxProps
 ) => {
@@ -59,17 +61,22 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
               </a>
             )}
             <a
-              className={classNames("button", { active: props.regionfree })}
+              className={classNames("button", {
+                [activeButtonClass]: props.regionfree
+              })}
               onClick={getFilterHandler(tag, !props.regionfree, props.salary)}
             >
               🌏 Region free
             </a>
             <a
-              className={classNames("button", { active: props.salary })}
+              className={classNames("button", {
+                [activeButtonClass]: props.salary
+              })}
               onClick={getFilterHandler(tag, props.regionfree, !props.salary)}
             >
               💰 Salary
             </a>
+            <a className="button">➕</a>
           </div>
         </div>
       </div>
