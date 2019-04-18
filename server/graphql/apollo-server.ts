@@ -1,11 +1,12 @@
 import { importSchema } from "graphql-import";
 import { ApolloServer, gql } from "apollo-server-express";
 import { Request } from "express";
-import { Context } from "./context";
+import { RemotedContext } from "./remotedContext";
 import { buildDb } from "../db/build-db";
 import { PAGE_SIZE } from "../../lib/common/constants";
 import { addJob, getJob, getJobs } from "./services/job-service";
 import { IResolvers } from "../../graphql-types";
+import { config } from "dotenv";
 import {
   addCompany,
   getCompanyByDisplayName,
@@ -16,10 +17,28 @@ import {
   updateSource
 } from "./services/source-service";
 import { getTagCountGroups, getTags } from "./services/tag-service";
+import { RemotedDatabase } from "../db/model";
+
+config();
 
 const typeDefs = gql(importSchema("server/graphql/schema.graphql"));
 
-type Resolvers = IResolvers & {
+async function applyMutation<R>(
+  context: RemotedContext,
+  resolver: (db: RemotedDatabase) => Promise<R>
+): Promise<R> {
+  const token = process.env.GRAPHQL_AUTH_TOKEN;
+  if (!token) {
+    throw new Error("Cannot read GRAPHQL_AUTH_TOKEN from process.env");
+  }
+  if (token !== context.authorizationHeader) {
+    throw new Error("UNAUTHORIZED");
+  }
+  const db = await buildDb();
+  return resolver(db);
+}
+
+type Resolvers = IResolvers<RemotedContext> & {
   [key: string]: any;
 };
 
@@ -52,17 +71,14 @@ const resolvers: Resolvers = {
     }
   },
   Mutation: {
-    addCompany: async (_parent, args) => {
-      const db = await buildDb();
-      return addCompany(db, args.input);
+    addCompany: async (_parent, args, context) => {
+      return applyMutation(context, async db => addCompany(db, args.input));
     },
-    addJob: async (_parent, args) => {
-      const db = await buildDb();
-      return addJob(db, args.input);
+    addJob: async (_parent, args, context) => {
+      return applyMutation(context, async db => addJob(db, args.input));
     },
-    updateSource: async (_parent, args) => {
-      const db = await buildDb();
-      return updateSource(db, args.input);
+    updateSource: async (_parent, args, context) => {
+      return applyMutation(context, async db => updateSource(db, args.input));
     }
   },
   Job: {
@@ -79,10 +95,8 @@ const resolvers: Resolvers = {
 
 // @ts-ignore
 export function getContext({ req }: { req: Request }) {
-  const context: Context = {
-    authScope: {
-      name: "andre"
-    }
+  const context: RemotedContext = {
+    authorizationHeader: req.header("Authorization")
   };
   return context;
 }
