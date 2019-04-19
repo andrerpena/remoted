@@ -1,5 +1,15 @@
 export interface IndexQuery {
+  tag: string;
+  // default filters
   salary: boolean;
   regionfree: boolean;
-  tag: string;
+  // location
+  nousonly: boolean;
+  nonorthamericaonly: boolean;
+  noukonly: boolean;
+  noeuropeonly: boolean;
+  // source
+  stackoverflow: boolean;
+  weworkremotely: boolean;
+  authenticjobs: boolean;
 }

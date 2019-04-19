@@ -3,11 +3,11 @@ import * as React from "react";
 import { ApolloConsumer } from "react-apollo";
 import { getTagsQuery } from "../queries/getTags";
 import { SearchBox } from "./SearchBox";
-import { FilterData } from "../lib/common/url";
 import { IndexQuery } from "../lib/common/query-types";
+import { FilterQuery } from "../lib/common/url";
 
 export type JobListCollectionHeaderProps = IndexQuery & {
-  onFilter: (searchData: FilterData) => void;
+  onFilter: (searchData: FilterQuery) => void;
 };
 
 export function Header(props: JobListCollectionHeaderProps) {

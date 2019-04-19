@@ -1,6 +1,18 @@
-export interface FilterData {
+export interface FilterQuery {
+  // tag
   tag?: string;
-  query: object;
+  // salary
+  salary: boolean;
+  // region
+  regionfree?: boolean;
+  nousonly?: boolean;
+  nonorthamericaonly?: boolean;
+  noukonly?: boolean;
+  noeuropeonly?: boolean;
+  // sources
+  stackoverflow?: boolean;
+  authenticjobs?: boolean;
+  weworkremotely?: boolean;
 }
 
 export function linkToJob(publicId: string) {

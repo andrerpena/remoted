@@ -89,8 +89,18 @@ const IndexPage = (props: IndexPageProps) => {
 IndexPage.getInitialProps = async ({ query }: Next.NextContext) => {
   return {
     tag: query.tag,
+    // default filters
+    salary: query.salary === "true",
     regionfree: query.regionfree === "true",
-    salary: query.salary === "true"
+    // location
+    nousonly: query.nousonly === "true",
+    nonorthamericaonly: query.nonorthamericaonly === "true",
+    noukonly: query.noukonly === "true",
+    noeuropeonly: query.noeuropeonly === "true",
+    // source
+    stackoverflow: query.stackoverflow === "true",
+    weworkremotely: query.weworkremotely === "true",
+    authenticjobs: query.authenticjobs === "true"
   } as IndexQuery;
 };
 

@@ -1,8 +1,9 @@
 import Router from "next/router";
-import { FilterData, linkToTag } from "../common/url";
+import { FilterQuery, linkToTag } from "../common/url";
 
-function cleanQuery(query: any) {
+function cleanUpQuery(query: any) {
   const queryCopy = { ...query };
+  delete queryCopy["tag"];
   const propNames = Object.getOwnPropertyNames(queryCopy);
   for (let i = 0; i < propNames.length; i++) {
     const propName = propNames[i];
@@ -13,8 +14,8 @@ function cleanQuery(query: any) {
   return queryCopy;
 }
 
-export function navigateToFilter(filter: FilterData) {
-  navigateTo(linkToTag(filter.tag), cleanQuery(filter.query));
+export function navigateToFilter(filter: FilterQuery) {
+  navigateTo(linkToTag(filter.tag), cleanUpQuery(filter));
 }
 
 export function navigateTo(path: string, query: any) {
