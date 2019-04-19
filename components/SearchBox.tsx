@@ -17,30 +17,18 @@ const activeButtonClass = "is-primary";
 export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
   props: SearchBoxProps
 ) => {
-  const [tag, setTag] = useState(props.tag || "");
-
-  // filters - default
-  const [regionfree, setRegionfree] = useState(props.regionfree || false);
-  const [salary, setSalary] = useState(props.salary || false);
-
-  // filters - region
-  const [nousonly, setNoUsOnly] = useState(props.nousonly || false);
-  const [nonorthamericaonly, setNoNorthAmericaOnly] = useState(
-    props.nonorthamericaonly || false
-  );
-  const [noukonly, setNoUkOnly] = useState(props.noukonly || false);
-  const [noeuropeonly, setNoEuropeOnly] = useState(props.noeuropeonly || false);
-
-  // filters - origin
-  const [stackoverflow, setStackoverflow] = useState(
-    props.stackoverflow || false
-  );
-  const [authenticjobs, setAuthenticJobs] = useState(
-    props.authenticjobs || false
-  );
-  const [weworkremotely, setWeWorkRemotely] = useState(
-    props.weworkremotely || false
-  );
+  const {
+    regionfree,
+    salary,
+    nousonly,
+    nonorthamericaonly,
+    noukonly,
+    noeuropeonly,
+    stackoverflow,
+    authenticjobs,
+    weworkremotely,
+    tag
+  } = props;
 
   const [moreFilters, setMoreFilters] = useState(
     nousonly ||
@@ -78,7 +66,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
         <TagSearchBox
           initialValue={tag}
           getTags={props.getTags}
-          onSelectTag={setTag}
+          onSelectTag={() => {}}
           onFilter={tag => handleFilterChange({ tag })}
         />
       )}
@@ -94,7 +82,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
             <SearchButton
               active={regionfree}
               onClick={() => {
-                setRegionfree(!regionfree);
+                // setRegionfree(!regionfree);
                 handleFilterChange({ regionfree: !regionfree });
               }}
               text="🔓 Region free"
@@ -102,7 +90,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
             <SearchButton
               active={salary}
               onClick={() => {
-                setSalary(!salary);
+                // setSalary(!salary);
                 handleFilterChange({ salary: !salary });
               }}
               text="💰 Salary"
@@ -112,7 +100,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
               hidden={!moreFilters}
               active={stackoverflow}
               onClick={() => {
-                setStackoverflow(!stackoverflow);
+                // setStackoverflow(!stackoverflow);
                 handleFilterChange({ stackoverflow: !stackoverflow });
               }}
               text="🔖 StackOverflow"
@@ -121,7 +109,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
               hidden={!moreFilters}
               active={authenticjobs}
               onClick={() => {
-                setAuthenticJobs(!authenticjobs);
+                // setAuthenticJobs(!authenticjobs);
                 handleFilterChange({ authenticjobs: !authenticjobs });
               }}
               text="🔖 Authentic Jobs"
@@ -130,7 +118,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
               hidden={!moreFilters}
               active={weworkremotely}
               onClick={() => {
-                setWeWorkRemotely(!weworkremotely);
+                // setWeWorkRemotely(!weworkremotely);
                 handleFilterChange({ weworkremotely: !weworkremotely });
               }}
               text="🔖 We Work Remotely"
@@ -140,7 +128,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
               hidden={!moreFilters}
               active={nousonly}
               onClick={() => {
-                setNoUsOnly(!nousonly);
+                // setNoUsOnly(!nousonly);
                 handleFilterChange({ nousonly: !nousonly });
               }}
               text="🌎 No US only"
@@ -149,7 +137,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
               hidden={!moreFilters}
               active={nonorthamericaonly}
               onClick={() => {
-                setNoNorthAmericaOnly(!nonorthamericaonly);
+                // setNoNorthAmericaOnly(!nonorthamericaonly);
                 handleFilterChange({ nonorthamericaonly: !nonorthamericaonly });
               }}
               text="🌎 No North America only"
@@ -158,7 +146,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
               hidden={!moreFilters}
               active={noukonly}
               onClick={() => {
-                setNoUkOnly(!noukonly);
+                // setNoUkOnly(!noukonly);
                 handleFilterChange({ noukonly: !noukonly });
               }}
               text="🌍 No UK only"
@@ -167,7 +155,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
               hidden={!moreFilters}
               active={noeuropeonly}
               onClick={() => {
-                setNoEuropeOnly(!noeuropeonly);
+                // setNoEuropeOnly(!noeuropeonly);
                 handleFilterChange({ noeuropeonly: !noeuropeonly });
               }}
               text="🌍 No Europe only"

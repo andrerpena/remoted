@@ -64,7 +64,8 @@ const tagIconMap: TagIconMap = {
       "postgresql",
       "sql",
       "sqlite",
-      "mongodb"
+      "mongodb",
+      "couchdb"
     ],
     prefix: "fas",
     color: "#4489C8"

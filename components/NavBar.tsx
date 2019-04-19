@@ -2,6 +2,7 @@ import "./NavBar.scss";
 import { Logo } from "./Logo";
 import * as React from "react";
 import * as classNames from "classnames";
+import Link from "next/link";
 
 export const NavBar = () => {
   const [open, setOpen] = React.useState(false);
@@ -13,9 +14,11 @@ export const NavBar = () => {
     >
       <div className="container">
         <div className="navbar-brand">
-          <a className="navbar-item" href="/">
-            <Logo />
-          </a>
+          <Link href="/">
+            <a className="navbar-item">
+              <Logo />
+            </a>
+          </Link>
           <a
             role="button"
             className={classNames("navbar-burger", "burger", {
