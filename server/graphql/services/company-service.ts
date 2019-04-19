@@ -56,9 +56,9 @@ export async function addCompany(
   };
 }
 
-export function buildCompanyImageUrl(imagePath: string) {
-  return `${serverConfig.storageHost}/${
-    serverConfig.storageCompanyHost
+export function buildCompanyCdnImageUrl(imagePath: string) {
+  return `${serverConfig.storageCdnHost}/${
+    serverConfig.storageCompanyPath
   }/${imagePath}`;
 }
 
@@ -68,7 +68,7 @@ export function getCompanyFromDbCompany(dbCompany: DbCompany): Company {
     displayName: dbCompany.display_name,
     name: dbCompany.name,
     imageUrl: dbCompany.image_url
-      ? buildCompanyImageUrl(dbCompany.image_url)
+      ? buildCompanyCdnImageUrl(dbCompany.image_url)
       : ""
   };
 }
@@ -143,7 +143,7 @@ export async function updateCompanyImageUrl(
     throw new Error("dbCompany was not supposed to be null");
   }
   const location = await uploadFromUrl(
-    `${serverConfig.storageCompanyHost}/${public_id}`,
+    `${serverConfig.storageCompanyPath}/${public_id}`,
     imageUrl
   );
   const fullFileKey = location.Key;

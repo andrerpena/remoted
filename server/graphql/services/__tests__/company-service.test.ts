@@ -2,7 +2,7 @@ import { config } from "dotenv";
 
 config();
 import {
-  buildCompanyImageUrl,
+  buildCompanyCdnImageUrl,
   generateCompanyPublicId
 } from "../company-service";
 
@@ -13,9 +13,9 @@ describe("company-service", () => {
       expect(companyPublicId.substr(6)).toEqual("awesome-company");
     });
   });
-  describe("buildCompanyImageUrl", () => {
+  describe("buildCompanyCdnImageUrl", () => {
     it("should work", () => {
-      const companyImageUrl = buildCompanyImageUrl("something.png");
+      const companyImageUrl = buildCompanyCdnImageUrl("something.png");
       expect([
         "https://remoted.sfo2.digitaloceanspaces.com/dev/remoted/companies/something.png",
         "https://remoted.sfo2.digitaloceanspaces.com/prod/remoted/companies/something.png"
