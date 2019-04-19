@@ -4,6 +4,7 @@ import { FilterData } from "../lib/common/url";
 import { useState } from "react";
 import { IndexQuery } from "../lib/common/query-types";
 import * as classNames from "classnames";
+import { MouseEventHandler } from "react";
 
 export type SearchBoxProps = IndexQuery & {
   displaySearchBar: boolean;
@@ -16,26 +17,28 @@ const activeButtonClass = "is-primary";
 export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
   props: SearchBoxProps
 ) => {
-  const [tag, setTag] = useState(props.tag);
+  const [tag, setTag] = useState(props.tag || "");
+  const [regionfree, setRegionfree] = useState(props.regionfree || false);
+  const [salary, setSalary] = useState(props.salary || false);
 
-  const getFilterHandler = (
+  const handleFilterChange = (
     tag?: string,
     regionfree?: boolean,
     salary?: boolean
   ) => {
-    return () => {
-      console.log("filtered");
-      props.onFilter({
-        tag: tag,
-        query: {
-          salary: salary || undefined,
-          regionfree: regionfree || undefined
-        }
-      });
-    };
+    setTag(tag || "");
+    setRegionfree(regionfree || false);
+    setSalary(salary || false);
+    props.onFilter({
+      tag: tag,
+      query: {
+        salary: salary || undefined,
+        regionfree: regionfree || undefined
+      }
+    });
   };
 
-  const hasAnyFilter = props.regionfree || props.salary;
+  const hasAnyFilter = regionfree || salary;
 
   return (
     <div className="search-box">
@@ -44,9 +47,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
           initialValue={tag}
           getTags={props.getTags}
           onSelectTag={setTag}
-          onFilter={tag =>
-            getFilterHandler(tag, props.regionfree, props.salary)()
-          }
+          onFilter={tag => handleFilterChange(tag, regionfree, salary)}
         />
       )}
       <div className="show-more-filters-wrapper">
@@ -55,27 +56,21 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
             {hasAnyFilter && (
               <a
                 className="button active clear"
-                onClick={getFilterHandler(tag)}
+                onClick={() => handleFilterChange(tag)}
               >
                 ❌
               </a>
             )}
-            <a
-              className={classNames("button", {
-                [activeButtonClass]: props.regionfree
-              })}
-              onClick={getFilterHandler(tag, !props.regionfree, props.salary)}
-            >
-              🌏 Region free
-            </a>
-            <a
-              className={classNames("button", {
-                [activeButtonClass]: props.salary
-              })}
-              onClick={getFilterHandler(tag, props.regionfree, !props.salary)}
-            >
-              💰 Salary
-            </a>
+            <SearchButton
+              active={regionfree}
+              onClick={() => handleFilterChange(tag, !regionfree, salary)}
+              text="🌏 Region free"
+            />
+            <SearchButton
+              active={salary}
+              onClick={() => handleFilterChange(tag, regionfree, !salary)}
+              text="💰 Salary"
+            />
             <a className="button">➕</a>
           </div>
         </div>
@@ -86,4 +81,23 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
 
 SearchBox.defaultProps = {
   displaySearchBar: true
+};
+
+interface SearchButtonProps {
+  text: string;
+  active: boolean;
+  onClick: MouseEventHandler<HTMLAnchorElement>;
+}
+
+const SearchButton: React.FunctionComponent<SearchButtonProps> = props => {
+  return (
+    <a
+      className={classNames("button", {
+        [activeButtonClass]: props.active
+      })}
+      onClick={props.onClick}
+    >
+      {props.text}
+    </a>
+  );
 };

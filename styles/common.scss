@@ -137,47 +137,20 @@ body {
       }
 
       .filter-box-wrapper {
-        padding: $size-6;
+        padding: $size-6 $size-6 0;
 
         .buttons-wrapper {
           display: flex;
           flex-direction: row;
           justify-content: center;
+          flex-wrap: wrap;
 
           a.button {
+            cursor: pointer;
             display: flex;
             flex-direction: row;
             justify-content: center;
-            margin: 0 $size-8;
-
-            &:last-child {
-              margin-bottom: 0;
-            }
-          }
-        }
-      }
-
-      .advanced-filter-box-wrapper {
-        .filter-box {
-          padding: 0 $size-5;
-
-          .filter-box-title {
-            font-weight: bold;
-            padding-bottom: $size-9;
-          }
-
-          .checkbox-list {
-          }
-        }
-
-        .button-bar {
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-          padding-bottom: $size-6;
-
-          .fas {
-            padding-right: $size-8;
+            margin: 0 $size-8 $size-6 $size-8;
           }
         }
       }

@@ -87,7 +87,11 @@ const IndexPage = (props: IndexPageProps) => {
 };
 
 IndexPage.getInitialProps = async ({ query }: Next.NextContext) => {
-  return { ...query };
+  return {
+    tag: query.tag,
+    regionfree: query.regionfree === "true",
+    salary: query.salary === "true"
+  } as IndexQuery;
 };
 
 export default withRouter(IndexPage);
