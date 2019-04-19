@@ -1,6 +1,5 @@
 import * as React from "react";
 import "./JobPost.scss";
-import * as Showdown from "showdown";
 import { Job } from "../graphql-types";
 import { getSalaryText } from "../lib/common/salary";
 import { getLocationText } from "../lib/common/location";
@@ -24,19 +23,11 @@ interface JobPostProps {
 }
 
 export class JobPost extends React.Component<JobPostProps, JobListState> {
-  converter: Showdown.Converter;
-
   constructor(props: JobPostProps) {
     super(props);
     this.state = {
       open: false
     };
-    this.converter = new Showdown.Converter({
-      tables: true,
-      simplifiedAutoLink: true,
-      strikethrough: true,
-      tasklists: true
-    });
   }
 
   handleClick = () => {
