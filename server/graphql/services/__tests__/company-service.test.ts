@@ -17,8 +17,8 @@ describe("company-service", () => {
     it("should work", () => {
       const companyImageUrl = buildCompanyCdnImageUrl("something.png");
       expect([
-        "https://remoted.sfo2.digitaloceanspaces.com/dev/remoted/companies/something.png",
-        "https://remoted.sfo2.digitaloceanspaces.com/prod/remoted/companies/something.png"
+        "https://remoted.sfo2.cdn.digitaloceanspaces.com/dev/remoted/companies/something.png",
+        "https://remoted.sfo2.cdn.digitaloceanspaces.com/prod/remoted/companies/something.png"
       ]).toContain(companyImageUrl);
     });
   });
