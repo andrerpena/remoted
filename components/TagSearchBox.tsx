@@ -91,7 +91,6 @@ export class TagSearchBox extends React.Component<
     _event: React.FormEvent,
     data: SuggestionSelectedEventData<TagOption>
   ) => {
-    console.log("should filter now");
     this.props.onFilter(data.suggestion.name);
     this.setState({ selectedSuggestion: data.suggestion.name });
   };
