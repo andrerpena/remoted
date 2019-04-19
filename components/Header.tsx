@@ -21,10 +21,16 @@ export function Header(props: JobListCollectionHeaderProps) {
     />
   ) : null;
 
-  let [showSearchBar, setShowSearchBar] = React.useState(!props.tag);
+  let [showSearch, setShowSearch] = React.useState(!props.tag);
+  let [previousTag, setPreviousTag] = React.useState(props.tag);
 
-  const bannerHeader = tag ? (
-    <div className="banner-header" onClick={() => setShowSearchBar(true)}>
+  if (previousTag !== props.tag) {
+    setPreviousTag(props.tag);
+    setShowSearch(!props.tag);
+  }
+
+  const banner = tag ? (
+    <div className="banner-header" onClick={() => setShowSearch(true)}>
       {tagElement}
       <span className="banner-title">
         <span>Remote</span>
@@ -48,7 +54,7 @@ export function Header(props: JobListCollectionHeaderProps) {
           <SearchBox
             getTags={getTags}
             onFilter={onFilter}
-            displaySearchBar={showSearchBar}
+            displaySearchBar={showSearch}
             {...props}
           />
         );
@@ -58,7 +64,7 @@ export function Header(props: JobListCollectionHeaderProps) {
 
   return (
     <div className="header">
-      {!showSearchBar && bannerHeader}
+      {!showSearch && banner}
       {searchBar}
     </div>
   );

@@ -2,7 +2,7 @@ export interface FilterQuery {
   // tag
   tag?: string;
   // salary
-  salary: boolean;
+  salary?: boolean;
   // region
   regionfree?: boolean;
   nousonly?: boolean;
@@ -15,15 +15,62 @@ export interface FilterQuery {
   weworkremotely?: boolean;
 }
 
-export function linkToJob(publicId: string) {
-  return `/job/${encodeURIComponent(publicId)}`;
+export const buildQuery = function(data: { [key: string]: any }) {
+  // Create a query array to hold the key/value pairs
+  const query = [];
+  // Loop through the data object
+  for (let key in data) {
+    if (data.hasOwnProperty(key)) {
+      // Encode each key and value, concatenate them into a string, and push them to the array
+      query.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
+    }
+  }
+  // Join each item in the array with a `&` and return the resulting string
+  return query.join("&");
+};
+
+export function cleanUpFilters(query: any, excludeTag: boolean) {
+  const queryCopy = { ...query };
+  if (excludeTag) {
+    delete queryCopy["tag"];
+  }
+  const propNames = Object.getOwnPropertyNames(queryCopy);
+  for (let i = 0; i < propNames.length; i++) {
+    const propName = propNames[i];
+    if (
+      queryCopy[propName] === null ||
+      queryCopy[propName] === undefined ||
+      queryCopy[propName] === false
+    ) {
+      delete queryCopy[propName];
+    }
+  }
+  return queryCopy;
 }
 
-export function linkToTag(tag?: string) {
-  if (!tag) {
+export function linkToJob(slug: string) {
+  return `/job?publicId=${encodeURIComponent(slug)}`;
+}
+
+export function linkToJobCanonical(slug: string) {
+  return `/job/${encodeURIComponent(slug)}`;
+}
+
+export function linkToFilters(filters?: FilterQuery) {
+  if (!filters) {
     return `/`;
   }
-  return `/remote-${encodeURIComponent(tag)}-jobs`;
+  return `/?${buildQuery(cleanUpFilters(filters, false))}`;
+}
+
+export function linkToTagCanonical(filters?: FilterQuery) {
+  if (!filters || !filters.tag) {
+    return linkToFilters(filters);
+  }
+  const query = buildQuery(cleanUpFilters(filters, true));
+  return `/remote-${encodeURIComponent(filters.tag)}-jobs${
+    query ? `?${query}` : ""
+  }`;
 }
 
 export function removeQueryString(url: string) {

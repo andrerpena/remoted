@@ -4,7 +4,7 @@ import * as Showdown from "showdown";
 import { Job } from "../graphql-types";
 import { getSalaryText } from "../lib/common/salary";
 import { getLocationText } from "../lib/common/location";
-import { linkToJob } from "../lib/common/url";
+import { linkToJob, linkToJobCanonical } from "../lib/common/url";
 import { CompanyHeader } from "./CompanyHeader";
 import { JobInfo } from "./Salary";
 import { JobTags } from "./JobTags";
@@ -77,7 +77,7 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
             postedOn={postedOn}
           />
           <div className="job-title">
-            <Link href={linkToJob(id)}>
+            <Link href={linkToJob(id)} as={linkToJobCanonical(id)}>
               <a className="title is-5" onClick={e => e.stopPropagation()}>
                 {title}
               </a>

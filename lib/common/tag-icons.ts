@@ -19,6 +19,11 @@ export interface ProcessedTagIconMap {
 }
 
 const tagIconMap: TagIconMap = {
+  "mobile-alt": {
+    tags: ["react-native", "flutter", "ionic", "mobile", "cordova"],
+    color: "#A1ABB1",
+    prefix: "fas"
+  },
   java: { tags: ["java"], color: "#517C90" },
   docker: { tags: ["docker"], color: "#0AA0D2" },
   android: { tags: ["android"], color: "#A4C639" },

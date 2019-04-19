@@ -42,7 +42,15 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
     props.weworkremotely || false
   );
 
-  const [moreFilters, setMoreFilters] = useState(false);
+  const [moreFilters, setMoreFilters] = useState(
+    nousonly ||
+      nonorthamericaonly ||
+      noukonly ||
+      noeuropeonly ||
+      stackoverflow ||
+      weworkremotely ||
+      authenticjobs
+  );
 
   const filterData: FilterQuery = {
     tag,

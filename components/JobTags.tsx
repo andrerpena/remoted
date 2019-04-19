@@ -1,6 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
-import { linkToTag } from "../lib/common/url";
+import { linkToFilters, linkToTagCanonical } from "../lib/common/url";
 
 export class JobTags extends React.Component<{ tags: string[] }> {
   render() {
@@ -10,7 +10,11 @@ export class JobTags extends React.Component<{ tags: string[] }> {
         <div className="job-post-tags">
           <div className="tags left">
             {this.props.tags.map(t => (
-              <Link href={linkToTag(t.toLowerCase())} key={t}>
+              <Link
+                href={linkToFilters({ tag: t.toLowerCase() })}
+                as={linkToTagCanonical({ tag: t.toLowerCase() })}
+                key={t}
+              >
                 <a
                   key={t}
                   className="tag is-white"
