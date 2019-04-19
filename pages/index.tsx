@@ -67,6 +67,11 @@ const IndexPage = (props: IndexPageProps) => {
             <Header onFilter={filter => navigateToFilter(filter)} {...props} />
             <div className="columns">
               <div className="column is-full">
+                {loading && (
+                  <div className="box-white loading-box">
+                    <i className="fas fa-spinner" /> Delivering...
+                  </div>
+                )}
                 <JobListCollection
                   router={props.router}
                   jobs={data ? data.getJobs : []}

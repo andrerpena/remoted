@@ -19,6 +19,11 @@ export interface ProcessedTagIconMap {
 }
 
 const tagIconMap: TagIconMap = {
+  "shield-alt": {
+    tags: ["security"],
+    color: "#bb0526",
+    prefix: "fas"
+  },
   "mobile-alt": {
     tags: ["react-native", "flutter", "ionic", "mobile", "cordova"],
     color: "#A1ABB1",
@@ -33,7 +38,10 @@ const tagIconMap: TagIconMap = {
     color: "#A1ABB1"
   },
   aws: { tags: ["amazon-web-services", "amazon-redshift"], color: "#FF9900" },
-  js: { tags: ["javascript", "js"], color: "#F7DF1E" },
+  js: {
+    tags: ["javascript", "js", "ecmascript-6", "es6", "typescript"],
+    color: "#F7DF1E"
+  },
   ember: { tags: ["ember", "ember.js", "emberjs"], color: "#DB492F" },
   react: { tags: ["reactjs", "react"], color: "#58D9FB" },
   angular: { tags: ["angularjs", "angular", "angular.js"], color: "#DD0031" },
@@ -55,6 +63,7 @@ const tagIconMap: TagIconMap = {
   database: {
     tags: [
       "database",
+      "database-design",
       "mysql",
       "redis",
       "elasticsearch",

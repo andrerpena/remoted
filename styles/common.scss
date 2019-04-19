@@ -237,3 +237,10 @@ body {
 footer.footer {
   margin-top: $size-4;
 }
+
+.loading-box {
+  padding: $size-9 $size-6;
+  i {
+    margin-right: $size-9;
+  }
+}
