@@ -58,7 +58,7 @@ const IndexPage = (props: IndexPageProps) => {
       <Query<GetJobsQueryType>
         query={getJobsQuery}
         variables={{
-          hasTag: props.tag,
+          tag: props.tag,
           limit: PAGE_SIZE + 1
         }}
         notifyOnNetworkStatusChange={true}
