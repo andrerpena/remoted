@@ -230,6 +230,23 @@ describe("job-service", () => {
         expect(data2.length).toEqual(0);
       });
 
+      it("should work US is NOT excluded", async () => {
+        // US-ONLY
+        await addJob(db, {
+          title: `dev job`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationTag: US_ONLY,
+          companyId: companyPublicId,
+          tags: ["react"],
+          url: `URL`,
+          source: "stackoverflow"
+        });
+
+        const data = await getJobs(db, 20, 0);
+        expect(data.length).toEqual(11);
+      });
+
       it("should work US is excluded", async () => {
         // US-ONLY
         await addJob(db, {
@@ -243,8 +260,179 @@ describe("job-service", () => {
           source: "stackoverflow"
         });
 
-        const data = await getJobs(db, 10, 0, null);
+        const data = await getJobs(db, 20, 0, null, null, [US_ONLY]);
         expect(data.length).toEqual(10);
+      });
+    });
+
+    describe("region free", () => {
+      it("should work when region free is not specified", async () => {
+        const data = await getJobs(db, 20, 0);
+        expect(data.length).toEqual(10);
+      });
+
+      it("should work when region free is specified and location tag exists", async () => {
+        // US-ONLY
+        await addJob(db, {
+          title: `dev job`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationTag: US_ONLY,
+          companyId: companyPublicId,
+          tags: ["react"],
+          url: `URL`,
+          source: "stackoverflow"
+        });
+
+        const data = await getJobs(db, 20, 0, null, true);
+        expect(data.length).toEqual(10);
+      });
+
+      it("should work when region free is specified and location required exists", async () => {
+        // US-ONLY
+        await addJob(db, {
+          title: `dev job`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationRequired: "Brazil",
+          companyId: companyPublicId,
+          tags: ["react"],
+          url: `URL`,
+          source: "stackoverflow"
+        });
+
+        const data = await getJobs(db, 20, 0, null, true);
+        expect(data.length).toEqual(10);
+      });
+    });
+
+    describe("tag", () => {
+      it("should work when only asking for react (10 were added)", async () => {
+        const data = await getJobs(db, 20, 0, "react");
+        expect(data.length).toEqual(10);
+      });
+      it("should work when only asking for a tag with only 1 job", async () => {
+        await addJob(db, {
+          title: `dev job`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationTag: US_ONLY,
+          companyId: companyPublicId,
+          tags: ["angular"],
+          url: `URL`,
+          source: "stackoverflow"
+        });
+        const data = await getJobs(db, 20, 0, "angular");
+        expect(data.length).toEqual(1);
+      });
+      it("should work when asking for a tag that does not exist", async () => {
+        const data = await getJobs(db, 20, 0, "react2");
+        expect(data.length).toEqual(0);
+      });
+    });
+
+    describe("salary", () => {
+      it("should work when salary is not specified", async () => {
+        const data = await getJobs(db, 20, 0);
+        expect(data.length).toEqual(10);
+      });
+      it("should work when exact salary is specified", async () => {
+        await addJob(db, {
+          title: `dev job`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationTag: US_ONLY,
+          companyId: companyPublicId,
+          tags: ["angular"],
+          url: `URL`,
+          source: "stackoverflow",
+          salaryExact: 10000
+        });
+        const data = await getJobs(db, 20, 0, null, null, null, true);
+        expect(data.length).toEqual(1);
+      });
+      it("should work when min salary is specified", async () => {
+        await addJob(db, {
+          title: `dev job`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationTag: US_ONLY,
+          companyId: companyPublicId,
+          tags: ["angular"],
+          url: `URL`,
+          source: "stackoverflow",
+          salaryMin: 10000
+        });
+        const data = await getJobs(db, 20, 0, null, null, null, true);
+        expect(data.length).toEqual(1);
+      });
+      it("should work when max salary is specified", async () => {
+        await addJob(db, {
+          title: `dev job`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationTag: US_ONLY,
+          companyId: companyPublicId,
+          tags: ["angular"],
+          url: `URL`,
+          source: "stackoverflow",
+          salaryMax: 10000
+        });
+        const data = await getJobs(db, 20, 0, null, null, null, true);
+        expect(data.length).toEqual(1);
+      });
+    });
+
+    describe("sources", () => {
+      it("should work with stackoverflow", async () => {
+        const data = await getJobs(db, 20, 0);
+        expect(data.length).toEqual(10);
+      });
+      it("should work with we-work-remotely", async () => {
+        await addJob(db, {
+          title: `dev job`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationTag: US_ONLY,
+          companyId: companyPublicId,
+          tags: ["angular"],
+          url: `URL`,
+          source: "we-work-remotely",
+          salaryExact: 10000
+        });
+        const data = await getJobs(db, 20, 0, null, null, null, null, [
+          "we-work-remotely"
+        ]);
+        expect(data.length).toEqual(1);
+      });
+      it("should work with 2 sources", async () => {
+        await addJob(db, {
+          title: `dev job`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationTag: US_ONLY,
+          companyId: companyPublicId,
+          tags: ["angular"],
+          url: `URL`,
+          source: "we-work-remotely",
+          salaryExact: 10000
+        });
+        await addJob(db, {
+          title: `dev job`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationTag: US_ONLY,
+          companyId: companyPublicId,
+          tags: ["angular"],
+          url: `URL2`,
+          source: "authentic-jobs",
+          salaryExact: 10000
+        });
+        const data = await getJobs(db, 20, 0, null, null, null, null, [
+          "we-work-remotely",
+          "authentic-jobs"
+        ]);
+        expect(data.length).toEqual(2);
       });
     });
   });

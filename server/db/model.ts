@@ -50,7 +50,7 @@ export interface DbJob {
   salary_currency: Nullable<string>;
   salary_equity: Nullable<boolean>;
   url: string;
-  source: String;
+  source: string;
 }
 
 export type DbJobInput = PartialBy<

@@ -4,8 +4,8 @@ import { Job } from "../../../graphql-types";
 export type GetJobsQueryType = { getJobs: Job[] };
 
 export const getJobsQuery = gql`
-  query getJobs($offset: Int, $limit: Int, $hasTag: String) {
-    getJobs(offset: $offset, limit: $limit, hasTag: $hasTag) {
+  query getJobs($offset: Int, $limit: Int, $tag: String) {
+    getJobs(offset: $offset, limit: $limit, tag: $tag) {
       id
       title
       url
@@ -24,9 +24,7 @@ export const getJobsQuery = gql`
       salaryMin
       salaryMax
       salaryCurrency
-      source {
-        name
-      }
+      source
     }
   }
 `;

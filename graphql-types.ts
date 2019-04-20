@@ -153,7 +153,15 @@ export interface GetJobsQueryArgs {
 
   limit?: Maybe<number>;
 
-  hasTag?: Maybe<string>;
+  tag?: Maybe<string>;
+
+  salary?: Maybe<boolean>;
+
+  regionFree?: Maybe<boolean>;
+
+  excludeLocationTags?: Maybe<string[]>;
+
+  sources?: Maybe<string[]>;
 }
 export interface GetJobQueryArgs {
   id?: Maybe<string>;
@@ -254,7 +262,15 @@ export namespace QueryResolvers {
 
     limit?: Maybe<number>;
 
-    hasTag?: Maybe<string>;
+    tag?: Maybe<string>;
+
+    salary?: Maybe<boolean>;
+
+    regionFree?: Maybe<boolean>;
+
+    excludeLocationTags?: Maybe<string[]>;
+
+    sources?: Maybe<string[]>;
   }
 
   export type GetJobResolver<

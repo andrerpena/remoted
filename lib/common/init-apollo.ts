@@ -25,6 +25,10 @@ function create(initialState: any) {
       credentials: "same-origin" // Additional fetch() options like `credentials` or `headers`
     }),
     cache: new InMemoryCache().restore(initialState || {})
+    // onError: ({ networkError, graphQLErrors }) => {
+    //   console.log("graphQLErrors", graphQLErrors);
+    //   console.log("networkError", networkError);
+    // }
   });
 }
 

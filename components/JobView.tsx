@@ -28,7 +28,7 @@ export const JobView = (props: JobViewProps) => {
   } = props.job;
   const companyName = company ? company.displayName : "";
   const companyUrl = company ? company.imageUrl : "";
-  const postedOn = source ? getSourceDisplayName(source.name) : "";
+  const postedOn = source ? getSourceDisplayName(source) : "";
 
   const salaryText = getSalaryText(props.job);
   const locationText = getLocationText(props.job);

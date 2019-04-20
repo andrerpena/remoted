@@ -53,7 +53,7 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
     const salaryText = getSalaryText(this.props.job);
     const locationText = getLocationText(this.props.job);
 
-    const postedOn = source ? getSourceDisplayName(source.name) : "";
+    const postedOn = source ? getSourceDisplayName(this.props.job.source) : "";
 
     return (
       <li className="job-post">

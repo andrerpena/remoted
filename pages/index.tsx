@@ -80,7 +80,9 @@ const IndexPage = (props: IndexPageProps) => {
                     loadMoreJobs(data ? data.getJobs : [], props.tag, fetchMore)
                   }
                   loading={loading}
-                  thereIsMore={isThereMore(data ? data.getJobs : [])}
+                  thereIsMore={
+                    !loading && isThereMore(data ? data.getJobs : [])
+                  }
                 />
               </div>
             </div>

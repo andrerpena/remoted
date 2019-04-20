@@ -4,7 +4,15 @@ schema {
 }
 
 type Query {
-  getJobs(offset: Int, limit: Int, hasTag: String): [Job]
+  getJobs(
+    offset: Int
+    limit: Int
+    tag: String
+    salary: Boolean
+    regionFree: Boolean
+    excludeLocationTags: [String!]
+    sources: [String!]
+  ): [Job]
   getJob(id: String, url: String): Job
   getTagCountGroups(tagGroups: [TagCountGroupInput!]!): [TagCountGroup]
   getTags(text: String): [TagCount]
