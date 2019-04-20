@@ -48,7 +48,7 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
       source
     } = this.props.job;
     const companyName = company ? company.displayName : "";
-    const companyUrl = company ? company.imageUrl : "";
+    const companyImageUrl20x20 = company ? company.imageUrl20x20 : "";
 
     const salaryText = getSalaryText(this.props.job);
     const locationText = getLocationText(this.props.job);
@@ -63,7 +63,7 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
         >
           <CompanyHeader
             companyName={companyName}
-            companyUrl={companyUrl || ""}
+            companyImageUrl20x20={companyImageUrl20x20 || ""}
             publishedAt={publishedAt}
             postedOn={postedOn}
           />

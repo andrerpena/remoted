@@ -4,12 +4,12 @@ import { Query } from "react-apollo";
 import { Meta } from "../components/Meta";
 import { NavBar } from "../components/NavBar";
 import { JobListCollection } from "../components/JobList";
-import { Job, TagCountGroup } from "../graphql-types";
+import { Job } from "../graphql-types";
 import { withRouter, WithRouterProps } from "next/router";
 import "../styles/common.scss";
 import "../styles/job.scss";
 import "../styles/markdown.scss";
-import { getJobsQuery } from "../queries/getJobs";
+import { getJobsQuery, GetJobsQueryType } from "../lib/common/queries/getJobs";
 import * as Next from "next";
 import { navigateToFilter } from "../lib/client/navigation";
 import { PAGE_SIZE } from "../lib/common/constants";
@@ -30,7 +30,10 @@ function loadMoreJobs(
       limit: PAGE_SIZE + 1,
       hasTag
     },
-    updateQuery: (previousResult: QueryType, { fetchMoreResult }: any) => {
+    updateQuery: (
+      previousResult: GetJobsQueryType,
+      { fetchMoreResult }: any
+    ) => {
       if (!fetchMoreResult) {
         return previousResult;
       }
@@ -47,14 +50,12 @@ function loadMoreJobs(
 
 export type IndexPageProps = IndexQuery & WithRouterProps;
 
-type QueryType = { getJobs: Job[]; getTagCountGroups: TagCountGroup[] };
-
 const IndexPage = (props: IndexPageProps) => {
   return (
     <div>
       <Meta title={getTitleForIndex(props)} />
       <NavBar />
-      <Query<QueryType>
+      <Query<GetJobsQueryType>
         query={getJobsQuery}
         variables={{
           hasTag: props.tag,
@@ -69,7 +70,7 @@ const IndexPage = (props: IndexPageProps) => {
               <div className="column is-full">
                 {loading && (
                   <div className="box-white loading-box">
-                    <i className="fas fa-spinner" /> Delivering...
+                    <i className="fas fa-spinner" /> Loading...
                   </div>
                 )}
                 <JobListCollection

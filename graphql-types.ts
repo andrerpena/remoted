@@ -130,6 +130,8 @@ export interface Company {
   displayName: string;
 
   imageUrl?: Maybe<string>;
+
+  imageUrl20x20?: Maybe<string>;
 }
 
 export interface Source {
@@ -513,6 +515,8 @@ export namespace CompanyResolvers {
     displayName?: DisplayNameResolver<string, TypeParent, Context>;
 
     imageUrl?: ImageUrlResolver<Maybe<string>, TypeParent, Context>;
+
+    imageUrl20x20?: ImageUrl20x20Resolver<Maybe<string>, TypeParent, Context>;
   }
 
   export type IdResolver<R = string, Parent = Company, Context = {}> = Resolver<
@@ -531,6 +535,11 @@ export namespace CompanyResolvers {
     Context = {}
   > = Resolver<R, Parent, Context>;
   export type ImageUrlResolver<
+    R = Maybe<string>,
+    Parent = Company,
+    Context = {}
+  > = Resolver<R, Parent, Context>;
+  export type ImageUrl20x20Resolver<
     R = Maybe<string>,
     Parent = Company,
     Context = {}

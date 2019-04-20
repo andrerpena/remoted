@@ -43,7 +43,7 @@ const tagIconMap: TagIconMap = {
     color: "#F7DF1E"
   },
   ember: { tags: ["ember", "ember.js", "emberjs"], color: "#DB492F" },
-  react: { tags: ["reactjs", "react"], color: "#58D9FB" },
+  react: { tags: ["reactjs", "react", "redux", "next.js"], color: "#58D9FB" },
   angular: { tags: ["angularjs", "angular", "angular.js"], color: "#DD0031" },
   vuejs: { tags: ["vue", "vuejs", "vue.js"], color: "#41B281" },
   python: { tags: ["python"], color: "#366C9C" },

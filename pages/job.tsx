@@ -1,5 +1,4 @@
 import * as React from "react";
-import { gql } from "apollo-boost";
 import { Query } from "react-apollo";
 import { JobView } from "../components/JobView";
 import { Job } from "../graphql-types";
@@ -8,34 +7,7 @@ import { Meta } from "../components/Meta";
 import { NavBar } from "../components/NavBar";
 import { Footer } from "../components/Footer";
 import { getTitleForJob } from "../lib/common/title";
-
-export const getJobQuery = gql`
-  query getJob($jobId: String) {
-    getJob(id: $jobId) {
-      id
-      title
-      url
-      descriptionHtml
-      tags
-      publishedAt
-      company {
-        displayName
-        imageUrl
-      }
-      locationRaw
-      locationRequired
-      locationPreferred
-      locationPreferredTimeZone
-      locationPreferredTimeZoneTolerance
-      salaryMin
-      salaryMax
-      salaryCurrency
-      source {
-        name
-      }
-    }
-  }
-`;
+import { getJobQuery } from "../lib/common/queries/getJob";
 
 export interface JobPageProps {
   id: string;

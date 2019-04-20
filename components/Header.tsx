@@ -1,7 +1,7 @@
 import { getIconForTag } from "../lib/common/tag-icons";
 import * as React from "react";
 import { ApolloConsumer } from "react-apollo";
-import { getTagsQuery } from "../queries/getTags";
+import { getTagsQuery } from "../lib/common/queries/getTags";
 import { SearchBox } from "./SearchBox";
 import { IndexQuery } from "../lib/common/query-types";
 import { FilterQuery } from "../lib/common/url";

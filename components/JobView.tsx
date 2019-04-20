@@ -37,7 +37,7 @@ export const JobView = (props: JobViewProps) => {
       <div className="job-view-header">
         <CompanyHeader
           companyName={companyName}
-          companyUrl={companyUrl || ""}
+          companyImageUrl20x20={companyUrl || ""}
           publishedAt={publishedAt}
           postedOn={postedOn}
         />

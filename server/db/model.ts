@@ -21,6 +21,7 @@ export interface DbCompany extends AnyObject<any> {
   name: string;
   display_name: string;
   image_url?: string;
+  image_url_20_20?: string;
 }
 
 export type DbCompanyInput = PartialBy<DbCompany, "id">;

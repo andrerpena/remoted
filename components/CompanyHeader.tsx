@@ -3,7 +3,7 @@ import { timeAgo } from "../lib/common/time";
 
 export interface CompanyHeaderProps {
   postedOn: string;
-  companyUrl: string;
+  companyImageUrl20x20: string;
   companyName: string;
   publishedAt: string;
 }
@@ -14,7 +14,9 @@ export const CompanyHeader: React.FunctionComponent<CompanyHeaderProps> = (
   return (
     <div className="company-header">
       <figure className="job-post-image">
-        {props.companyUrl && <img src={props.companyUrl as string} />}
+        {props.companyImageUrl20x20 && (
+          <img src={props.companyImageUrl20x20 as string} />
+        )}
       </figure>
       <span className="company-name">
         <a href="#">{props.companyName}</a>

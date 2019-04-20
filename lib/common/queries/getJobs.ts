@@ -1,4 +1,7 @@
 import { gql } from "apollo-boost";
+import { Job } from "../../../graphql-types";
+
+export type GetJobsQueryType = { getJobs: Job[] };
 
 export const getJobsQuery = gql`
   query getJobs($offset: Int, $limit: Int, $hasTag: String) {
@@ -11,7 +14,7 @@ export const getJobsQuery = gql`
       publishedAt
       company {
         displayName
-        imageUrl
+        imageUrl20x20
       }
       locationRaw
       locationRequired

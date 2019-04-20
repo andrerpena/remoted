@@ -63,6 +63,7 @@ type Company {
   name: String!
   displayName: String!
   imageUrl: String
+  imageUrl20x20: String
 }
 
 input JobInput {

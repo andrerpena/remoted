@@ -6,8 +6,9 @@ import {
 } from "../../db/model";
 import { generateSlug, makeId } from "../../../lib/server/id";
 import { Company, CompanyInput } from "../../../graphql-types";
-import { uploadFromUrl } from "../../../lib/common/storage";
+import { downloadImage, uploadFile } from "../../../lib/server/storage";
 import { serverConfig } from "../../../lib/common/serverConfig";
+import { resizeImage } from "../../../lib/server/image-processing";
 
 export function generateCompanyPublicId(companyName: string) {
   const id = makeId();
@@ -69,6 +70,9 @@ export function getCompanyFromDbCompany(dbCompany: DbCompany): Company {
     name: dbCompany.name,
     imageUrl: dbCompany.image_url
       ? buildCompanyCdnImageUrl(dbCompany.image_url)
+      : "",
+    imageUrl20x20: dbCompany.image_url_20_20
+      ? buildCompanyCdnImageUrl(dbCompany.image_url_20_20)
       : ""
   };
 }
@@ -131,6 +135,26 @@ export async function getCompanyByJobPublicId(
   return getCompanyFromDbCompany(dbCompany);
 }
 
+/**
+ * Uploads a company image.
+ * Returns the relative path to be saved on the database
+ */
+export async function uploadCompanyImage(
+  companySlug: string,
+  buffer: Buffer,
+  contentType?: string,
+  suffix?: string
+): Promise<string> {
+  const location = await uploadFile(
+    buffer,
+    `${serverConfig.storageCompanyPath}/${companySlug}${
+      suffix ? `-${suffix}` : ""
+    }`,
+    contentType
+  );
+  return location.Key.substring(location.Key.lastIndexOf("/") + 1);
+}
+
 export async function updateCompanyImageUrl(
   db: RemotedDatabase,
   public_id: string,
@@ -142,16 +166,36 @@ export async function updateCompanyImageUrl(
   if (!dbCompany) {
     throw new Error("dbCompany was not supposed to be null");
   }
-  const location = await uploadFromUrl(
-    `${serverConfig.storageCompanyPath}/${public_id}`,
-    imageUrl
+
+  const companyImageBuffer = await downloadImage(imageUrl);
+  const imageRelativePath = await uploadCompanyImage(
+    public_id,
+    companyImageBuffer.buffer,
+    companyImageBuffer.contentType
   );
-  const fullFileKey = location.Key;
-  const processedFileKey = fullFileKey.substring(
-    fullFileKey.lastIndexOf("/") + 1
-  );
+  let imageRelativePath20x20: string | null = null;
+
+  try {
+    const companyImageBuffer20x20 = await resizeImage(
+      companyImageBuffer.buffer,
+      20
+    );
+    imageRelativePath20x20 = await uploadCompanyImage(
+      public_id,
+      companyImageBuffer20x20,
+      companyImageBuffer.contentType,
+      "20x20"
+    );
+  } catch (ex) {
+    console.log("Error resizing image");
+    console.error(ex);
+  }
+
   return db.company.save({
     ...dbCompany,
-    image_url: processedFileKey
+    ...({
+      image_url: imageRelativePath,
+      image_url_20_20: imageRelativePath20x20
+    } as DbCompany)
   }) as Promise<DbCompany>;
 }
