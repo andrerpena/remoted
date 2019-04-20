@@ -19,13 +19,32 @@ export interface ProcessedTagIconMap {
 }
 
 const tagIconMap: TagIconMap = {
+  "fa-vial": {
+    tags: ["testing", "jest", "junit", "unit-testing"],
+    prefix: "fas"
+  },
+  "code-branch": {
+    tags: ["git", "cvs", "subversion", "svn"],
+    prefix: "fas"
+  },
+  "network-wired": {
+    tags: ["networking", "network-programming"],
+    prefix: "fas"
+  },
   "shield-alt": {
-    tags: ["security"],
+    tags: ["security", "encryption"],
     color: "#bb0526",
     prefix: "fas"
   },
   "mobile-alt": {
-    tags: ["react-native", "flutter", "ionic", "mobile", "cordova"],
+    tags: [
+      "react-native",
+      "flutter",
+      "ionic",
+      "ionic-framework",
+      "mobile",
+      "cordova"
+    ],
     color: "#A1ABB1",
     prefix: "fas"
   },
@@ -39,7 +58,7 @@ const tagIconMap: TagIconMap = {
   },
   aws: { tags: ["amazon-web-services", "amazon-redshift"], color: "#FF9900" },
   js: {
-    tags: ["javascript", "js", "ecmascript-6", "es6", "typescript"],
+    tags: ["javascript", "js", "ecmascript-6", "es6", "typescript", "jquery"],
     color: "#F7DF1E"
   },
   ember: { tags: ["ember", "ember.js", "emberjs"], color: "#DB492F" },
@@ -48,7 +67,7 @@ const tagIconMap: TagIconMap = {
   vuejs: { tags: ["vue", "vuejs", "vue.js"], color: "#41B281" },
   python: { tags: ["python"], color: "#366C9C" },
   microsoft: {
-    tags: ["microsoft", "azure", ".net", "asp.net", "windows"],
+    tags: ["microsoft", "azure", ".net", "asp.net", "windows", "c#"],
     color: "#00A6E4"
   },
   linux: { tags: ["linux", "unix", "bash"] },
@@ -86,7 +105,7 @@ const processedTagIconMap: ProcessedTagIconMap = {};
 for (let icon in tagIconMap) {
   for (let tag of tagIconMap[icon].tags) {
     processedTagIconMap[tag] = {
-      color: tagIconMap[icon].color,
+      color: tagIconMap[icon].color || "#209CEE",
       icon: icon,
       prefix: tagIconMap[icon].prefix
     };
