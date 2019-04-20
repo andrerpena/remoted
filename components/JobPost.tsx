@@ -44,6 +44,7 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
       tags,
       company,
       publishedAt,
+      locationTag,
       url,
       source
     } = this.props.job;
@@ -74,7 +75,11 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
               </a>
             </Link>
           </div>
-          <JobInfo salaryText={salaryText} locationText={locationText} />
+          <JobInfo
+            salaryText={salaryText}
+            locationPreferred={locationText}
+            locationTag={locationTag}
+          />
           <JobTags tags={tags} />
         </div>
         <div

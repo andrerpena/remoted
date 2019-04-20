@@ -18,6 +18,7 @@ export const getJobsQuery = gql`
       }
       locationRaw
       locationRequired
+      locationTag
       locationPreferred
       locationPreferredTimeZone
       locationPreferredTimeZoneTolerance

@@ -80,6 +80,14 @@
     &.salary {
       color: #5fba7d;
     }
+
+    &.location-tag {
+      padding: 0 $size-8;
+      border-radius: $radius;
+      border: $border-default;
+      background-color: $white-ter;
+      text-transform: uppercase;
+    }
   }
 }
 

@@ -44,7 +44,7 @@ export const JobView = (props: JobViewProps) => {
         <div className="job-title">
           <h3 className="title is-3">{title}</h3>
         </div>
-        <JobInfo salaryText={salaryText} locationText={locationText} />
+        <JobInfo salaryText={salaryText} locationPreferred={locationText} />
         <JobTags tags={tags} />
         <JobApply applyUrl={url} permalink={"/"} buttonClass="is-primary" />
       </div>

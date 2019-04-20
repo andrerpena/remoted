@@ -1,26 +1,28 @@
 import * as React from "react";
 import { Nullable } from "../lib/common/types";
 
-export class JobInfo extends React.Component<{
+export function JobInfo(props: {
   salaryText?: Nullable<string>;
-  locationText?: Nullable<string>;
-}> {
-  render() {
-    return (
-      <>
-        {(this.props.salaryText || this.props.locationText) && (
-          <div className="job-info">
-            {this.props.salaryText && (
-              <span className="info-block salary">{this.props.salaryText}</span>
-            )}
-            {this.props.locationText && (
-              <span className="info-block location">
-                {this.props.locationText}
-              </span>
-            )}
-          </div>
-        )}
-      </>
-    );
-  }
+  locationPreferred?: Nullable<string>;
+  locationTag?: Nullable<string>;
+}) {
+  return (
+    <>
+      {(props.salaryText || props.locationPreferred || props.locationTag) && (
+        <div className="job-info">
+          {props.salaryText && (
+            <span className="info-block salary">{props.salaryText}</span>
+          )}
+          {props.locationPreferred && (
+            <span className="info-block location">
+              {props.locationPreferred}
+            </span>
+          )}
+          {props.locationTag && (
+            <span className="info-block location-tag">{props.locationTag}</span>
+          )}
+        </div>
+      )}
+    </>
+  );
 }
