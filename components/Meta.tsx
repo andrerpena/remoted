@@ -10,6 +10,7 @@ export interface MetaProps {
 export const Meta = (props: MetaProps) => (
   <>
     <Head>
+      <link rel="icon" href="/static/favicon.ico" />
       <title>{props.title}</title>
       <script
         async
