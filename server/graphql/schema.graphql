@@ -9,13 +9,11 @@ type Query {
   getTagCountGroups(tagGroups: [TagCountGroupInput!]!): [TagCountGroup]
   getTags(text: String): [TagCount]
   getCompany(displayName: String!): Company
-  getSources: [Source]
 }
 
 type Mutation {
   addJob(input: JobInput!): Job
   addCompany(input: CompanyInput!): Company
-  updateSource(input: UpdateSourceInput!): Source
 }
 
 type Job {
@@ -40,7 +38,7 @@ type Job {
   salaryCurrency: String
   salaryEquity: Boolean
   url: String!
-  source: Source
+  source: String!
 }
 
 input TagCountGroupInput {
@@ -91,17 +89,4 @@ input JobInput {
 input CompanyInput {
   displayName: String!
   imageUrl: String
-}
-
-type Source {
-  name: String!
-  lastUpdatedAt: String
-  lastUpdateMessage: String
-  lastUpdateMessageDetails: String
-}
-
-input UpdateSourceInput {
-  name: String!
-  updateMessage: String!
-  updateMessageDetails: String
 }

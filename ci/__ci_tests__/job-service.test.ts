@@ -11,6 +11,7 @@ import {
   getJob
 } from "../../server/graphql/services/job-service";
 import { clearDb } from "../../lib/server/db-ci-helpers";
+import { US_ONLY } from "../../lib/common/location";
 
 let db: RemotedDatabase;
 
@@ -221,7 +222,6 @@ describe("job-service", () => {
     });
 
     describe("location tag", () => {
-
       it("should work when you specify the tag that does not exist", async () => {
         const data = await getJobs(db, 10, 0);
         expect(data.length).toEqual(10);
@@ -231,18 +231,20 @@ describe("job-service", () => {
       });
 
       it("should work US is excluded", async () => {
-        const data = await getJobs(db, 10, 0, null, true);
-        expect(data.length).toEqual(10);
-
+        // US-ONLY
         await addJob(db, {
           title: `dev job`,
           description: "This is a job",
           publishedAt: new Date().toISOString(),
+          locationTag: US_ONLY,
           companyId: companyPublicId,
           tags: ["react"],
           url: `URL`,
           source: "stackoverflow"
         });
+
+        const data = await getJobs(db, 10, 0, null);
+        expect(data.length).toEqual(10);
       });
     });
   });

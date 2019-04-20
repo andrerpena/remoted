@@ -12,10 +12,6 @@ import {
   getCompanyByDisplayName,
   getCompanyByJobPublicId
 } from "./services/company-service";
-import {
-  getSourceByJobPublicId,
-  updateSource
-} from "./services/source-service";
 import { getTagCountGroups, getTags } from "./services/tag-service";
 import { RemotedDatabase } from "../db/model";
 
@@ -76,19 +72,12 @@ const resolvers: Resolvers = {
     },
     addJob: async (_parent, args, context) => {
       return applyMutation(context, async db => addJob(db, args.input));
-    },
-    updateSource: async (_parent, args, context) => {
-      return applyMutation(context, async db => updateSource(db, args.input));
     }
   },
   Job: {
     company: async _parent => {
       const db = await buildDb();
       return getCompanyByJobPublicId(db, _parent.id);
-    },
-    source: async _parent => {
-      const db = await buildDb();
-      return getSourceByJobPublicId(db, _parent.id);
     }
   }
 };

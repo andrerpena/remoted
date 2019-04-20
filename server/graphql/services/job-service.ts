@@ -4,7 +4,6 @@ import {
   DbJob,
   DbJobInput,
   DbJobTag,
-  DbSource,
   DbTag,
   RemotedDatabase
 } from "../../db/model";
@@ -67,24 +66,12 @@ export async function addJob(
     throw new Error(`Invalid source: ${jobInput.source}`);
   }
 
-  // get or create the source
-  let dbSource: DbSource = await db.source.findOne({
-    name: jobInput.source
-  } as DbSource);
-
-  if (!dbSource) {
-    dbSource = (await insertDbRecord(db.source, {
-      name: jobInput.source
-    } as DbSource)) as DbSource;
-  }
-
   const dbJobInput: DbJobInput = getDbJobInputFromJobInput(jobInput, {
     companyName: dbCompany.name,
     companyDisplayName: dbCompany.display_name,
     descriptionHtml: convertToHtml(jobInput.description),
     sanitizedTags: jobInput.tags,
     companyId: dbCompany.id,
-    sourceId: dbSource.id,
     normalizedUrl: normalizedUrl
   });
 
@@ -117,27 +104,17 @@ export async function getJobs(
   db: RemotedDatabase,
   limit: number,
   offset: number,
-  hasTag?: Nullable<string>,
-  excludeUs?: Nullable<boolean>,
-  excludeNorthAmerica?: Nullable<boolean>,
-  excludeEurope?: Nullable<boolean>,
-  excludeUk?: Nullable<boolean>,
-  excludeJobsWithoutSalary?: Nullable<boolean>,
-  excludeStackoverflow?: Nullable<boolean>,
-  excludeWeWorkRemotely?: Nullable<boolean>
+  tag?: Nullable<string>,
+  excludeLocationTags?: string[],
+  sources?: string[]
 ): Promise<Job[]> {
   // create function "__remoted_get_jobs"(_limit integer, _offset integer, _hastag character varying, _excludeus boolean, _excludenorthamerica boolean, _excludeeurope boolean, _excludeuk boolean, _excludewithoutsalary boolean, _excludestackoverflow boolean, _excludeweworkremotely boolean) returns SETOF job
   const dbJobs = await db.getJobs({
     _limit: limit,
     _offset: offset,
-    _hasTag: hasTag,
-    _excludeUs: excludeUs,
-    _excludeEurope: excludeEurope,
-    _excludeNorthAmerica: excludeNorthAmerica,
-    _excludeUk: excludeUk,
-    _excludeWithoutSalary: excludeJobsWithoutSalary,
-    _excludeStackoverflow: excludeStackoverflow,
-    _excludeWeWorkRemotely: excludeWeWorkRemotely
+    _tag: tag,
+    _excludeLocationTags: excludeLocationTags,
+    _sources: sources
   });
 
   return dbJobs.map((j: DbJob) => {
@@ -177,7 +154,6 @@ export interface GetDbJobInputFromJobInputOptions {
   companyName: string;
   companyDisplayName: string;
   companyId: number;
-  sourceId: number;
   normalizedUrl: string;
 }
 
@@ -209,7 +185,7 @@ export function getDbJobInputFromJobInput(
     salary_currency: jobInput.salaryCurrency || null,
     salary_equity: jobInput.salaryEquity || null,
     url: options.normalizedUrl,
-    source_id: options.sourceId
+    source: jobInput.source
   };
 }
 

@@ -11,7 +11,6 @@ export interface RemotedDatabase extends massive.Database {
   stackoverflow_tags_cache: Writable;
   tag: Writable;
   job_tag: Writable;
-  source: Writable;
   getTags: (options: any) => Promise<TagCount[]>;
 }
 
@@ -51,21 +50,13 @@ export interface DbJob {
   salary_currency: Nullable<string>;
   salary_equity: Nullable<boolean>;
   url: string;
-  source_id: number;
+  source: String;
 }
 
 export type DbJobInput = PartialBy<
   DbJob,
   "id" | "company_name" | "created_at" | "company_display_name"
 >;
-
-export interface DbSource {
-  id: number;
-  name: string;
-  last_updated_at: Date;
-  last_update_message: string;
-  last_update_message_details: string;
-}
 
 export interface DbJobTag {
   id: number;

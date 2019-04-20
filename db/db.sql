@@ -57,7 +57,8 @@ CREATE TABLE public.company (
     name character varying(100) NOT NULL,
     display_name character varying(50) NOT NULL,
     created_at timestamp with time zone DEFAULT now(),
-    image_url character varying(300)
+    image_url character varying(300),
+    image_url_20_20 character varying(300)
 );
 
 
@@ -133,7 +134,7 @@ CREATE TABLE public.job (
     salary_raw character varying(200),
     salary_currency character varying(10),
     url character varying(300),
-    source_id integer NOT NULL,
+    source character varying(50) NOT NULL,
     location_tag character varying(100)
 );
 
@@ -186,39 +187,6 @@ CREATE SEQUENCE public.jobs_id_seq
 --
 
 ALTER SEQUENCE public.jobs_id_seq OWNED BY public.job.id;
-
-
---
--- Name: source; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.source (
-    id integer NOT NULL,
-    name character varying(100),
-    last_updated_at timestamp with time zone,
-    last_update_message text,
-    last_update_message_details text,
-    display_name character varying(100)
-);
-
-
---
--- Name: source_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.source_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: source_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.source_id_seq OWNED BY public.source.id;
 
 
 --
@@ -278,13 +246,6 @@ ALTER TABLE ONLY public.job_tag ALTER COLUMN id SET DEFAULT nextval('public.job_
 
 
 --
--- Name: source id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.source ALTER COLUMN id SET DEFAULT nextval('public.source_id_seq'::regclass);
-
-
---
 -- Name: company companies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -306,14 +267,6 @@ ALTER TABLE ONLY public.job_tag
 
 ALTER TABLE ONLY public.job
     ADD CONSTRAINT jobs_pkey PRIMARY KEY (id);
-
-
---
--- Name: source source_pk; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.source
-    ADD CONSTRAINT source_pk PRIMARY KEY (id);
 
 
 --
@@ -358,14 +311,6 @@ CREATE UNIQUE INDEX tag_name_uindex ON public.tag USING btree (name);
 
 ALTER TABLE ONLY public.job
     ADD CONSTRAINT job_company_id_fk FOREIGN KEY (company_id) REFERENCES public.company(id);
-
-
---
--- Name: job job_source_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.job
-    ADD CONSTRAINT job_source_id_fk FOREIGN KEY (source_id) REFERENCES public.source(id);
 
 
 --

@@ -52,14 +52,6 @@ export interface CompanyInput {
   imageUrl?: Maybe<string>;
 }
 
-export interface UpdateSourceInput {
-  name: string;
-
-  updateMessage: string;
-
-  updateMessageDetails?: Maybe<string>;
-}
-
 // ====================================================
 // Types
 // ====================================================
@@ -74,8 +66,6 @@ export interface Query {
   getTags?: Maybe<(Maybe<TagCount>)[]>;
 
   getCompany?: Maybe<Company>;
-
-  getSources?: Maybe<(Maybe<Source>)[]>;
 }
 
 export interface Job {
@@ -121,7 +111,7 @@ export interface Job {
 
   url: string;
 
-  source?: Maybe<Source>;
+  source: string;
 }
 
 export interface Company {
@@ -134,16 +124,6 @@ export interface Company {
   imageUrl?: Maybe<string>;
 
   imageUrl20x20?: Maybe<string>;
-}
-
-export interface Source {
-  name: string;
-
-  lastUpdatedAt?: Maybe<string>;
-
-  lastUpdateMessage?: Maybe<string>;
-
-  lastUpdateMessageDetails?: Maybe<string>;
 }
 
 export interface TagCountGroup {
@@ -162,8 +142,6 @@ export interface Mutation {
   addJob?: Maybe<Job>;
 
   addCompany?: Maybe<Company>;
-
-  updateSource?: Maybe<Source>;
 }
 
 // ====================================================
@@ -196,9 +174,6 @@ export interface AddJobMutationArgs {
 }
 export interface AddCompanyMutationArgs {
   input: CompanyInput;
-}
-export interface UpdateSourceMutationArgs {
-  input: UpdateSourceInput;
 }
 
 import { GraphQLResolveInfo } from "graphql";
@@ -267,12 +242,6 @@ export namespace QueryResolvers {
     getTags?: GetTagsResolver<Maybe<(Maybe<TagCount>)[]>, TypeParent, Context>;
 
     getCompany?: GetCompanyResolver<Maybe<Company>, TypeParent, Context>;
-
-    getSources?: GetSourcesResolver<
-      Maybe<(Maybe<Source>)[]>,
-      TypeParent,
-      Context
-    >;
   }
 
   export type GetJobsResolver<
@@ -325,12 +294,6 @@ export namespace QueryResolvers {
   export interface GetCompanyArgs {
     displayName: string;
   }
-
-  export type GetSourcesResolver<
-    R = Maybe<(Maybe<Source>)[]>,
-    Parent = {},
-    Context = {}
-  > = Resolver<R, Parent, Context>;
 }
 
 export namespace JobResolvers {
@@ -393,7 +356,7 @@ export namespace JobResolvers {
 
     url?: UrlResolver<string, TypeParent, Context>;
 
-    source?: SourceResolver<Maybe<Source>, TypeParent, Context>;
+    source?: SourceResolver<string, TypeParent, Context>;
   }
 
   export type IdResolver<R = string, Parent = Job, Context = {}> = Resolver<
@@ -501,11 +464,11 @@ export namespace JobResolvers {
     Parent,
     Context
   >;
-  export type SourceResolver<
-    R = Maybe<Source>,
-    Parent = Job,
-    Context = {}
-  > = Resolver<R, Parent, Context>;
+  export type SourceResolver<R = string, Parent = Job, Context = {}> = Resolver<
+    R,
+    Parent,
+    Context
+  >;
 }
 
 export namespace CompanyResolvers {
@@ -544,47 +507,6 @@ export namespace CompanyResolvers {
   export type ImageUrl20x20Resolver<
     R = Maybe<string>,
     Parent = Company,
-    Context = {}
-  > = Resolver<R, Parent, Context>;
-}
-
-export namespace SourceResolvers {
-  export interface Resolvers<Context = {}, TypeParent = Source> {
-    name?: NameResolver<string, TypeParent, Context>;
-
-    lastUpdatedAt?: LastUpdatedAtResolver<Maybe<string>, TypeParent, Context>;
-
-    lastUpdateMessage?: LastUpdateMessageResolver<
-      Maybe<string>,
-      TypeParent,
-      Context
-    >;
-
-    lastUpdateMessageDetails?: LastUpdateMessageDetailsResolver<
-      Maybe<string>,
-      TypeParent,
-      Context
-    >;
-  }
-
-  export type NameResolver<
-    R = string,
-    Parent = Source,
-    Context = {}
-  > = Resolver<R, Parent, Context>;
-  export type LastUpdatedAtResolver<
-    R = Maybe<string>,
-    Parent = Source,
-    Context = {}
-  > = Resolver<R, Parent, Context>;
-  export type LastUpdateMessageResolver<
-    R = Maybe<string>,
-    Parent = Source,
-    Context = {}
-  > = Resolver<R, Parent, Context>;
-  export type LastUpdateMessageDetailsResolver<
-    R = Maybe<string>,
-    Parent = Source,
     Context = {}
   > = Resolver<R, Parent, Context>;
 }
@@ -632,8 +554,6 @@ export namespace MutationResolvers {
     addJob?: AddJobResolver<Maybe<Job>, TypeParent, Context>;
 
     addCompany?: AddCompanyResolver<Maybe<Company>, TypeParent, Context>;
-
-    updateSource?: UpdateSourceResolver<Maybe<Source>, TypeParent, Context>;
   }
 
   export type AddJobResolver<
@@ -652,15 +572,6 @@ export namespace MutationResolvers {
   > = Resolver<R, Parent, Context, AddCompanyArgs>;
   export interface AddCompanyArgs {
     input: CompanyInput;
-  }
-
-  export type UpdateSourceResolver<
-    R = Maybe<Source>,
-    Parent = {},
-    Context = {}
-  > = Resolver<R, Parent, Context, UpdateSourceArgs>;
-  export interface UpdateSourceArgs {
-    input: UpdateSourceInput;
   }
 }
 
@@ -701,7 +612,6 @@ export interface IResolvers<Context = {}> {
   Query?: QueryResolvers.Resolvers<Context>;
   Job?: JobResolvers.Resolvers<Context>;
   Company?: CompanyResolvers.Resolvers<Context>;
-  Source?: SourceResolvers.Resolvers<Context>;
   TagCountGroup?: TagCountGroupResolvers.Resolvers<Context>;
   TagCount?: TagCountResolvers.Resolvers<Context>;
   Mutation?: MutationResolvers.Resolvers<Context>;
