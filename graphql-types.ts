@@ -27,6 +27,8 @@ export interface JobInput {
 
   locationPreferredTimezoneTolerance?: Maybe<number>;
 
+  locationTag?: Maybe<string>;
+
   salaryRaw?: Maybe<string>;
 
   salaryExact?: Maybe<number>;

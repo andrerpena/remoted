@@ -15,7 +15,6 @@ import { generateSlug, makeId } from "../../../lib/server/id";
 import { Nullable } from "../../../lib/common/types";
 import { isSourceValid } from "../../../lib/common/sources";
 import { removeQueryString } from "../../../lib/common/url";
-import { extractLocationTag } from "../../../lib/common/location";
 
 export async function getJob(
   db: RemotedDatabase,
@@ -86,8 +85,7 @@ export async function addJob(
     sanitizedTags: jobInput.tags,
     companyId: dbCompany.id,
     sourceId: dbSource.id,
-    normalizedUrl: normalizedUrl,
-    locationTag: extractLocationTag(jobInput.title, jobInput.description)
+    normalizedUrl: normalizedUrl
   });
 
   const dbJob = await (insertDbRecord(db.job, dbJobInput) as Promise<DbJob>);
@@ -181,7 +179,6 @@ export interface GetDbJobInputFromJobInputOptions {
   companyId: number;
   sourceId: number;
   normalizedUrl: string;
-  locationTag: Nullable<string>;
 }
 
 export function getDbJobInputFromJobInput(
@@ -204,7 +201,7 @@ export function getDbJobInputFromJobInput(
     location_preferred_timezone: jobInput.locationPreferredTimezone || null,
     location_preferred_timezone_tolerance:
       jobInput.locationPreferredTimezoneTolerance || null,
-    location_tag: options.locationTag,
+    location_tag: jobInput.locationTag || null,
     salary_raw: jobInput.salaryRaw || null,
     salary_exact: jobInput.salaryExact || null,
     salary_min: jobInput.salaryMin || null,

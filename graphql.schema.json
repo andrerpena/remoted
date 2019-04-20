@@ -835,6 +835,12 @@
             "defaultValue": null
           },
           {
+            "name": "locationTag",
+            "description": "",
+            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "defaultValue": null
+          },
+          {
             "name": "salaryRaw",
             "description": "",
             "type": { "kind": "SCALAR", "name": "String", "ofType": null },

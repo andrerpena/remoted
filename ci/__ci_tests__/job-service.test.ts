@@ -48,7 +48,7 @@ describe("job-service", () => {
         locationPreferredTimeZoneTolerance: null,
         locationRaw: null,
         locationRequired: null,
-        locationTag: "us-only",
+        locationTag: null,
         publishedAt: expect.any(String),
         salaryCurrency: null,
         salaryEquity: null,
@@ -129,6 +129,32 @@ describe("job-service", () => {
       );
     });
   });
+  describe("getJob", () => {
+    it("should work", async () => {
+      const company = await addCompany(db, {
+        displayName: "c-1"
+      });
+      const insertedJob = await addJob(db, {
+        title: `dev job 1`,
+        description: "This is a job",
+        publishedAt: new Date().toISOString(),
+        companyId: company.id,
+        tags: ["react"],
+        url: `URL`,
+        source: "stackoverflow"
+      });
+      const id = insertedJob!.id;
+      console.log(id);
+      const job = await getJob(db, id);
+      expect(job).toMatchObject({
+        description: "This is a job",
+        descriptionHtml: "<p>This is a job</p>",
+        tags: ["react"],
+        title: "dev job 1",
+        url: "URL"
+      });
+    });
+  });
   describe("getJobs", () => {
     let companyPublicId = "";
     beforeEach(async () => {
@@ -194,52 +220,29 @@ describe("job-service", () => {
       expect(data.map(d => d.title)).toEqual(["dev job 1", "dev job 0"]);
     });
 
-    it("should work when you specify the tag", async () => {
-      const data = await getJobs(db, 10, 0);
-      expect(data.length).toEqual(10);
+    describe("location tag", () => {
 
-      const data2 = await getJobs(db, 10, 0, "tag-that-does-not-exist");
-      expect(data2.length).toEqual(0);
-    });
+      it("should work when you specify the tag that does not exist", async () => {
+        const data = await getJobs(db, 10, 0);
+        expect(data.length).toEqual(10);
 
-    it("should work US is excluded", async () => {
-      const data = await getJobs(db, 10, 0, null, true);
-      expect(data.length).toEqual(10);
+        const data2 = await getJobs(db, 10, 0, "tag-that-does-not-exist");
+        expect(data2.length).toEqual(0);
+      });
 
-      await addJob(db, {
-        title: `dev job`,
-        description: "This is a job",
-        publishedAt: new Date().toISOString(),
-        companyId: companyPublicId,
-        tags: ["react"],
-        url: `URL`,
-        source: "stackoverflow"
-      });
-    });
-  });
-  describe("getJob", () => {
-    it("should work", async () => {
-      const company = await addCompany(db, {
-        displayName: "c-1"
-      });
-      const insertedJob = await addJob(db, {
-        title: `dev job 1`,
-        description: "This is a job",
-        publishedAt: new Date().toISOString(),
-        companyId: company.id,
-        tags: ["react"],
-        url: `URL`,
-        source: "stackoverflow"
-      });
-      const id = insertedJob!.id;
-      console.log(id);
-      const job = await getJob(db, id);
-      expect(job).toMatchObject({
-        description: "This is a job",
-        descriptionHtml: "<p>This is a job</p>",
-        tags: ["react"],
-        title: "dev job 1",
-        url: "URL"
+      it("should work US is excluded", async () => {
+        const data = await getJobs(db, 10, 0, null, true);
+        expect(data.length).toEqual(10);
+
+        await addJob(db, {
+          title: `dev job`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          companyId: companyPublicId,
+          tags: ["react"],
+          url: `URL`,
+          source: "stackoverflow"
+        });
       });
     });
   });
