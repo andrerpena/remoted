@@ -32,6 +32,7 @@ import {
   STACKOVERFLOW,
   WE_WORK_REMOTELY
 } from "../lib/common/sources";
+import { NotFoundList } from "../components/EmptyJobs";
 
 function loadMoreJobs(
   query: IndexQuery,
@@ -99,6 +100,7 @@ const IndexPage = (props: IndexPageProps) => {
                       loading || isThereMore(data ? data.getJobs : [])
                     }
                   />
+                  {data && data.getJobs.length === 0 && <NotFoundList />}
                 </div>
               </div>
             </div>

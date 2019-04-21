@@ -258,3 +258,11 @@ footer.footer {
     margin-right: $size-9;
   }
 }
+
+.not-found-list {
+  ul {
+    li {
+      list-style: disc inside;
+    }
+  }
+}
