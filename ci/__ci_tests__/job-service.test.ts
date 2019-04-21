@@ -145,7 +145,6 @@ describe("job-service", () => {
         source: "stackoverflow"
       });
       const id = insertedJob!.id;
-      console.log(id);
       const job = await getJob(db, id);
       expect(job).toMatchObject({
         description: "This is a job",

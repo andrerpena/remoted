@@ -105,7 +105,7 @@ export async function getJobs(
   limit: number,
   offset: number,
   tag?: Nullable<string>,
-  regionFree?: Nullable<boolean>,
+  anywhere?: Nullable<boolean>,
   excludeLocationTags?: Nullable<string[]>,
   salary?: Nullable<boolean>,
   sources?: Nullable<string[]>
@@ -115,7 +115,7 @@ export async function getJobs(
     _limit: limit,
     _offset: offset,
     _tag: tag || null,
-    _regionFree: regionFree || null,
+    _anywhere: anywhere || null,
     _excludeLocationTags:
       excludeLocationTags && excludeLocationTags.length
         ? excludeLocationTags

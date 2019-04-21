@@ -38,7 +38,7 @@
                 "defaultValue": null
               },
               {
-                "name": "regionFree",
+                "name": "anywhere",
                 "description": "",
                 "type": { "kind": "SCALAR", "name": "Boolean", "ofType": null },
                 "defaultValue": null

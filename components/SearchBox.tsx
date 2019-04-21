@@ -18,7 +18,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
 ) => {
   const {
     filters,
-    regionfree,
+    anywhere,
     salary,
     nousonly,
     nonorthamericaonly,
@@ -34,7 +34,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
   const filterData: FilterQuery = {
     filters,
     tag,
-    regionfree,
+    anywhere: anywhere,
     salary,
     nousonly,
     nonorthamericaonly,
@@ -53,7 +53,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
     if (!newFilterData.filters) {
       onFilter({
         tag,
-        regionfree,
+        anywhere: anywhere,
         salary,
         filters: newFilterData.filters
       });
@@ -78,12 +78,11 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
           <div className="buttons-wrapper">
             {/* Basic filters */}
             <SearchButton
-              active={regionfree}
+              active={anywhere}
               onClick={() => {
-                // setRegionfree(!regionfree);
-                handleFilterChange({ regionfree: !regionfree });
+                handleFilterChange({ anywhere: !anywhere });
               }}
-              text="🔓 Region free"
+              text="🌐 Anywhere"
             />
             <SearchButton
               active={salary}

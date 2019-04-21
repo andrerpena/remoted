@@ -9,7 +9,7 @@ type Query {
     limit: Int
     tag: String
     salary: Boolean
-    regionFree: Boolean
+    anywhere: Boolean
     excludeLocationTags: [String!]
     sources: [String!]
   ): [Job]

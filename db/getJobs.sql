@@ -2,7 +2,7 @@
 -- _limit
 -- _offset
 -- _tag
--- _regionFree
+-- _anywhere
 -- _excludeLocationTags
 -- _salary
 -- _sources
@@ -17,7 +17,7 @@ where (
                         and t.name = ${_tag}
                   ))
               and (
-                      ${_regionFree} is null
+                      ${_anywhere} is null
                       or (location_tag is null and u.location_required is null)
                   )
               and (

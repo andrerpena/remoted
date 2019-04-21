@@ -8,7 +8,7 @@ export type GetJobsVariables = {
   limit?: number;
   tag?: string;
   salary?: boolean;
-  regionFree?: boolean;
+  anywhere?: boolean;
   excludeLocationTags?: string[];
   sources?: string[];
 };
@@ -19,7 +19,7 @@ export const getJobsQuery = gql`
     $limit: Int
     $tag: String
     $salary: Boolean
-    $regionFree: Boolean
+    $anywhere: Boolean
     $excludeLocationTags: [String!]
     $sources: [String!]
   ) {
@@ -28,7 +28,7 @@ export const getJobsQuery = gql`
       limit: $limit
       tag: $tag
       salary: $salary
-      regionFree: $regionFree
+      anywhere: $anywhere
       excludeLocationTags: $excludeLocationTags
       sources: $sources
     ) {

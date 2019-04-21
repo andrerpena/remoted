@@ -6,7 +6,7 @@ export interface FilterQuery {
   // salary
   salary?: boolean;
   // region
-  regionfree?: boolean;
+  anywhere?: boolean;
   nousonly?: boolean;
   nonorthamericaonly?: boolean;
   noukonly?: boolean;

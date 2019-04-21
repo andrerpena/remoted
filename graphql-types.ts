@@ -157,7 +157,7 @@ export interface GetJobsQueryArgs {
 
   salary?: Maybe<boolean>;
 
-  regionFree?: Maybe<boolean>;
+  anywhere?: Maybe<boolean>;
 
   excludeLocationTags?: Maybe<string[]>;
 
@@ -266,7 +266,7 @@ export namespace QueryResolvers {
 
     salary?: Maybe<boolean>;
 
-    regionFree?: Maybe<boolean>;
+    anywhere?: Maybe<boolean>;
 
     excludeLocationTags?: Maybe<string[]>;
 

@@ -71,7 +71,6 @@ const IndexPage = (props: IndexPageProps) => {
         notifyOnNetworkStatusChange={true}
       >
         {({ data, fetchMore, loading }) => {
-          console.log(data);
           return (
             <div className="container">
               <Header
@@ -120,7 +119,7 @@ function getGetJobsQueryVariablesFromQuery(
     tag: query.tag,
     limit: limit,
     offset: offset,
-    regionFree: query.regionfree || undefined,
+    anywhere: query.anywhere || undefined,
     salary: query.salary || undefined,
     excludeLocationTags: [
       query.nonorthamericaonly ? NORTH_AMERICA_ONLY : "",
@@ -142,7 +141,7 @@ IndexPage.getInitialProps = async ({ query }: Next.NextContext) => {
     tag: query.tag,
     // default filters
     salary: query.salary === "true",
-    regionfree: query.regionfree === "true",
+    anywhere: query.anywhere === "true",
     // location
     nousonly: query.nousonly === "true",
     nonorthamericaonly: query.nonorthamericaonly === "true",

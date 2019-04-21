@@ -3,7 +3,7 @@ export interface IndexQuery {
   tag: string;
   // default filters
   salary: boolean;
-  regionfree: boolean;
+  anywhere: boolean;
   // location
   nousonly: boolean;
   nonorthamericaonly: boolean;

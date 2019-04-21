@@ -47,7 +47,7 @@ const resolvers: Resolvers = {
         args.limit || PAGE_SIZE,
         args.offset || 0,
         args.tag,
-        args.regionFree,
+        args.anywhere,
         args.excludeLocationTags,
         args.salary,
         args.sources
