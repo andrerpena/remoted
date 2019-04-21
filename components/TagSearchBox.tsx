@@ -162,7 +162,7 @@ export class TagSearchBox extends React.Component<
         />
         {this.state.showNotFound ? (
           <div className="notification">
-            {`😭 Could not find any jobs with this tag`}
+            {`😭 Could not find any job with this tag`}
           </div>
         ) : null}
       </div>
