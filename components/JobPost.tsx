@@ -31,7 +31,7 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
     };
   }
 
-  handleClick = () => {
+  handleOnClose = () => {
     this.setState({
       open: !this.state.open
     });
@@ -63,7 +63,7 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
           className={classNames("box-white-content", "job-post-header", {
             open: this.state.open
           })}
-          onClick={this.handleClick}
+          onClick={this.handleOnClose}
         >
           <CompanyHeader
             companyName={companyName}
@@ -93,13 +93,14 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
           <JobApply
             applyUrl={url}
             permalink={linkToJob(id)}
-            buttonClass="is-primary"
+            hideSecondaryButtons={true}
+            onClose={() => this.handleOnClose()}
           />
           <JobDescription html={descriptionHtml} />
           <JobApply
             applyUrl={url}
             permalink={linkToJob(id)}
-            buttonClass={"is-primary"}
+            onClose={() => this.handleOnClose()}
           />
         </div>
       </li>

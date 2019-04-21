@@ -131,8 +131,21 @@
 }
 
 .job-apply {
-  a {
-    display: block;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background-color: $white-ter;
+  border-radius: $radius;
+  padding: $size-9 0;
+
+  .job-actions-wrapper {
+    .button {
+      margin-top: $size-7;
+      display: block;
+      &:last-child {
+        margin-bottom: $size-8;
+      }
+    }
   }
 }
 
@@ -167,6 +180,6 @@ $company-header-image-size: 20px;
   padding-bottom: $size-3;
 
   .job-apply {
-    margin-top: $size-7;
+    margin-top: $size-5;
   }
 }

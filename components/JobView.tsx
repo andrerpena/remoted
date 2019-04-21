@@ -46,10 +46,10 @@ export const JobView = (props: JobViewProps) => {
         </div>
         <JobInfo salaryText={salaryText} locationPreferred={locationText} />
         <JobTags tags={tags} />
-        <JobApply applyUrl={url} permalink={"/"} buttonClass="is-primary" />
+        <JobApply applyUrl={url} permalink={"/"} hideSecondaryButtons={true} />
       </div>
       <JobDescription html={descriptionHtml} />
-      <JobApply applyUrl={url} permalink={"/"} buttonClass="is-primary" />
+      <JobApply applyUrl={url} permalink={"/"} hideSecondaryButtons={true} />
     </div>
   );
 };
