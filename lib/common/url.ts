@@ -1,4 +1,6 @@
 export interface FilterQuery {
+  // filters
+  filters?: boolean;
   // tag
   tag?: string;
   // salary

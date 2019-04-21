@@ -96,6 +96,7 @@ const IndexPage = (props: IndexPageProps) => {
 
 IndexPage.getInitialProps = async ({ query }: Next.NextContext) => {
   return {
+    filters: query.filters === "true",
     tag: query.tag,
     // default filters
     salary: query.salary === "true",

@@ -1,4 +1,5 @@
 export interface IndexQuery {
+  filters: boolean;
   tag: string;
   // default filters
   salary: boolean;
