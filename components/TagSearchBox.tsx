@@ -131,6 +131,21 @@ export class TagSearchBox extends React.Component<
       </div>
     );
 
+    function renderSuggestionsContainer({
+      containerProps,
+      children,
+      query
+    }: any) {
+      return (
+        <div {...containerProps}>
+          {children}
+          <div>
+            Press Enter to search <strong>{query}</strong>
+          </div>
+        </div>
+      );
+    }
+
     // Finally, render it!
     return (
       <div className="tag-search-box">
@@ -144,6 +159,7 @@ export class TagSearchBox extends React.Component<
           onSuggestionSelected={this.onSuggestionSelected}
           renderInputComponent={renderInputComponent}
           renderSuggestion={renderSuggestion}
+          renderSuggestionsContainer={renderSuggestionsContainer}
         />
       </div>
     );
