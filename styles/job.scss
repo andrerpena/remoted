@@ -23,10 +23,15 @@
     background-color: $white-bis;
     cursor: pointer;
   }
+
+  &.open {
+    border-left: 2px solid $primary;
+  }
 }
 
 .job-title {
   margin-top: $size-6;
+
   a:hover {
     text-decoration: underline;
   }
@@ -158,7 +163,9 @@ $company-header-image-size: 20px;
       margin-bottom: 1rem;
     }
   }
+
   padding-bottom: $size-3;
+
   .job-apply {
     margin-top: $size-7;
   }

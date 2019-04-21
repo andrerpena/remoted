@@ -12,6 +12,7 @@ import { JobApply } from "./JobApply";
 import { SingletonRouter } from "next/router";
 import Link from "next/link";
 import { getSourceDisplayName } from "../lib/common/sources";
+import * as classNames from "classnames";
 
 interface JobListState {
   open: boolean;
@@ -59,7 +60,9 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
     return (
       <li className="job-post">
         <div
-          className="box-white-content job-post-header"
+          className={classNames("box-white-content", "job-post-header", {
+            open: this.state.open
+          })}
           onClick={this.handleClick}
         >
           <CompanyHeader
