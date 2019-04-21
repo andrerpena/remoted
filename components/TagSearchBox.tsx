@@ -100,7 +100,7 @@ export class TagSearchBox extends React.Component<
     const { value, suggestions } = this.state;
 
     const inputProps: InputProps<TagOption> = {
-      placeholder: "Search remote jobs",
+      placeholder: "Search remote jobs by tag",
       value,
       onChange: this.onChange,
       onBlur: this.onBlur,
