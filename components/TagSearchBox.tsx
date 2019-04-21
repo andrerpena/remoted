@@ -24,10 +24,11 @@ export interface TagSearchBoxProps {
   onFilter: (tag: string) => void;
 }
 
-export interface TextSearchBoxProps {
+export interface TagSearchBoxState {
   value: string;
   selectedSuggestion: string;
   suggestions: TagOption[];
+  showNotFound: boolean;
 }
 
 // Important behavior:
@@ -35,7 +36,7 @@ export interface TextSearchBoxProps {
 // When you click out, the onBlur happens but no suggestion selection
 export class TagSearchBox extends React.Component<
   TagSearchBoxProps,
-  TextSearchBoxProps
+  TagSearchBoxState
 > {
   constructor(props: TagSearchBoxProps) {
     super(props);
@@ -43,7 +44,8 @@ export class TagSearchBox extends React.Component<
     this.state = {
       value: props.initialValue || "",
       selectedSuggestion: "",
-      suggestions: []
+      suggestions: [],
+      showNotFound: false
     };
   }
 
@@ -58,8 +60,10 @@ export class TagSearchBox extends React.Component<
   }: SuggestionsFetchRequestedParams) => {
     const { getTags } = this.props;
     const suggestions = await getTags(value.toLowerCase());
+    const showNotFound = suggestions && suggestions.length === 0;
     this.setState({
-      suggestions: processTags(suggestions, value.toLowerCase())
+      suggestions: processTags(suggestions, value.toLowerCase()),
+      showNotFound
     });
   };
 
@@ -81,9 +85,17 @@ export class TagSearchBox extends React.Component<
         const tag = this.state.suggestions.length
           ? this.state.suggestions[0].name
           : "";
-        this.setState({ value: tag, selectedSuggestion: tag });
+        this.setState({
+          value: tag,
+          selectedSuggestion: tag,
+          showNotFound: false
+        });
         this.props.onSelectTag(tag);
       }
+    } else {
+      this.setState({
+        showNotFound: false
+      });
     }
   };
 
@@ -92,7 +104,10 @@ export class TagSearchBox extends React.Component<
     data: SuggestionSelectedEventData<TagOption>
   ) => {
     this.props.onFilter(data.suggestion.name);
-    this.setState({ selectedSuggestion: data.suggestion.name });
+    this.setState({
+      selectedSuggestion: data.suggestion.name,
+      showNotFound: false
+    });
   };
 
   render() {
@@ -131,21 +146,6 @@ export class TagSearchBox extends React.Component<
       </div>
     );
 
-    function renderSuggestionsContainer({
-      containerProps,
-      children,
-      query
-    }: any) {
-      return (
-        <div {...containerProps}>
-          {children}
-          <div>
-            Press Enter to search <strong>{query}</strong>
-          </div>
-        </div>
-      );
-    }
-
     // Finally, render it!
     return (
       <div className="tag-search-box">
@@ -159,8 +159,12 @@ export class TagSearchBox extends React.Component<
           onSuggestionSelected={this.onSuggestionSelected}
           renderInputComponent={renderInputComponent}
           renderSuggestion={renderSuggestion}
-          renderSuggestionsContainer={renderSuggestionsContainer}
         />
+        {this.state.showNotFound ? (
+          <div className="notification">
+            {`😭 Could not find any jobs with this tag`}
+          </div>
+        ) : null}
       </div>
     );
   }
