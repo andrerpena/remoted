@@ -42,7 +42,16 @@ const resolvers: Resolvers = {
   Query: {
     getJobs: async (_parent, args) => {
       const db = await buildDb();
-      return getJobs(db, args.limit || PAGE_SIZE, args.offset || 0, args.tag);
+      return getJobs(
+        db,
+        args.limit || PAGE_SIZE,
+        args.offset || 0,
+        args.tag,
+        args.regionFree,
+        args.excludeLocationTags,
+        args.salary,
+        args.sources
+      );
     },
     getTags: async (_parent, args) => {
       const db = await buildDb();

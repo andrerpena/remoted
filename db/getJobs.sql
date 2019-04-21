@@ -22,7 +22,7 @@ where (
                   )
               and (
                       ${_excludeLocationTags} is null
-                      or location_tag is null or location_tag != ANY (${_excludeLocationTags})
+                      or location_tag is null or location_tag != ALL (${_excludeLocationTags})
                   )
               and (
                       ${_salary} is not true or

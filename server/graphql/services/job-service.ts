@@ -116,8 +116,11 @@ export async function getJobs(
     _offset: offset,
     _tag: tag || null,
     _regionFree: regionFree || null,
-    _excludeLocationTags: excludeLocationTags || null,
-    _sources: sources || null,
+    _excludeLocationTags:
+      excludeLocationTags && excludeLocationTags.length
+        ? excludeLocationTags
+        : null,
+    _sources: sources && sources.length ? sources : null,
     _salary: salary || null
   });
 

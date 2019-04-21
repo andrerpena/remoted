@@ -3,9 +3,35 @@ import { Job } from "../../../graphql-types";
 
 export type GetJobsQueryType = { getJobs: Job[] };
 
+export type GetJobsVariables = {
+  offset?: number;
+  limit?: number;
+  tag?: string;
+  salary?: boolean;
+  regionFree?: boolean;
+  excludeLocationTags?: string[];
+  sources?: string[];
+};
+
 export const getJobsQuery = gql`
-  query getJobs($offset: Int, $limit: Int, $tag: String) {
-    getJobs(offset: $offset, limit: $limit, tag: $tag) {
+  query getJobs(
+    $offset: Int
+    $limit: Int
+    $tag: String
+    $salary: Boolean
+    $regionFree: Boolean
+    $excludeLocationTags: [String!]
+    $sources: [String!]
+  ) {
+    getJobs(
+      offset: $offset
+      limit: $limit
+      tag: $tag
+      salary: $salary
+      regionFree: $regionFree
+      excludeLocationTags: $excludeLocationTags
+      sources: $sources
+    ) {
       id
       title
       url

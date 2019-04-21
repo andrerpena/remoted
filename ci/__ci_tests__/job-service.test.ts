@@ -11,7 +11,7 @@ import {
   getJob
 } from "../../server/graphql/services/job-service";
 import { clearDb } from "../../lib/server/db-ci-helpers";
-import { US_ONLY } from "../../lib/common/location";
+import { NORTH_AMERICA_ONLY, US_ONLY } from "../../lib/common/location";
 
 let db: RemotedDatabase;
 
@@ -261,6 +261,37 @@ describe("job-service", () => {
         });
 
         const data = await getJobs(db, 20, 0, null, null, [US_ONLY]);
+        expect(data.length).toEqual(10);
+      });
+
+      it("should exclude multiple", async () => {
+        // US-ONLY
+        await addJob(db, {
+          title: `dev job`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationTag: US_ONLY,
+          companyId: companyPublicId,
+          tags: ["react"],
+          url: `URL`,
+          source: "stackoverflow"
+        });
+
+        await addJob(db, {
+          title: `dev job`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationTag: NORTH_AMERICA_ONLY,
+          companyId: companyPublicId,
+          tags: ["react"],
+          url: `URL2`,
+          source: "stackoverflow"
+        });
+
+        const data = await getJobs(db, 20, 0, null, null, [
+          US_ONLY,
+          NORTH_AMERICA_ONLY
+        ]);
         expect(data.length).toEqual(10);
       });
     });
