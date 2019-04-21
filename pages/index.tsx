@@ -96,8 +96,8 @@ const IndexPage = (props: IndexPageProps) => {
                       )
                     }
                     loading={loading}
-                    thereIsMore={
-                      !loading && isThereMore(data ? data.getJobs : [])
+                    showLoadMore={
+                      loading || isThereMore(data ? data.getJobs : [])
                     }
                   />
                 </div>

@@ -31,7 +31,7 @@ export interface JobListCollectionProps {
   router?: SingletonRouter;
   onLoadMore: () => void;
   loading: boolean;
-  thereIsMore: boolean;
+  showLoadMore: boolean;
 }
 
 export const JobListCollection = (props: JobListCollectionProps) => {
@@ -49,7 +49,7 @@ export const JobListCollection = (props: JobListCollectionProps) => {
           router={props.router}
         />
       ))}
-      {props.thereIsMore && (
+      {props.showLoadMore && (
         <a className="button is-primary is-fullwidth" onClick={onClick}>
           <i className="fas fa-space fa-arrow-down" />
           {text}
