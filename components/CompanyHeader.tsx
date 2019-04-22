@@ -1,6 +1,7 @@
 import * as React from "react";
 import { timeAgo } from "../lib/common/time";
-import { linkToCompanyCanonical } from "../lib/common/url";
+import { linkToCompanyCanonical, linkToFilters } from "../lib/common/url";
+import Link from "next/link";
 
 export interface CompanyHeaderProps {
   postedOn: string;
@@ -19,20 +20,20 @@ export const CompanyHeader: React.FunctionComponent<CompanyHeaderProps> = ({
 }: CompanyHeaderProps) => {
   return (
     <div className="company-header">
-      <figure className="job-post-image">
-        {companyImageUrl20x20 && (
-          <img src={companyImageUrl20x20 as string} alt="" />
-        )}
-      </figure>
-      <span className="company-name">
-        <a
-          href={linkToCompanyCanonical({
-            company: companyId
-          })}
-          onClick={e => e.stopPropagation()}
+      <span>
+        <Link
+          href={linkToFilters({ company: companyId })}
+          as={linkToCompanyCanonical({ company: companyId })}
         >
-          {companyName}
-        </a>
+          <a className="a-wrapper" onClick={e => e.stopPropagation()}>
+            {companyImageUrl20x20 && (
+              <figure className="job-post-image">
+                <img src={companyImageUrl20x20 as string} alt="" />
+              </figure>
+            )}
+            <span className="company-name">{companyName}</span>
+          </a>
+        </Link>
       </span>
       <span className="post-info">
         Posted on {postedOn} {timeAgo(new Date(publishedAt))} ago

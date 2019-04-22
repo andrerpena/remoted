@@ -9,6 +9,7 @@ import { Company, CompanyInput } from "../../../graphql-types";
 import { downloadImage, uploadFile } from "../../../lib/server/storage";
 import { serverConfig } from "../../../lib/common/serverConfig";
 import { resizeImage } from "../../../lib/server/image-processing";
+import { Nullable } from "../../../lib/common/types";
 
 export function generateCompanyPublicId(companyName: string) {
   const id = makeId();
@@ -24,6 +25,7 @@ export async function addCompany(
 
   const existingCompany = await getCompanyByDisplayName(
     db,
+    null,
     companyInput.displayName
   );
   if (existingCompany) {
@@ -105,11 +107,18 @@ export async function getCompanyById(
 
 export async function getCompanyByDisplayName(
   db: RemotedDatabase,
-  displayName: string
+  id?: Nullable<string>,
+  displayName?: Nullable<string>
 ): Promise<Company | null> {
-  let dbCompany = await db.company.findOne({
-    display_name: displayName
-  } as DbCompany);
+  const criteria = id
+    ? ({
+        public_id: id
+      } as DbCompany)
+    : {
+        display_name: displayName
+      };
+
+  let dbCompany = await db.company.findOne(criteria);
   if (!dbCompany) {
     return null;
   }

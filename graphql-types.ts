@@ -177,7 +177,9 @@ export interface GetTagsQueryArgs {
   text?: Maybe<string>;
 }
 export interface GetCompanyQueryArgs {
-  displayName: string;
+  id?: Maybe<string>;
+
+  displayName?: Maybe<string>;
 }
 export interface AddJobMutationArgs {
   input: JobInput;
@@ -312,7 +314,9 @@ export namespace QueryResolvers {
     Context = {}
   > = Resolver<R, Parent, Context, GetCompanyArgs>;
   export interface GetCompanyArgs {
-    displayName: string;
+    id?: Maybe<string>;
+
+    displayName?: Maybe<string>;
   }
 }
 

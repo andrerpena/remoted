@@ -18,6 +18,7 @@ export const JobView = ({ job }: JobViewProps) => {
     return <div>Not found</div>;
   }
   const {
+    id,
     title,
     descriptionHtml,
     tags,
@@ -47,10 +48,10 @@ export const JobView = ({ job }: JobViewProps) => {
         </div>
         <JobInfo salaryText={salaryText} locationPreferred={locationText} />
         <JobTags tags={tags} />
-        <JobApply applyUrl={url} permalink={"/"} hideSecondaryButtons={true} />
+        <JobApply applyUrl={url} jobId={id} hideSecondaryButtons={true} />
       </div>
       <JobDescription html={descriptionHtml} />
-      <JobApply applyUrl={url} permalink={"/"} hideSecondaryButtons={true} />
+      <JobApply applyUrl={url} jobId={id} hideSecondaryButtons={true} />
     </div>
   );
 };

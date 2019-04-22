@@ -1,26 +1,49 @@
 import * as React from "react";
+import { Query } from "react-apollo";
+import {
+  getCompanyQuery,
+  GetCompanyQueryType,
+  GetCompanyQueryVariables
+} from "../lib/common/queries/getCompany";
 
 export interface BannerCompanyProps {
-  companyName: string;
-  companyImageUrl?: string;
+  company: string;
 }
 
 export const BannerCompany: React.FunctionComponent<BannerCompanyProps> = ({
-  companyName,
-  companyImageUrl
+  company
 }) => {
   return (
     <div className="banner-header">
-      {companyImageUrl && (
-        <figure className="image is-128x128">
-          <img src={companyImageUrl} alt="" />
-        </figure>
-      )}
-      <span className="banner-title">
-        <span>Remote</span>
-        <span className="title-tag">{companyName}</span>
-        <span>jobs</span>
-      </span>
+      <Query<GetCompanyQueryType, GetCompanyQueryVariables>
+        query={getCompanyQuery}
+        variables={{ companyId: company }}
+        notifyOnNetworkStatusChange={true}
+      >
+        {({ data, loading }) => {
+          console.log(data);
+          console.log(loading);
+          if (loading) {
+            return <i className="fas fa-spinner loading" style={{}} />;
+          }
+          if (!data) {
+            return null;
+          }
+          const { imageUrl, displayName } = data.getCompany;
+          return (
+            <>
+              {imageUrl && (
+                <figure className="image">
+                  <img src={imageUrl} alt="" />
+                </figure>
+              )}
+              <span className="banner-title">
+                <span>Remote jobs at {displayName}</span>
+              </span>
+            </>
+          );
+        }}
+      </Query>
     </div>
   );
 };

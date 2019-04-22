@@ -44,7 +44,7 @@ export const getJobsQuery = gql`
       company {
         id
         displayName
-        imageUrl20x20
+        imageUrl
       }
       locationRaw
       locationRequired

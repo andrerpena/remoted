@@ -60,7 +60,7 @@ const resolvers: Resolvers = {
     },
     getCompany: async (_parent, args) => {
       const db = await buildDb();
-      return getCompanyByDisplayName(db, args.displayName);
+      return getCompanyByDisplayName(db, args.id, args.displayName);
     },
     getJob: async (_parent, args) => {
       const db = await buildDb();

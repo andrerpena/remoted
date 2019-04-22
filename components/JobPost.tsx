@@ -52,7 +52,7 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
       source
     } = this.props.job;
     const companyName = company ? company.displayName : "";
-    const companyImageUrl20x20 = company ? company.imageUrl20x20 : "";
+    const companyImageUrl20x20 = company ? company.imageUrl : "";
     const companyId = company ? company.id : "";
 
     const salaryText = getSalaryText(this.props.job);
@@ -101,14 +101,14 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
         >
           <JobApply
             applyUrl={url}
-            permalink={linkToJob(id)}
+            jobId={id}
             hideSecondaryButtons={true}
             onClose={() => this.handleToggle()}
           />
           <JobDescription html={descriptionHtml} />
           <JobApply
             applyUrl={url}
-            permalink={linkToJob(id)}
+            jobId={id}
             onClose={() => this.handleToggle()}
           />
         </div>

@@ -76,6 +76,10 @@ const IndexPage = ({ query, router }: IndexPageProps) => {
           notifyOnNetworkStatusChange={true}
         >
           {({ data, fetchMore, loading }) => {
+            if (!data || !data.getJobs) {
+              return null;
+            }
+
             return (
               <div className="columns">
                 <div className="column is-full">
@@ -90,7 +94,7 @@ const IndexPage = ({ query, router }: IndexPageProps) => {
                     onLoadMore={() =>
                       loadMoreJobs(
                         query,
-                        data ? data.getJobs.length : 0,
+                        data && data.getJobs ? data.getJobs.length : 0,
                         fetchMore
                       )
                     }

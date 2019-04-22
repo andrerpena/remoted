@@ -19,6 +19,10 @@ export interface ProcessedTagIconMap {
 }
 
 const tagIconMap: TagIconMap = {
+  palette: {
+    tags: ["design"],
+    prefix: "fas"
+  },
   "fa-vial": {
     tags: ["testing", "jest", "junit", "unit-testing"],
     prefix: "fas"

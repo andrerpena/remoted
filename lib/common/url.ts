@@ -64,7 +64,7 @@ export function linkToJob(slug: string) {
 }
 
 export function linkToJobCanonical(slug: string) {
-  return `/job/${encodeURIComponent(slug)}`;
+  return `/job/${slug}`;
 }
 
 export function linkToFilters(filters?: FilterQuery) {

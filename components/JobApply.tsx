@@ -1,12 +1,14 @@
 import * as React from "react";
 import * as classNames from "classnames";
+import Link from "next/link";
+import { linkToJob, linkToJobCanonical } from "../lib/common/url";
 
 export const JobApply: React.FunctionComponent<{
   applyUrl: string;
-  permalink: string;
+  jobId: string;
   hideSecondaryButtons?: boolean;
   onClose?: () => void;
-}> = ({ applyUrl, permalink, hideSecondaryButtons, onClose }) => {
+}> = ({ applyUrl, jobId, hideSecondaryButtons, onClose }) => {
   return (
     <div className="job-apply">
       <div className="columns is-mobile">
@@ -24,9 +26,9 @@ export const JobApply: React.FunctionComponent<{
               </a>
             )}
             {!hideSecondaryButtons && (
-              <a className={`button`} href={permalink}>
-                🔗 Permalink
-              </a>
+              <Link href={linkToJob(jobId)} as={linkToJobCanonical(jobId)}>
+                <a className={`button`}>🔗 Permalink</a>
+              </Link>
             )}
             <a
               className={classNames(`button`, "is-primary")}

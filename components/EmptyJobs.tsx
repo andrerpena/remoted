@@ -8,7 +8,7 @@ export const NotFoundList = function() {
           <p>😟 Your search returned no matches.</p>
           <p>Suggestions:</p>
           <ul>
-            <li>Try different but similar tags.</li>
+            <li>Try similar tags.</li>
             <li>Try different filters.</li>
           </ul>
           <p>If nothing helps, keep looking and never give up.</p>

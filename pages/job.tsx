@@ -1,13 +1,16 @@
 import * as React from "react";
 import { Query } from "react-apollo";
 import { JobView } from "../components/JobView";
-import { Job } from "../graphql-types";
 import * as Next from "next";
 import { Meta } from "../components/Meta";
 import { NavBar } from "../components/NavBar";
 import { Footer } from "../components/Footer";
 import { getTitleForJob } from "../lib/common/title";
-import { getJobQuery } from "../lib/common/queries/getJob";
+import {
+  getJobQuery,
+  GetJobQueryType,
+  GetJobQueryVariables
+} from "../lib/common/queries/getJob";
 
 export interface JobPageProps {
   id: string;
@@ -22,13 +25,20 @@ const JobPage = function(props: JobPageProps) {
         <div className="columns">
           <div className="column is-full">
             <div className="box-white">
-              <Query<{ getJob: Job }>
+              <Query<GetJobQueryType, GetJobQueryVariables>
                 query={getJobQuery}
                 variables={{
-                  jobId: props.id
+                  id: props.id
                 }}
               >
-                {({ data }) => (data ? <JobView job={data.getJob} /> : null)}
+                {({ data }) => {
+                  console.log(data);
+                  if (!data || !data.getJob) {
+                    return "nothing";
+                  }
+
+                  return <JobView job={data.getJob} />;
+                }}
               </Query>
             </div>
           </div>

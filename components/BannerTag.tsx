@@ -14,7 +14,7 @@ export const BannerTag: React.FunctionComponent<BannerTagProps> = ({
   const prefix = icon ? icon.prefix || "fab" : "";
 
   return (
-    <div className="banner-header" onClick={() => onHeaderClick()}>
+    <div className="banner-header clickable" onClick={() => onHeaderClick()}>
       {icon && (
         <i
           className={`${prefix} fa-${icon.icon} title-tag-icon`}

@@ -73,6 +73,7 @@ describe("company-service", () => {
       });
       const companyRetrieved = await getCompanyByDisplayName(
         db,
+        null,
         company.displayName
       );
       expect(companyRetrieved).toEqual(

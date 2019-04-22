@@ -21,6 +21,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = ({
   query
 }: SearchBoxProps) => {
   const {
+    company,
     filters,
     anywhere,
     salary,
@@ -35,6 +36,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = ({
   } = query;
 
   const filterData: FilterQuery = {
+    company,
     filters,
     tag,
     anywhere: anywhere,

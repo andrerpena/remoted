@@ -278,6 +278,13 @@ ALTER TABLE ONLY public.tag
 
 
 --
+-- Name: company_name_uindex; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX company_name_uindex ON public.company USING btree (name);
+
+
+--
 -- Name: company_public_id_uindex; Type: INDEX; Schema: public; Owner: -
 --
 

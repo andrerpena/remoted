@@ -17,7 +17,7 @@ type Query {
   getJob(id: String, url: String): Job
   getTagCountGroups(tagGroups: [TagCountGroupInput!]!): [TagCountGroup]
   getTags(text: String): [TagCount]
-  getCompany(displayName: String!): Company
+  getCompany(id: String, displayName: String): Company
 }
 
 type Mutation {

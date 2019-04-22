@@ -19,6 +19,13 @@
     color: $black;
   }
 
+  .job-title {
+    margin-top: $size-6;
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+
   &:hover {
     background-color: $white-bis;
     cursor: pointer;
@@ -27,10 +34,6 @@
   &.open {
     border-left: 5px solid $primary;
   }
-}
-
-.job-title {
-  margin-top: $size-6;
 }
 
 .job-post-tags {
@@ -106,16 +109,32 @@
     }
   }
 
-  .company-name {
-    font-weight: bold;
-    margin-left: $size-7;
-    margin-right: $size-8;
-    white-space: nowrap;
-    a:hover {
+  .a-wrapper {
+    display: flex;
+    flex-direction: row;
+    $company-header-image-size: 20px;
+    :hover {
       text-decoration: underline;
     }
-  }
 
+    .job-post-image {
+      margin-right: $size-8;
+      width: $company-header-image-size;
+      height: $company-header-image-size;
+    }
+
+    .job-post-image img {
+      border-radius: $radius;
+      width: $company-header-image-size;
+      height: $company-header-image-size;
+    }
+
+    .company-name {
+      font-weight: bold;
+      margin-right: $size-8;
+      white-space: nowrap;
+    }
+  }
   .post-info {
     white-space: nowrap;
   }
@@ -150,19 +169,6 @@
 
 .job-description {
   margin: $size-5 0;
-}
-
-$company-header-image-size: 20px;
-
-.job-post-image {
-  width: $company-header-image-size;
-  height: $company-header-image-size;
-}
-
-.job-post-image img {
-  border-radius: $radius;
-  width: $company-header-image-size;
-  height: $company-header-image-size;
 }
 
 .job-post-body-more-info {

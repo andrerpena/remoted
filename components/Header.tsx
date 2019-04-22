@@ -10,16 +10,9 @@ import { BannerCompany } from "./BannerCompany";
 export type JobListCollectionHeaderProps = {
   query: IndexQuery;
   onFilter: (searchData: FilterQuery) => void;
-  companyName?: string;
-  companyImageUrl?: string;
 };
 
-export function Header({
-  query,
-  onFilter,
-  companyName,
-  companyImageUrl
-}: JobListCollectionHeaderProps) {
+export function Header({ query, onFilter }: JobListCollectionHeaderProps) {
   let [showSearch, setShowSearch] = React.useState(!query.tag);
   let [previousTag, setPreviousTag] = React.useState(query.tag);
 
@@ -30,12 +23,7 @@ export function Header({
 
   return (
     <div className="header">
-      {companyName && (
-        <BannerCompany
-          companyName={companyName}
-          companyImageUrl={companyImageUrl}
-        />
-      )}
+      {query.company && <BannerCompany company={query.company} />}
       {!showSearch && query.tag && (
         <BannerTag tag={query.tag} onHeaderClick={() => setShowSearch(true)} />
       )}
