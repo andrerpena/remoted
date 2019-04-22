@@ -3,7 +3,7 @@ import { buildTestDb } from "../../server/db/build-db";
 import { config } from "dotenv";
 
 config();
-import { RemotedDatabase } from "../../server/db/model";
+import { DbCompany, RemotedDatabase } from "../../server/db/model";
 import { addCompany } from "../../server/graphql/services/company-service";
 import {
   getJobs,
@@ -157,6 +157,7 @@ describe("job-service", () => {
   });
   describe("getJobs", () => {
     let companyPublicId = "";
+    let dbCompanyId: number | undefined;
     beforeEach(async () => {
       const company = await addCompany(db, {
         displayName: "c-1"
@@ -173,6 +174,13 @@ describe("job-service", () => {
           source: "stackoverflow"
         });
       }
+      const dbCompany = (await db.company.findOne({
+        public_id: companyPublicId
+      } as Partial<DbCompany>)) as DbCompany;
+      if (!dbCompany) {
+        throw new Error("Company should exist");
+      }
+      dbCompanyId = dbCompany.id;
     });
 
     it("default behavior", async () => {
@@ -295,7 +303,7 @@ describe("job-service", () => {
       });
     });
 
-    describe("region free", () => {
+    describe("anywhere", () => {
       it("should work when region free is not specified", async () => {
         const data = await getJobs(db, 20, 0);
         expect(data.length).toEqual(10);
@@ -463,6 +471,67 @@ describe("job-service", () => {
           "authentic-jobs"
         ]);
         expect(data.length).toEqual(2);
+      });
+    });
+
+    describe("company", () => {
+      it("should work when company is specified", async () => {
+        const data = await getJobs(
+          db,
+          20,
+          0,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          dbCompanyId
+        );
+        expect(data.length).toEqual(10);
+      });
+      it("should work when the company specified does not have any job or does not exist", async () => {
+        const data = await getJobs(
+          db,
+          20,
+          0,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          818308473
+        );
+        expect(data.length).toEqual(0);
+      });
+      it("should work with a newly created company", async () => {
+        const dbCompany = (await db.company.save({
+          public_id: "company_public_id",
+          name: "my company",
+          display_name: "my company"
+        } as Partial<DbCompany>)) as DbCompany;
+        await addJob(db, {
+          title: `dev job`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationTag: US_ONLY,
+          companyId: "company_public_id",
+          tags: ["angular"],
+          url: `URL`,
+          source: "we-work-remotely",
+          salaryExact: 10000
+        });
+        const data = await getJobs(
+          db,
+          20,
+          0,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          dbCompany.id
+        );
+        expect(data.length).toEqual(1);
       });
     });
   });

@@ -108,9 +108,9 @@ export async function getJobs(
   anywhere?: Nullable<boolean>,
   excludeLocationTags?: Nullable<string[]>,
   salary?: Nullable<boolean>,
-  sources?: Nullable<string[]>
+  sources?: Nullable<string[]>,
+  companyId?: Nullable<number>
 ): Promise<Job[]> {
-  // create function "__remoted_get_jobs"(_limit integer, _offset integer, _hastag character varying, _excludeus boolean, _excludenorthamerica boolean, _excludeeurope boolean, _excludeuk boolean, _excludewithoutsalary boolean, _excludestackoverflow boolean, _excludeweworkremotely boolean) returns SETOF job
   const dbJobs = await db.getJobs({
     _limit: limit,
     _offset: offset,
@@ -121,7 +121,8 @@ export async function getJobs(
         ? excludeLocationTags
         : null,
     _sources: sources && sources.length ? sources : null,
-    _salary: salary || null
+    _salary: salary || null,
+    _companyId: companyId || null
   });
 
   return dbJobs.map((j: DbJob) => {

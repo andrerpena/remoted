@@ -6,6 +6,7 @@
 -- _excludeLocationTags
 -- _salary
 -- _sources
+-- _companyId
 select *
 from job u
 where (
@@ -31,8 +32,9 @@ where (
                       or u.salary_exact is not null
                   )
               and (${_sources} is null or u.source = ANY (${_sources}))
+
+              and (${_companyId} is null or u.company_id = ${_companyId})
           )
 order by published_at desc
 limit ${_limit} offset ${_offset}
 -- $$;
-
