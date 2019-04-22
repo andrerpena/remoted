@@ -13,6 +13,7 @@ import { SingletonRouter } from "next/router";
 import Link from "next/link";
 import { getSourceDisplayName } from "../lib/common/sources";
 import * as classNames from "classnames";
+import { IndexQuery } from "../lib/common/query-types";
 
 interface JobListState {
   open: boolean;
@@ -21,6 +22,7 @@ interface JobListState {
 interface JobPostProps {
   job: Job;
   router?: SingletonRouter;
+  query: IndexQuery;
 }
 
 export class JobPost extends React.Component<JobPostProps, JobListState> {
@@ -31,7 +33,7 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
     };
   }
 
-  handleOnClose = () => {
+  handleToggle = () => {
     this.setState({
       open: !this.state.open
     });
@@ -51,6 +53,7 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
     } = this.props.job;
     const companyName = company ? company.displayName : "";
     const companyImageUrl20x20 = company ? company.imageUrl20x20 : "";
+    const companyId = company ? company.id : "";
 
     const salaryText = getSalaryText(this.props.job);
     const locationText = getLocationText(this.props.job);
@@ -63,17 +66,23 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
           className={classNames("box-white-content", "job-post-header", {
             open: this.state.open
           })}
-          onClick={this.handleOnClose}
+          onClick={this.handleToggle}
         >
           <CompanyHeader
             companyName={companyName}
             companyImageUrl20x20={companyImageUrl20x20 || ""}
             publishedAt={publishedAt}
             postedOn={postedOn}
+            companyId={companyId}
           />
           <div className="job-title">
             <Link href={linkToJob(id)} as={linkToJobCanonical(id)}>
-              <a className="title is-5" onClick={e => e.stopPropagation()}>
+              <a
+                className="title is-5"
+                onClick={e => {
+                  e.preventDefault();
+                }}
+              >
                 {title}
               </a>
             </Link>
@@ -94,13 +103,13 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
             applyUrl={url}
             permalink={linkToJob(id)}
             hideSecondaryButtons={true}
-            onClose={() => this.handleOnClose()}
+            onClose={() => this.handleToggle()}
           />
           <JobDescription html={descriptionHtml} />
           <JobApply
             applyUrl={url}
             permalink={linkToJob(id)}
-            onClose={() => this.handleOnClose()}
+            onClose={() => this.handleToggle()}
           />
         </div>
       </li>

@@ -21,11 +21,19 @@ nextServer.prepare().then(() => {
 
   apolloServer.applyMiddleware({ app });
 
+  app.get("/companies/:company", (req, res) => {
+    return nextServer.render(req, res, "/", {
+      ...req.query,
+      company: req.params.company
+    });
+  });
+
   app.get("/:path", (req, res) => {
     const path = req.params.path;
+    // process tag
     const tag = extractTagFromPath(path);
     if (tag) {
-      return nextServer.render(req, res, "/", { tag, ...req.query });
+      return nextServer.render(req, res, "/", { ...req.query, tag });
     }
     return nextRequestHandler(req, res, fromExpressRequest(req));
   });

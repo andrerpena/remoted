@@ -15,6 +15,8 @@ export interface FilterQuery {
   stackoverflow?: boolean;
   authenticjobs?: boolean;
   weworkremotely?: boolean;
+  // company
+  company?: string;
 }
 
 export const buildQuery = function(data: { [key: string]: any }) {
@@ -31,10 +33,17 @@ export const buildQuery = function(data: { [key: string]: any }) {
   return query.join("&");
 };
 
-export function cleanUpFilters(query: any, excludeTag: boolean) {
+export function cleanUpFilters(
+  query: any,
+  excludeTag: boolean,
+  excludeCompany: boolean
+) {
   const queryCopy = { ...query };
   if (excludeTag) {
     delete queryCopy["tag"];
+  }
+  if (excludeCompany) {
+    delete queryCopy["company"];
   }
   const propNames = Object.getOwnPropertyNames(queryCopy);
   for (let i = 0; i < propNames.length; i++) {
@@ -62,15 +71,25 @@ export function linkToFilters(filters?: FilterQuery) {
   if (!filters) {
     return `/`;
   }
-  return `/?${buildQuery(cleanUpFilters(filters, false))}`;
+  return `/?${buildQuery(cleanUpFilters(filters, false, false))}`;
 }
 
 export function linkToTagCanonical(filters?: FilterQuery) {
   if (!filters || !filters.tag) {
     return linkToFilters(filters);
   }
-  const query = buildQuery(cleanUpFilters(filters, true));
+  const query = buildQuery(cleanUpFilters(filters, true, true));
   return `/remote-${encodeURIComponent(filters.tag)}-jobs${
+    query ? `?${query}` : ""
+  }`;
+}
+
+export function linkToCompanyCanonical(filters?: FilterQuery) {
+  if (!filters || !filters.company) {
+    return linkToFilters(filters);
+  }
+  const query = buildQuery(cleanUpFilters(filters, true, true));
+  return `/companies/${encodeURIComponent(filters.company)}${
     query ? `?${query}` : ""
   }`;
 }

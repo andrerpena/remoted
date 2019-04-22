@@ -6,13 +6,13 @@ import { SearchBox } from "./SearchBox";
 import { IndexQuery } from "../lib/common/query-types";
 import { FilterQuery } from "../lib/common/url";
 
-export type JobListCollectionHeaderProps = IndexQuery & {
+export type JobListCollectionHeaderProps = {
+  query: IndexQuery;
   onFilter: (searchData: FilterQuery) => void;
 };
 
-export function Header(props: JobListCollectionHeaderProps) {
-  const { tag, onFilter } = props;
-  const icon = getIconForTag(tag);
+export function Header({ query, onFilter }: JobListCollectionHeaderProps) {
+  const icon = getIconForTag(query.tag);
   const prefix = icon ? icon.prefix || "fab" : "";
   const tagElement = icon ? (
     <i
@@ -21,20 +21,20 @@ export function Header(props: JobListCollectionHeaderProps) {
     />
   ) : null;
 
-  let [showSearch, setShowSearch] = React.useState(!props.tag);
-  let [previousTag, setPreviousTag] = React.useState(props.tag);
+  let [showSearch, setShowSearch] = React.useState(!query.tag);
+  let [previousTag, setPreviousTag] = React.useState(query.tag);
 
-  if (previousTag !== props.tag) {
-    setPreviousTag(props.tag);
-    setShowSearch(!props.tag);
+  if (previousTag !== query.tag) {
+    setPreviousTag(query.tag);
+    setShowSearch(!query.tag);
   }
 
-  const banner = tag ? (
+  const banner = query.tag ? (
     <div className="banner-header" onClick={() => setShowSearch(true)}>
       {tagElement}
       <span className="banner-title">
         <span>Remote</span>
-        <span className="title-tag">{tag}</span>
+        <span className="title-tag">{query.tag}</span>
         <span>jobs</span>
       </span>
     </div>
@@ -55,7 +55,7 @@ export function Header(props: JobListCollectionHeaderProps) {
             getTags={getTags}
             onFilter={onFilter}
             displaySearchBar={showSearch}
-            {...props}
+            query={query}
           />
         );
       }}

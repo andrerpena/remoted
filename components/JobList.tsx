@@ -4,39 +4,48 @@ import { JobPost } from "./JobPost";
 import { Job } from "../graphql-types";
 import { SingletonRouter } from "next-server/router";
 import { bucketize } from "../lib/common/time";
+import { IndexQuery } from "../lib/common/query-types";
 
 export interface JobListProps {
   jobs: Job[];
   router?: SingletonRouter;
   title: string;
+  query: IndexQuery;
 }
 
-export const JobList = (props: JobListProps) => (
+export const JobList = ({ jobs, router, title, query }: JobListProps) => (
   <>
     <div className="box-white">
       <div className="box-white-header">
-        <h5 className="title is-5">{props.title}</h5>
+        <h5 className="title is-5">{title}</h5>
       </div>
       <ul className="job-list">
-        {props.jobs.map(j => (
-          <JobPost key={j.id} job={j} router={props.router} />
+        {jobs.map(j => (
+          <JobPost key={j.id} job={j} router={router} query={query} />
         ))}
       </ul>
     </div>
   </>
 );
 
-export interface JobListCollectionProps {
+export type JobListCollectionProps = {
   jobs: Job[];
   router?: SingletonRouter;
   onLoadMore: () => void;
   loading: boolean;
   showLoadMore: boolean;
-}
+  query: IndexQuery;
+};
 
-export const JobListCollection = (props: JobListCollectionProps) => {
-  const buckets = bucketize(props.jobs, job => new Date(job.publishedAt));
-  const { onLoadMore, loading } = props;
+export const JobListCollection = ({
+  jobs,
+  router,
+  onLoadMore,
+  loading,
+  showLoadMore,
+  query
+}: JobListCollectionProps) => {
+  const buckets = bucketize(jobs, job => new Date(job.publishedAt));
   const onClick = () => (loading ? undefined : onLoadMore());
   const text = loading ? "Good luck next page! 🤑" : "Load more";
   return (
@@ -46,10 +55,11 @@ export const JobListCollection = (props: JobListCollectionProps) => {
           key={b.title}
           jobs={b.data}
           title={b.title}
-          router={props.router}
+          router={router}
+          query={query}
         />
       ))}
-      {props.showLoadMore && (
+      {showLoadMore && (
         <a className="button is-primary is-fullwidth" onClick={onClick}>
           <i className="fas fa-space fa-arrow-down" />
           {text}

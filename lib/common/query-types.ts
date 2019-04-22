@@ -13,4 +13,5 @@ export interface IndexQuery {
   stackoverflow: boolean;
   weworkremotely: boolean;
   authenticjobs: boolean;
+  company: string;
 }

@@ -39,6 +39,7 @@ export const getJobsQuery = gql`
       tags
       publishedAt
       company {
+        id
         displayName
         imageUrl20x20
       }

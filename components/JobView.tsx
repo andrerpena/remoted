@@ -13,8 +13,8 @@ export interface JobViewProps {
   job: Job;
 }
 
-export const JobView = (props: JobViewProps) => {
-  if (!props.job) {
+export const JobView = ({ job }: JobViewProps) => {
+  if (!job) {
     return <div>Not found</div>;
   }
   const {
@@ -25,13 +25,13 @@ export const JobView = (props: JobViewProps) => {
     publishedAt,
     source,
     url
-  } = props.job;
+  } = job;
   const companyName = company ? company.displayName : "";
   const companyUrl = company ? company.imageUrl : "";
   const postedOn = source ? getSourceDisplayName(source) : "";
 
-  const salaryText = getSalaryText(props.job);
-  const locationText = getLocationText(props.job);
+  const salaryText = getSalaryText(job);
+  const locationText = getLocationText(job);
   return (
     <div className="job-view box-white-content">
       <div className="job-view-header">
@@ -40,6 +40,7 @@ export const JobView = (props: JobViewProps) => {
           companyImageUrl20x20={companyUrl || ""}
           publishedAt={publishedAt}
           postedOn={postedOn}
+          companyId={job.company ? job.company.id : ""}
         />
         <div className="job-title">
           <h3 className="title is-3">{title}</h3>

@@ -59,16 +59,18 @@ function loadMoreJobs(
   });
 }
 
-export type IndexPageProps = IndexQuery & WithRouterProps;
+export type IndexPageProps = WithRouterProps & {
+  query: IndexQuery;
+};
 
-const IndexPage = (props: IndexPageProps) => {
+const IndexPage = ({ query, router }: IndexPageProps) => {
   return (
     <div>
-      <Meta title={getTitleForIndex(props)} />
+      <Meta title={getTitleForIndex(query)} />
       <NavBar />
       <Query<GetJobsQueryType, GetJobsVariables>
         query={getJobsQuery}
-        variables={getGetJobsQueryVariablesFromQuery(props, 0, PAGE_SIZE + 1)}
+        variables={getGetJobsQueryVariablesFromQuery(query, 0, PAGE_SIZE + 1)}
         notifyOnNetworkStatusChange={true}
       >
         {({ data, fetchMore, loading }) => {
@@ -76,7 +78,7 @@ const IndexPage = (props: IndexPageProps) => {
             <div className="container">
               <Header
                 onFilter={filter => navigateToFilter(filter)}
-                {...props}
+                query={query}
               />
               <div className="columns">
                 <div className="column is-full">
@@ -86,11 +88,11 @@ const IndexPage = (props: IndexPageProps) => {
                     </div>
                   )}
                   <JobListCollection
-                    router={props.router}
+                    router={router}
                     jobs={data ? data.getJobs : []}
                     onLoadMore={() =>
                       loadMoreJobs(
-                        props,
+                        query,
                         data ? data.getJobs.length : 0,
                         fetchMore
                       )
@@ -99,6 +101,7 @@ const IndexPage = (props: IndexPageProps) => {
                     showLoadMore={
                       loading || isThereMore(data ? data.getJobs : [])
                     }
+                    query={query}
                   />
                   {data && data.getJobs.length === 0 && <NotFoundList />}
                 </div>
@@ -139,21 +142,25 @@ function getGetJobsQueryVariablesFromQuery(
 
 IndexPage.getInitialProps = async ({ query }: Next.NextContext) => {
   return {
-    filters: query.filters === "true",
-    tag: query.tag,
-    // default filters
-    salary: query.salary === "true",
-    anywhere: query.anywhere === "true",
-    // location
-    nousonly: query.nousonly === "true",
-    nonorthamericaonly: query.nonorthamericaonly === "true",
-    noukonly: query.noukonly === "true",
-    noeuropeonly: query.noeuropeonly === "true",
-    // source
-    stackoverflow: query.stackoverflow === "true",
-    weworkremotely: query.weworkremotely === "true",
-    authenticjobs: query.authenticjobs === "true"
-  } as IndexQuery;
+    query: {
+      filters: query.filters === "true",
+      tag: query.tag,
+      // default filters
+      salary: query.salary === "true",
+      anywhere: query.anywhere === "true",
+      // location
+      nousonly: query.nousonly === "true",
+      nonorthamericaonly: query.nonorthamericaonly === "true",
+      noukonly: query.noukonly === "true",
+      noeuropeonly: query.noeuropeonly === "true",
+      // source
+      stackoverflow: query.stackoverflow === "true",
+      weworkremotely: query.weworkremotely === "true",
+      authenticjobs: query.authenticjobs === "true",
+      // company
+      company: query.company
+    } as IndexQuery
+  };
 };
 
 export default withRouter(IndexPage);

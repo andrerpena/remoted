@@ -5,17 +5,21 @@ import * as classNames from "classnames";
 import { MouseEventHandler } from "react";
 import { FilterQuery } from "../lib/common/url";
 
-export type SearchBoxProps = IndexQuery & {
+export type SearchBoxProps = {
   displaySearchBar: boolean;
   getTags: (text: string) => Promise<Array<TagOption>>;
   onFilter: (filterQuery: FilterQuery) => void;
+  query: IndexQuery;
 };
 
 const activeButtonClass = "is-primary";
 
-export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
-  props: SearchBoxProps
-) => {
+export const SearchBox: React.FunctionComponent<SearchBoxProps> = ({
+  displaySearchBar,
+  getTags,
+  onFilter,
+  query
+}: SearchBoxProps) => {
   const {
     filters,
     anywhere,
@@ -27,9 +31,8 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
     stackoverflow,
     authenticjobs,
     weworkremotely,
-    tag,
-    onFilter
-  } = props;
+    tag
+  } = query;
 
   const filterData: FilterQuery = {
     filters,
@@ -65,10 +68,10 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = (
   // @ts-ignore
   return (
     <div className="search-box">
-      {props.displaySearchBar && (
+      {displaySearchBar && (
         <TagSearchBox
           initialValue={tag}
-          getTags={props.getTags}
+          getTags={getTags}
           onSelectTag={() => {}}
           onFilter={tag => handleFilterChange({ tag })}
         />
