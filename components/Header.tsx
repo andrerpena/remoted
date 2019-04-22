@@ -29,43 +29,37 @@ export function Header({ query, onFilter }: JobListCollectionHeaderProps) {
     setShowSearch(!query.tag);
   }
 
-  const banner = query.tag ? (
-    <div className="banner-header" onClick={() => setShowSearch(true)}>
-      {tagElement}
-      <span className="banner-title">
-        <span>Remote</span>
-        <span className="title-tag">{query.tag}</span>
-        <span>jobs</span>
-      </span>
-    </div>
-  ) : null;
-
-  const searchBar = (
-    <ApolloConsumer>
-      {client => {
-        const getTags = async (text: string) => {
-          const queryResult = await client.query({
-            query: getTagsQuery,
-            variables: { text }
-          });
-          return queryResult.data.getTags;
-        };
-        return (
-          <SearchBox
-            getTags={getTags}
-            onFilter={onFilter}
-            displaySearchBar={showSearch}
-            query={query}
-          />
-        );
-      }}
-    </ApolloConsumer>
-  );
-
   return (
     <div className="header">
-      {!showSearch && banner}
-      {searchBar}
+      {!showSearch && query.tag && (
+        <div className="banner-header" onClick={() => setShowSearch(true)}>
+          {tagElement}
+          <span className="banner-title">
+            <span>Remote</span>
+            <span className="title-tag">{query.tag}</span>
+            <span>jobs</span>
+          </span>
+        </div>
+      )}
+      <ApolloConsumer>
+        {client => {
+          const getTags = async (text: string) => {
+            const queryResult = await client.query({
+              query: getTagsQuery,
+              variables: { text }
+            });
+            return queryResult.data.getTags;
+          };
+          return (
+            <SearchBox
+              getTags={getTags}
+              onFilter={onFilter}
+              displaySearchBar={showSearch}
+              query={query}
+            />
+          );
+        }}
+      </ApolloConsumer>
     </div>
   );
 }
