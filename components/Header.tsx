@@ -4,14 +4,22 @@ import { getTagsQuery } from "../lib/common/queries/getTags";
 import { SearchBox } from "./SearchBox";
 import { IndexQuery } from "../lib/common/query-types";
 import { FilterQuery } from "../lib/common/url";
-import { Banner } from "./Banner";
+import { BannerTag } from "./BannerTag";
+import { BannerCompany } from "./BannerCompany";
 
 export type JobListCollectionHeaderProps = {
   query: IndexQuery;
   onFilter: (searchData: FilterQuery) => void;
+  companyName?: string;
+  companyImageUrl?: string;
 };
 
-export function Header({ query, onFilter }: JobListCollectionHeaderProps) {
+export function Header({
+  query,
+  onFilter,
+  companyName,
+  companyImageUrl
+}: JobListCollectionHeaderProps) {
   let [showSearch, setShowSearch] = React.useState(!query.tag);
   let [previousTag, setPreviousTag] = React.useState(query.tag);
 
@@ -22,12 +30,14 @@ export function Header({ query, onFilter }: JobListCollectionHeaderProps) {
 
   return (
     <div className="header">
-      {!showSearch && query.tag && (
-        <Banner
-          tag={query.tag}
-          company={query.company}
-          onHeaderClick={() => setShowSearch(true)}
+      {companyName && (
+        <BannerCompany
+          companyName={companyName}
+          companyImageUrl={companyImageUrl}
         />
+      )}
+      {!showSearch && query.tag && (
+        <BannerTag tag={query.tag} onHeaderClick={() => setShowSearch(true)} />
       )}
       <ApolloConsumer>
         {client => {
