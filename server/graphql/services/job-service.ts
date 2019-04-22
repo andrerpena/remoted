@@ -109,8 +109,22 @@ export async function getJobs(
   excludeLocationTags?: Nullable<string[]>,
   salary?: Nullable<boolean>,
   sources?: Nullable<string[]>,
-  companyId?: Nullable<number>
+  companyPublicId?: Nullable<string>
 ): Promise<Job[]> {
+  let companyId: number | null = null;
+
+  if (companyPublicId) {
+    const company = (await db.company.findOne({
+      public_id: companyPublicId
+    } as Partial<DbCompany>)) as DbCompany;
+    if (company) {
+      companyId = company.id;
+    } else {
+      // When we cannot find the company, we just return no jobs
+      return [];
+    }
+  }
+
   const dbJobs = await db.getJobs({
     _limit: limit,
     _offset: offset,

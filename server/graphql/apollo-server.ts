@@ -50,7 +50,8 @@ const resolvers: Resolvers = {
         args.anywhere,
         args.excludeLocationTags,
         args.salary,
-        args.sources
+        args.sources,
+        args.companyId
       );
     },
     getTags: async (_parent, args) => {

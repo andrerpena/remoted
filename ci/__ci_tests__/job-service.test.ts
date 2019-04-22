@@ -157,7 +157,6 @@ describe("job-service", () => {
   });
   describe("getJobs", () => {
     let companyPublicId = "";
-    let dbCompanyId: number | undefined;
     beforeEach(async () => {
       const company = await addCompany(db, {
         displayName: "c-1"
@@ -180,7 +179,6 @@ describe("job-service", () => {
       if (!dbCompany) {
         throw new Error("Company should exist");
       }
-      dbCompanyId = dbCompany.id;
     });
 
     it("default behavior", async () => {
@@ -485,7 +483,7 @@ describe("job-service", () => {
           undefined,
           undefined,
           undefined,
-          dbCompanyId
+          companyPublicId
         );
         expect(data.length).toEqual(10);
       });
@@ -499,7 +497,7 @@ describe("job-service", () => {
           undefined,
           undefined,
           undefined,
-          818308473
+          "non existing public id"
         );
         expect(data.length).toEqual(0);
       });
@@ -514,7 +512,7 @@ describe("job-service", () => {
           description: "This is a job",
           publishedAt: new Date().toISOString(),
           locationTag: US_ONLY,
-          companyId: "company_public_id",
+          companyId: dbCompany.public_id,
           tags: ["angular"],
           url: `URL`,
           source: "we-work-remotely",
@@ -529,7 +527,7 @@ describe("job-service", () => {
           undefined,
           undefined,
           undefined,
-          dbCompany.id
+          dbCompany.public_id
         );
         expect(data.length).toEqual(1);
       });

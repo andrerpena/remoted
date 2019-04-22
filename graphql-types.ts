@@ -162,6 +162,8 @@ export interface GetJobsQueryArgs {
   excludeLocationTags?: Maybe<string[]>;
 
   sources?: Maybe<string[]>;
+
+  companyId?: Maybe<string>;
 }
 export interface GetJobQueryArgs {
   id?: Maybe<string>;
@@ -271,6 +273,8 @@ export namespace QueryResolvers {
     excludeLocationTags?: Maybe<string[]>;
 
     sources?: Maybe<string[]>;
+
+    companyId?: Maybe<string>;
   }
 
   export type GetJobResolver<

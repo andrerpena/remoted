@@ -12,6 +12,7 @@ type Query {
     anywhere: Boolean
     excludeLocationTags: [String!]
     sources: [String!]
+    companyId: String
   ): [Job]
   getJob(id: String, url: String): Job
   getTagCountGroups(tagGroups: [TagCountGroupInput!]!): [TagCountGroup]
