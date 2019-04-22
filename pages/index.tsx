@@ -126,6 +126,7 @@ function getGetJobsQueryVariablesFromQuery(
     offset: offset,
     anywhere: query.anywhere || undefined,
     salary: query.salary || undefined,
+    companyId: query.company || undefined,
     excludeLocationTags: [
       query.nonorthamericaonly ? NORTH_AMERICA_ONLY : "",
       query.nousonly ? US_ONLY : "",
