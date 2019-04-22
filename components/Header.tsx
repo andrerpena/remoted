@@ -1,10 +1,10 @@
-import { getIconForTag } from "../lib/common/tag-icons";
 import * as React from "react";
 import { ApolloConsumer } from "react-apollo";
 import { getTagsQuery } from "../lib/common/queries/getTags";
 import { SearchBox } from "./SearchBox";
 import { IndexQuery } from "../lib/common/query-types";
 import { FilterQuery } from "../lib/common/url";
+import { Banner } from "./Banner";
 
 export type JobListCollectionHeaderProps = {
   query: IndexQuery;
@@ -12,15 +12,6 @@ export type JobListCollectionHeaderProps = {
 };
 
 export function Header({ query, onFilter }: JobListCollectionHeaderProps) {
-  const icon = getIconForTag(query.tag);
-  const prefix = icon ? icon.prefix || "fab" : "";
-  const tagElement = icon ? (
-    <i
-      className={`${prefix} fa-${icon.icon} title-tag-icon`}
-      style={icon.color ? { color: icon.color } : {}}
-    />
-  ) : null;
-
   let [showSearch, setShowSearch] = React.useState(!query.tag);
   let [previousTag, setPreviousTag] = React.useState(query.tag);
 
@@ -32,14 +23,11 @@ export function Header({ query, onFilter }: JobListCollectionHeaderProps) {
   return (
     <div className="header">
       {!showSearch && query.tag && (
-        <div className="banner-header" onClick={() => setShowSearch(true)}>
-          {tagElement}
-          <span className="banner-title">
-            <span>Remote</span>
-            <span className="title-tag">{query.tag}</span>
-            <span>jobs</span>
-          </span>
-        </div>
+        <Banner
+          tag={query.tag}
+          company={query.company}
+          onHeaderClick={() => setShowSearch(true)}
+        />
       )}
       <ApolloConsumer>
         {client => {
