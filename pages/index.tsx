@@ -68,18 +68,15 @@ const IndexPage = ({ query, router }: IndexPageProps) => {
     <div>
       <Meta title={getTitleForIndex(query)} />
       <NavBar />
-      <Query<GetJobsQueryType, GetJobsVariables>
-        query={getJobsQuery}
-        variables={getGetJobsQueryVariablesFromQuery(query, 0, PAGE_SIZE + 1)}
-        notifyOnNetworkStatusChange={true}
-      >
-        {({ data, fetchMore, loading }) => {
-          return (
-            <div className="container">
-              <Header
-                onFilter={filter => navigateToFilter(filter)}
-                query={query}
-              />
+      <div className="container">
+        <Header onFilter={filter => navigateToFilter(filter)} query={query} />
+        <Query<GetJobsQueryType, GetJobsVariables>
+          query={getJobsQuery}
+          variables={getGetJobsQueryVariablesFromQuery(query, 0, PAGE_SIZE + 1)}
+          notifyOnNetworkStatusChange={true}
+        >
+          {({ data, fetchMore, loading }) => {
+            return (
               <div className="columns">
                 <div className="column is-full">
                   {loading && (
@@ -106,10 +103,10 @@ const IndexPage = ({ query, router }: IndexPageProps) => {
                   {data && data.getJobs.length === 0 && <NotFoundList />}
                 </div>
               </div>
-            </div>
-          );
-        }}
-      </Query>
+            );
+          }}
+        </Query>
+      </div>
       <Footer />
     </div>
   );
