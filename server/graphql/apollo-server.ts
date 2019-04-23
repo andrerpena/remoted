@@ -41,6 +41,9 @@ type Resolvers = IResolvers<RemotedContext> & {
 const resolvers: Resolvers = {
   Query: {
     getJobs: async (_parent, args) => {
+      if (args && args.limit && args.limit > 100) {
+        throw new Error("LIMIT cannot be greater than 100");
+      }
       const db = await buildDb();
       return getJobs(
         db,
