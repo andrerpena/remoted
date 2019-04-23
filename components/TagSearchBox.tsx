@@ -144,7 +144,7 @@ export class TagSearchBox extends React.Component<
     const renderSuggestion = (suggestion: TagOption) => (
       <div>
         <span className="tag-name">{suggestion.name}</span>
-        <span className="tag-count">{suggestion.count} active jobs</span>
+        <span className="tag-count">{suggestion.count} recent jobs</span>
       </div>
     );
 
@@ -164,7 +164,7 @@ export class TagSearchBox extends React.Component<
         />
         {this.state.showNotFound ? (
           <div className="notification">
-            {`😭 Could not find any job with this tag.`}
+            {`😢 Could not find jobs with this tag`}
           </div>
         ) : null}
       </div>
