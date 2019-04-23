@@ -27,7 +27,7 @@ export function Header({ query, onFilter }: JobListCollectionHeaderProps) {
       {!showSearch && query.tag && (
         <BannerTag tag={query.tag} onHeaderClick={() => setShowSearch(true)} />
       )}
-      <ApolloConsumer>
+      {!query.company && <ApolloConsumer>
         {client => {
           const getTags = async (text: string) => {
             const queryResult = await client.query({
@@ -45,7 +45,7 @@ export function Header({ query, onFilter }: JobListCollectionHeaderProps) {
             />
           );
         }}
-      </ApolloConsumer>
+      </ApolloConsumer>}
     </div>
   );
 }

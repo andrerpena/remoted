@@ -59,6 +59,13 @@ body {
     justify-content: center;
     font-size: 30px;
     padding-top: $size-5;
+    &.p-bottom {
+      @media screen and (max-width: $tablet) {
+        padding-bottom: 0;
+        flex-direction: column;
+      }
+      padding-bottom: $size-5;
+    }
 
     @media screen and (max-width: $tablet) {
       flex-direction: column;

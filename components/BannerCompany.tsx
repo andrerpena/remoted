@@ -14,7 +14,7 @@ export const BannerCompany: React.FunctionComponent<BannerCompanyProps> = ({
   company
 }) => {
   return (
-    <div className="banner-header">
+    <div className="banner-header p-bottom">
       <Query<GetCompanyQueryType, GetCompanyQueryVariables>
         query={getCompanyQuery}
         variables={{ companyId: company }}
