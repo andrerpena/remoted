@@ -85,6 +85,10 @@
     &.salary {
       color: #5fba7d;
     }
+
+    &.not-available {
+      color: $red;
+    }
   }
 }
 

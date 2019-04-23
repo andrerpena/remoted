@@ -31,6 +31,10 @@ body {
   padding: $size-4 $size-5;
 }
 
+.irrelevant {
+  opacity: 0.5;
+}
+
 .tag-box {
   .box-white-header {
     padding-bottom: 0;

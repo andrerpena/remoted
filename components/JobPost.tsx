@@ -12,6 +12,7 @@ import { getSourceDisplayName } from "../lib/common/sources";
 import * as classNames from "classnames";
 import { IndexQuery } from "../lib/common/query-types";
 import { JobDetails } from "./JobDetails";
+import { isJobPostTooOld } from "../lib/common/job-post-utils";
 
 interface JobListState {
   open: boolean;
@@ -69,7 +70,11 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
             postedOn={postedOn}
             companyId={companyId}
           />
-          <div className="job-title">
+          <div
+            className={classNames("job-title", {
+              irrelevant: isJobPostTooOld(new Date(publishedAt))
+            })}
+          >
             <Link href={linkToJob(id)} as={linkToJobCanonical(id)}>
               <a
                 className="title is-5"
@@ -95,7 +100,12 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
             hideSecondaryButtons={true}
             onClose={() => this.handleToggle()}
           />
-          <JobDescription html={descriptionHtml} />
+          <JobDescription
+            html={descriptionHtml}
+            className={
+              isJobPostTooOld(new Date(publishedAt)) ? "irrelevant" : undefined
+            }
+          />
           <JobApply
             applyUrl={url}
             jobId={id}

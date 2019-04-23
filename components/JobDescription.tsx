@@ -1,9 +1,10 @@
 import * as React from "react";
+import * as classNames from "classnames";
 
-export function JobDescription(props: { html: string }) {
+export function JobDescription(props: { html: string; className?: string }) {
   return (
     <div
-      className="job-description markdown"
+      className={classNames("job-description", "markdown", props.className)}
       dangerouslySetInnerHTML={{
         __html: props.html
       }}
