@@ -143,7 +143,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = ({
                   anywhere: newValue ? false : undefined
                 });
               }}
-              text="🌎 No 'US only'"
+              text={'🌎 No "US only"'}
             />
             <SearchButton
               hidden={!filters}
@@ -155,7 +155,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = ({
                   anywhere: newValue ? false : undefined
                 });
               }}
-              text="🌎 No 'North America only'"
+              text={'🌎 No "North America only"'}
             />
             <SearchButton
               hidden={!filters}
@@ -167,7 +167,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = ({
                   anywhere: newValue ? false : undefined
                 });
               }}
-              text="🌍 No 'Europe only'"
+              text={'🌍 No "Europe only"'}
             />
           </div>
           <div className="show-more-filters-wrapper">

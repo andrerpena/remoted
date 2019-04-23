@@ -10,8 +10,8 @@ export interface MetaProps {
 export const Meta = (props: MetaProps) => (
   <>
     <Head>
-      <link rel="icon" href="/static/favicon.ico" />
       <title>{props.title}</title>
+      <link rel="icon" href="/static/favicon.ico" />
       <script
         async
         src="https://www.googletagmanager.com/gtag/js?id=UA-89807105-2"
@@ -37,6 +37,10 @@ export const Meta = (props: MetaProps) => (
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
       />
       <meta name="theme-color" content="#209cee" />
+      <meta
+        name="description"
+        content="Remote job aggregator for developers and IT professionals. Remoted.io indexes data from Stackoverflow, WeWorkRemotely and AuthenticJobs."
+      />
       <link
         href="https://fonts.googleapis.com/css?family=Fredoka+One"
         rel="stylesheet"
