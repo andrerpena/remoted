@@ -1,13 +1,11 @@
 import * as React from "react";
 import { Job } from "../graphql-types";
-import { getSalaryText } from "../lib/common/salary";
-import { getLocationText } from "../lib/common/location";
 import { CompanyHeader } from "./CompanyHeader";
-import { JobInfo } from "./Salary";
 import { JobTags } from "./JobTags";
 import { JobDescription } from "./JobDescription";
 import { getSourceDisplayName } from "../lib/common/sources";
 import { JobApply } from "./JobApply";
+import { JobDetails } from "./JobDetails";
 
 export interface JobViewProps {
   job: Job;
@@ -31,8 +29,6 @@ export const JobView = ({ job }: JobViewProps) => {
   const companyUrl = company ? company.imageUrl : "";
   const postedOn = source ? getSourceDisplayName(source) : "";
 
-  const salaryText = getSalaryText(job);
-  const locationText = getLocationText(job);
   return (
     <div className="job-view box-white-content">
       <div className="job-view-header">
@@ -46,7 +42,7 @@ export const JobView = ({ job }: JobViewProps) => {
         <div className="job-title">
           <h3 className="title is-3">{title}</h3>
         </div>
-        <JobInfo salaryText={salaryText} locationPreferred={locationText} />
+        <JobDetails job={job} />
         <JobTags tags={tags} />
         <JobApply applyUrl={url} jobId={id} hideSecondaryButtons={true} />
       </div>

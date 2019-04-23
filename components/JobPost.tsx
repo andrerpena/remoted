@@ -1,11 +1,8 @@
 import * as React from "react";
 import "./JobPost.scss";
 import { Job } from "../graphql-types";
-import { getSalaryText } from "../lib/common/salary";
-import { getLocationText } from "../lib/common/location";
 import { linkToJob, linkToJobCanonical } from "../lib/common/url";
 import { CompanyHeader } from "./CompanyHeader";
-import { JobInfo } from "./Salary";
 import { JobTags } from "./JobTags";
 import { JobDescription } from "./JobDescription";
 import { JobApply } from "./JobApply";
@@ -14,6 +11,7 @@ import Link from "next/link";
 import { getSourceDisplayName } from "../lib/common/sources";
 import * as classNames from "classnames";
 import { IndexQuery } from "../lib/common/query-types";
+import { JobDetails } from "./JobDetails";
 
 interface JobListState {
   open: boolean;
@@ -47,16 +45,12 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
       tags,
       company,
       publishedAt,
-      locationTag,
       url,
       source
     } = this.props.job;
     const companyName = company ? company.displayName : "";
     const companyImageUrl20x20 = company ? company.imageUrl : "";
     const companyId = company ? company.id : "";
-
-    const salaryText = getSalaryText(this.props.job);
-    const locationText = getLocationText(this.props.job);
 
     const postedOn = source ? getSourceDisplayName(this.props.job.source) : "";
 
@@ -87,11 +81,7 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
               </a>
             </Link>
           </div>
-          <JobInfo
-            salaryText={salaryText}
-            locationPreferred={locationText}
-            locationTag={locationTag}
-          />
+          <JobDetails job={this.props.job} />
           <JobTags tags={tags} />
         </div>
         <div

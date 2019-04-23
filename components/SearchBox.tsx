@@ -85,7 +85,14 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = ({
             <SearchButton
               active={anywhere}
               onClick={() => {
-                handleFilterChange({ anywhere: !anywhere });
+                const newValue = !anywhere;
+                handleFilterChange({
+                  anywhere: newValue,
+                  noeuropeonly: newValue ? false : undefined,
+                  noukonly: newValue ? false : undefined,
+                  nonorthamericaonly: newValue ? false : undefined,
+                  nousonly: newValue ? false : undefined
+                });
               }}
               text="🌐 Anywhere"
             />
@@ -130,37 +137,37 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = ({
               hidden={!filters}
               active={nousonly}
               onClick={() => {
-                // setNoUsOnly(!nousonly);
-                handleFilterChange({ nousonly: !nousonly });
+                const newValue = !nousonly;
+                handleFilterChange({
+                  nousonly: newValue,
+                  anywhere: newValue ? false : undefined
+                });
               }}
-              text="🌎 No US only"
+              text="🌎 No 'US only'"
             />
             <SearchButton
               hidden={!filters}
               active={nonorthamericaonly}
               onClick={() => {
-                // setNoNorthAmericaOnly(!nonorthamericaonly);
-                handleFilterChange({ nonorthamericaonly: !nonorthamericaonly });
+                const newValue = !nonorthamericaonly;
+                handleFilterChange({
+                  nonorthamericaonly: newValue,
+                  anywhere: newValue ? false : undefined
+                });
               }}
-              text="🌎 No North America only"
-            />
-            <SearchButton
-              hidden={!filters}
-              active={noukonly}
-              onClick={() => {
-                // setNoUkOnly(!noukonly);
-                handleFilterChange({ noukonly: !noukonly });
-              }}
-              text="🌍 No UK only"
+              text="🌎 No 'North America only'"
             />
             <SearchButton
               hidden={!filters}
               active={noeuropeonly}
               onClick={() => {
-                // setNoEuropeOnly(!noeuropeonly);
-                handleFilterChange({ noeuropeonly: !noeuropeonly });
+                const newValue = !noeuropeonly;
+                handleFilterChange({
+                  noeuropeonly: newValue,
+                  anywhere: newValue ? false : undefined
+                });
               }}
-              text="🌍 No Europe only"
+              text="🌍 No 'Europe only'"
             />
           </div>
           <div className="show-more-filters-wrapper">

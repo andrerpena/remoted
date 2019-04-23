@@ -21,6 +21,7 @@
 
   .job-title {
     margin-top: $size-6;
+
     a:hover {
       text-decoration: underline;
     }
@@ -84,14 +85,6 @@
     &.salary {
       color: #5fba7d;
     }
-
-    &.location-tag {
-      padding: 0 $size-8;
-      border-radius: $radius;
-      border: $border-default;
-      background-color: $white-ter;
-      text-transform: uppercase;
-    }
   }
 }
 
@@ -113,6 +106,7 @@
     display: flex;
     flex-direction: row;
     $company-header-image-size: 20px;
+
     :hover {
       text-decoration: underline;
     }
@@ -135,6 +129,7 @@
       white-space: nowrap;
     }
   }
+
   .post-info {
     white-space: nowrap;
   }
@@ -160,6 +155,7 @@
     .button {
       margin-top: $size-7;
       display: block;
+
       &:last-child {
         margin-bottom: $size-8;
       }
