@@ -6,7 +6,7 @@ export interface IndexPageHeadProps {
   query: IndexQuery;
 }
 
-export const IndexPageHead: React.FunctionComponent<IndexPageHeadProps> = ({
+export const HeadIndexPage: React.FunctionComponent<IndexPageHeadProps> = ({
 
 }: IndexPageHeadProps) => {
   const description =

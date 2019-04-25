@@ -9,6 +9,8 @@ import {
   GetJobQueryType,
   GetJobQueryVariables
 } from "../lib/common/queries/getJob";
+import { EssentialHead } from "../components/EssentialHead";
+import { HeadJobPage } from "../components/HeadJob";
 
 export interface JobPageProps {
   id: string;
@@ -18,6 +20,7 @@ const JobPage = function(props: JobPageProps) {
   return (
     <div>
       <NavBar />
+      <EssentialHead />
       <div className="container">
         <div className="columns">
           <div className="column is-full">
@@ -29,12 +32,23 @@ const JobPage = function(props: JobPageProps) {
                 }}
               >
                 {({ data }) => {
-                  console.log(data);
                   if (!data || !data.getJob) {
                     return "nothing";
+                    1;
                   }
-
-                  return <JobView job={data.getJob} />;
+                  return (
+                    <>
+                      <HeadJobPage
+                        title={data.getJob.title}
+                        companyDisplayName={
+                          data.getJob.company
+                            ? data.getJob.company.displayName
+                            : ""
+                        }
+                      />
+                      <JobView job={data.getJob} />
+                    </>
+                  );
                 }}
               </Query>
             </div>

@@ -32,7 +32,7 @@ import {
 } from "../lib/common/sources";
 import { NotFoundList } from "../components/EmptyJobs";
 import { EssentialHead } from "../components/EssentialHead";
-import { IndexPageHead } from "../components/IndexPageHead";
+import { HeadIndexPage } from "../components/HeadIndexPage";
 
 function loadMoreJobs(
   query: IndexQuery,
@@ -82,7 +82,7 @@ const IndexPage = ({ query, router }: IndexPageProps) => {
 
             return (
               <>
-                <IndexPageHead query={query} />
+                <HeadIndexPage query={query} />
                 <div className="columns">
                   <div className="column is-full">
                     {loading && (
