@@ -3,14 +3,11 @@ import * as React from "react";
 import "../styles/bulma.scss";
 import { Script } from "./Script";
 
-export interface MetaProps {
-  title: string;
-}
+export interface MetaProps {}
 
-export const Meta = (props: MetaProps) => (
+export const EssentialHead = () => (
   <>
     <Head>
-      <title>{props.title}</title>
       <link rel="icon" href="/static/favicon.ico" />
       <script
         async

@@ -2,10 +2,8 @@ import * as React from "react";
 import { Query } from "react-apollo";
 import { JobView } from "../components/JobView";
 import * as Next from "next";
-import { Meta } from "../components/Meta";
 import { NavBar } from "../components/NavBar";
 import { Footer } from "../components/Footer";
-import { getTitleForJob } from "../lib/common/title";
 import {
   getJobQuery,
   GetJobQueryType,
@@ -19,7 +17,6 @@ export interface JobPageProps {
 const JobPage = function(props: JobPageProps) {
   return (
     <div>
-      <Meta title={getTitleForJob()} />
       <NavBar />
       <div className="container">
         <div className="columns">

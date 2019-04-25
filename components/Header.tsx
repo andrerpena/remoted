@@ -6,6 +6,7 @@ import { IndexQuery } from "../lib/common/query-types";
 import { FilterQuery } from "../lib/common/url";
 import { BannerTag } from "./BannerTag";
 import { BannerCompany } from "./BannerCompany";
+import Head from "next-server/head";
 
 export type JobListCollectionHeaderProps = {
   query: IndexQuery;
@@ -27,25 +28,30 @@ export function Header({ query, onFilter }: JobListCollectionHeaderProps) {
       {!showSearch && query.tag && (
         <BannerTag tag={query.tag} onHeaderClick={() => setShowSearch(true)} />
       )}
-      {!query.company && <ApolloConsumer>
-        {client => {
-          const getTags = async (text: string) => {
-            const queryResult = await client.query({
-              query: getTagsQuery,
-              variables: { text }
-            });
-            return queryResult.data.getTags;
-          };
-          return (
-            <SearchBox
-              getTags={getTags}
-              onFilter={onFilter}
-              displaySearchBar={showSearch}
-              query={query}
-            />
-          );
-        }}
-      </ApolloConsumer>}
+      <Head>
+        <title>Remote job aggregator for developers and IT professionals</title>
+      </Head>
+      {!query.company && (
+        <ApolloConsumer>
+          {client => {
+            const getTags = async (text: string) => {
+              const queryResult = await client.query({
+                query: getTagsQuery,
+                variables: { text }
+              });
+              return queryResult.data.getTags;
+            };
+            return (
+              <SearchBox
+                getTags={getTags}
+                onFilter={onFilter}
+                displaySearchBar={showSearch}
+                query={query}
+              />
+            );
+          }}
+        </ApolloConsumer>
+      )}
     </div>
   );
 }

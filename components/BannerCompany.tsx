@@ -5,6 +5,7 @@ import {
   GetCompanyQueryType,
   GetCompanyQueryVariables
 } from "../lib/common/queries/getCompany";
+import Head from "next/head";
 
 export interface BannerCompanyProps {
   company: string;
@@ -21,8 +22,6 @@ export const BannerCompany: React.FunctionComponent<BannerCompanyProps> = ({
         notifyOnNetworkStatusChange={true}
       >
         {({ data, loading }) => {
-          console.log(data);
-          console.log(loading);
           if (loading) {
             return <i className="fas fa-spinner loading" style={{}} />;
           }
@@ -32,6 +31,9 @@ export const BannerCompany: React.FunctionComponent<BannerCompanyProps> = ({
           const { imageUrl, displayName } = data.getCompany;
           return (
             <>
+              <Head>
+                <title>Remote jobs at {displayName}</title>
+              </Head>
               {imageUrl && (
                 <figure className="image">
                   <img src={imageUrl} alt="" />
