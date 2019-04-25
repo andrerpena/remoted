@@ -6,7 +6,7 @@ import { IndexQuery } from "../lib/common/query-types";
 import { FilterQuery } from "../lib/common/url";
 import { BannerTag } from "./BannerTag";
 import { BannerCompany } from "./BannerCompany";
-import Head from "next-server/head";
+import Head from "next/head";
 
 export type JobListCollectionHeaderProps = {
   query: IndexQuery;
@@ -24,13 +24,13 @@ export function Header({ query, onFilter }: JobListCollectionHeaderProps) {
 
   return (
     <div className="header">
+      <Head>
+        <title>Remote job aggregator for developers and IT professionals</title>
+      </Head>
       {query.company && <BannerCompany company={query.company} />}
       {!showSearch && query.tag && (
         <BannerTag tag={query.tag} onHeaderClick={() => setShowSearch(true)} />
       )}
-      <Head>
-        <title>Remote job aggregator for developers and IT professionals</title>
-      </Head>
       {!query.company && (
         <ApolloConsumer>
           {client => {
