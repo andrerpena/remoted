@@ -55,6 +55,30 @@ export const NavBar = () => {
             >
               🤖 GraphQL API
             </a>
+            <div className="navbar-item has-dropdown is-hoverable">
+              <a className="navbar-link">Social</a>
+
+              <div className="navbar-dropdown">
+                <a
+                  className="navbar-item"
+                  href="https://twitter.com/remoted_io"
+                >
+                  Twitter
+                </a>
+                <a
+                  className="navbar-item"
+                  href="https://www.indiehackers.com/product/remoted"
+                >
+                  Indie Hackers
+                </a>
+                <a
+                  className="navbar-item"
+                  href="https://www.producthunt.com/posts/remoted-io"
+                >
+                  Product Hunt
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
