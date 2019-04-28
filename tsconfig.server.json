@@ -5,5 +5,5 @@
     "outDir": "./.production-server/",
     "noEmit": false
   },
-  "include": ["server/**/*.ts"]
+  "include": ["server/**/*.ts", "server/**/*.d.ts"]
 }

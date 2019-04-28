@@ -4,6 +4,7 @@ import { fromExpressRequest } from "../lib/server/url";
 import { apolloServer } from "./graphql/apollo-server";
 import { config } from "dotenv";
 import { extractTagFromPath } from "../lib/common/url";
+import { buildSiteMap } from "./sitemap";
 
 config();
 
@@ -14,6 +15,18 @@ const nextRequestHandler = nextServer.getRequestHandler();
 
 nextServer.prepare().then(() => {
   const app = express();
+
+  app.get("/sitemap.xml", async function(_req: any, res: any) {
+    const sitemap = await buildSiteMap();
+    sitemap.toXML(function(err: any, xml: any) {
+      if (err) {
+        console.error(err);
+        return res.status(500).end();
+      }
+      res.header("Content-Type", "application/xml");
+      res.send(xml);
+    });
+  });
 
   app.get("/job/:public_id", (req, res) => {
     nextServer.render(req, res, "/job", { publicId: req.params.public_id });
