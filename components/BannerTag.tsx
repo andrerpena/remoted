@@ -17,7 +17,7 @@ export const BannerTag: React.FunctionComponent<BannerTagProps> = ({
   return (
     <>
       <Head>
-        <title>Remote {tag} jobs</title>
+        <title>Remote {tag} jobs | Remoted</title>
       </Head>
       <div className="banner-header clickable" onClick={() => onHeaderClick()}>
         {icon && (
