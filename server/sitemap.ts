@@ -18,11 +18,8 @@ const getSiteMapUrls = async () => {
     console.log(urls);
     return urls;
   } catch (e) {
-    return [
-      {
-        url: "https://remoted.io"
-      }
-    ];
+    console.error(e);
+    return [];
   }
 };
 
