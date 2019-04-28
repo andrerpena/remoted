@@ -33,8 +33,7 @@ const JobPage = function(props: JobPageProps) {
               >
                 {({ data }) => {
                   if (!data || !data.getJob) {
-                    return "nothing";
-                    1;
+                    return null;
                   }
                   return (
                     <>
