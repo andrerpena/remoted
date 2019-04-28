@@ -6,6 +6,7 @@ import Link from "next/link";
 
 export const NavBar = () => {
   const [open, setOpen] = React.useState(false);
+  const [moreOpen, setMoreOpen] = React.useState(false);
   return (
     <nav
       className="main-nav navbar"
@@ -55,6 +56,16 @@ export const NavBar = () => {
             >
               🤖 GraphQL API
             </a>
+            <div className="navbar-item has-dropdown is-hoverable">
+              <a className="navbar-link">More</a>
+
+              <div className="navbar-dropdown">
+                <a className="navbar-item">Be happy</a>
+                <a className="navbar-item">Hello</a>
+                <hr className="navbar-divider" />
+                <a className="navbar-item">Report an issue</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
