@@ -63,8 +63,8 @@ export const Hero: React.FunctionComponent<{}> = () => {
             </a>{" "}
             creating an issue!
           </p>
+          <p>Thank you and please come back! </p>
           <p>
-            Thank you and please come back!{" "}
             <a
               href="#"
               onClick={e => {
@@ -72,7 +72,7 @@ export const Hero: React.FunctionComponent<{}> = () => {
                 setOpen(false);
               }}
             >
-              Close this thing!
+              ❌ Ok. Close.
             </a>
           </p>
         </div>
