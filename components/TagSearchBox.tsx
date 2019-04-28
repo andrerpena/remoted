@@ -144,7 +144,7 @@ export class TagSearchBox extends React.Component<
     const renderSuggestion = (suggestion: TagOption) => (
       <div>
         <span className="tag-name">{suggestion.name}</span>
-        <span className="tag-count">{suggestion.count} recent jobs</span>
+        <span className="tag-count">{suggestion.count} remote jobs</span>
       </div>
     );
 

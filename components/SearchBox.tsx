@@ -94,7 +94,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = ({
                   nousonly: newValue ? false : undefined
                 });
               }}
-              text="🌐 Anywhere"
+              text="🌐 Work Anywhere"
             />
             <SearchButton
               active={salary}
@@ -102,7 +102,7 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = ({
                 // setSalary(!salary);
                 handleFilterChange({ salary: !salary });
               }}
-              text="💰 Salary"
+              text="💰 With Salary"
             />
             {/* Sources */}
             <SearchButton

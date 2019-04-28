@@ -10,7 +10,6 @@ body {
 }
 
 body {
-  background-color: $white-ter;
 }
 
 .box-transparent {
@@ -50,10 +49,57 @@ body {
   }
 }
 
+@mixin element-color($color) {
+  background-image: url('data:image/svg+xml;utf8,<svg ...><g stroke="#{$color}" ... /></g></svg>');
+}
+
 .header {
-  background-color: $white;
-  border-radius: $radius;
-  margin-bottom: $column-gap;
+  .hero {
+    .logo-wrapper {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin-top: $size-1;
+      margin-bottom: $size-8;
+    }
+    .description {
+      margin: 0 $size-7 0 $size-7;
+      font-size: 1.25em;
+      text-align: center;
+
+      -webkit-user-select: none; /* Chrome/Safari */
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* IE10+ */
+
+      /* Rules below not implemented in browsers yet */
+      user-select: none;
+
+      .learn-more {
+        cursor: pointer;
+        white-space: nowrap;
+        margin: 0 $size-7;
+        .fas {
+          margin-right: $size-8;
+        }
+        .fa-plus {
+          color: $primary;
+        }
+        .fa-times {
+          color: $red;
+        }
+      }
+    }
+
+    .notification {
+      margin: $size-6 $size-6 0 $size-6;
+      p {
+        margin-bottom: $size-6;
+        &:last-child {
+          margin-bottom: auto;
+        }
+      }
+    }
+  }
 
   .banner-header {
     display: flex;
@@ -163,7 +209,6 @@ body {
         display: flex;
         flex-direction: row;
         justify-content: center;
-        cursor: pointer;
         align-items: center;
         padding-bottom: $size-7;
 

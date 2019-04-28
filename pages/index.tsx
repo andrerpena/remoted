@@ -67,7 +67,7 @@ const IndexPage = ({ query, router }: IndexPageProps) => {
   return (
     <div>
       <EssentialHead />
-      <NavBar />
+      <NavBar hideLogo={!query.tag && !query.company} />
       <div className="container">
         <Header onFilter={filter => navigateToFilter(filter)} query={query} />
         <Query<GetJobsQueryType, GetJobsVariables>

@@ -4,7 +4,11 @@ import * as React from "react";
 import * as classNames from "classnames";
 import Link from "next/link";
 
-export const NavBar = () => {
+export interface NavBarProps {
+  hideLogo?: boolean;
+}
+
+export const NavBar = ({ hideLogo }: NavBarProps) => {
   const [open, setOpen] = React.useState(false);
   return (
     <nav
@@ -14,11 +18,13 @@ export const NavBar = () => {
     >
       <div className="container">
         <div className="navbar-brand">
-          <Link href="/">
-            <a className="navbar-item">
-              <Logo />
-            </a>
-          </Link>
+          {!hideLogo && (
+            <Link href="/">
+              <a className="navbar-item">
+                <Logo size={"small"} />
+              </a>
+            </Link>
+          )}
           <a
             role="button"
             className={classNames("navbar-burger", "burger", {
@@ -56,24 +62,27 @@ export const NavBar = () => {
               🤖 GraphQL API
             </a>
             <div className="navbar-item has-dropdown is-hoverable">
-              <a className="navbar-link">Social</a>
+              <a className="navbar-link">More</a>
 
               <div className="navbar-dropdown">
                 <a
                   className="navbar-item"
                   href="https://twitter.com/remoted_io"
+                  target="_blank"
                 >
                   Twitter
                 </a>
                 <a
                   className="navbar-item"
                   href="https://www.indiehackers.com/product/remoted"
+                  target="_blank"
                 >
                   Indie Hackers
                 </a>
                 <a
                   className="navbar-item"
                   href="https://www.producthunt.com/posts/remoted-io"
+                  target="_blank"
                 >
                   Product Hunt
                 </a>

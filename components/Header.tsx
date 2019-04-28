@@ -7,6 +7,7 @@ import { FilterQuery } from "../lib/common/url";
 import { BannerTag } from "./BannerTag";
 import { BannerCompany } from "./BannerCompany";
 import Head from "next/head";
+import { Hero } from "./Hero";
 
 export type JobListCollectionHeaderProps = {
   query: IndexQuery;
@@ -29,6 +30,7 @@ export function Header({ query, onFilter }: JobListCollectionHeaderProps) {
           Remote job aggregator for developers and IT professionals | Remoted
         </title>
       </Head>
+      {!query.company && !query.tag && <Hero />}
       {query.company && <BannerCompany company={query.company} />}
       {!showSearch && query.tag && (
         <BannerTag tag={query.tag} onHeaderClick={() => setShowSearch(true)} />
