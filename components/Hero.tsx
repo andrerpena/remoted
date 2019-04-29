@@ -26,13 +26,10 @@ export const Hero: React.FunctionComponent<{}> = () => {
             }}
           />
           <p>
-            🙋‍♀️ Hey there! Remoted is a remote job aggregator. I made 🤖 bots
-            that constantly search{" "}
-            <a href="https://www.stackoverflow.com">StackOverflow</a>,{" "}
-            <a href="https://www.weworkremotely.com">We Work Remotely</a> and{" "}
-            <a href="https://authenticjobs.com/">Authentic Jobs</a> for IT
-            related remote jobs, meaning jobs you can work from home, co-working
-            spaces, coffee shops, you name it.
+            🙋‍♀️ Hey there! Remoted is a remote job aggregator. It has 🤖 bots
+            that constantly search the web looking for remote jobs. Remote jobs
+            are jobs you can work from home, co-working spaces, coffee shops,
+            you name it.
           </p>
           <p>
             💗 Remoted is cool because of the search options. Remote jobs often
@@ -41,29 +38,37 @@ export const Hero: React.FunctionComponent<{}> = () => {
             countries.
           </p>
           <p>
-            When you choose 🌐 Work Anywhere, I'll do my best to only show jobs
-            you can be anywhere.
+            🕵️‍♀️ In order to filter jobs, all you have to do is to select a tag
+            and/or click on the filter buttons. The filters are automatically
+            applied.
           </p>
           <p>
-            When you choose 💰 With Salary, I'll only display jobs that list the
-            salary range.
+            When you choose 🌐Work Anywhere, only jobs without detected location
+            restrictions will be displayed.
           </p>
           <p>
-            When you choose, for example, 🔖 Stackoverflow, I'll only display
-            jobs that came from Stackoverflow.
+            When you choose 💰With Salary, only jobs that list salary details
+            will be displayed.
           </p>
           <p>
-            When you choose, for example, 🌎 No "US Only", I 'll exclude jobs
-            that I know require you to be in the US.
+            When you choose sources, for example, 🔖Stackoverflow, only jobs
+            from those sources will be displayed.
+          </p>
+          <p>
+            It is also possible to exclude jobs that require the candidate to be
+            a particular region. For example, When you choose, 🌎No "US Only",
+            jobs that require the candidate to be in the United States will be
+            excluded. Remoted offers filters for the most popular location
+            restrictions.
           </p>
           <p>
             💔 If there is something you think should be better, please{" "}
             <a href="https://github.com/remoted-io/remoted/issues">
-              let me know
+              let me know by creating an issue
             </a>{" "}
-            creating an issue!
+            .
           </p>
-          <p>Thank you and please come back! </p>
+          <p>Thank you and I hope you find the perfect job! </p>
           <p>
             <a
               href="#"
@@ -72,7 +77,7 @@ export const Hero: React.FunctionComponent<{}> = () => {
                 setOpen(false);
               }}
             >
-              ❌ Ok. Close.
+              ❌ Ok. Thanks.
             </a>
           </p>
         </div>
