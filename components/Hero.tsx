@@ -32,10 +32,10 @@ export const Hero: React.FunctionComponent<{}> = () => {
             you name it.
           </p>
           <p>
-            💗 Remoted is cool because of the search options. Remote jobs often
-            impose limitations on your location. Some require you to be on a
-            specific range of time zones. Other require you to be in specific
-            countries.
+            💗 Remoted is strong because of the search options. Remote jobs
+            often impose limitations on your location. Some require the
+            candidate to be in a specific range of time zones, others only
+            accept applicants from certain countries.
           </p>
           <p>
             🕵️‍♀️ In order to filter jobs, all you have to do is to select a tag
