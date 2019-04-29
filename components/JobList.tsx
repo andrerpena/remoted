@@ -5,6 +5,7 @@ import { Job } from "../graphql-types";
 import { SingletonRouter } from "next-server/router";
 import { bucketize } from "../lib/common/time";
 import { IndexQuery } from "../lib/common/query-types";
+import { getSearchTagLineFor } from "../lib/common/search";
 
 export interface JobListProps {
   jobs: Job[];
@@ -14,18 +15,21 @@ export interface JobListProps {
 }
 
 export const JobList = ({ jobs, router, title, query }: JobListProps) => (
-  <>
+  <div className="job-list">
     <div className="box-white">
       <div className="box-white-header">
-        <h5 className="title is-5">{title}</h5>
+        <h5 className="title is-5">
+          {title}{" "}
+          <span className="tagline">- {getSearchTagLineFor(query)}</span>
+        </h5>
       </div>
-      <ul className="job-list">
+      <ul>
         {jobs.map(j => (
           <JobPost key={j.id} job={j} router={router} query={query} />
         ))}
       </ul>
     </div>
-  </>
+  </div>
 );
 
 export type JobListCollectionProps = {

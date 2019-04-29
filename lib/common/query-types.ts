@@ -7,7 +7,6 @@ export interface IndexQuery {
   // location
   nousonly: boolean;
   nonorthamericaonly: boolean;
-  noukonly: boolean;
   noeuropeonly: boolean;
   // source
   stackoverflow: boolean;

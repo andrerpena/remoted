@@ -22,7 +22,6 @@ import { IndexQuery } from "../lib/common/query-types";
 import {
   EUROPE_ONLY,
   NORTH_AMERICA_ONLY,
-  UK_ONLY,
   US_ONLY
 } from "../lib/common/location";
 import {
@@ -134,7 +133,6 @@ function getGetJobsQueryVariablesFromQuery(
     excludeLocationTags: [
       query.nonorthamericaonly ? NORTH_AMERICA_ONLY : "",
       query.nousonly ? US_ONLY : "",
-      query.noukonly ? UK_ONLY : "",
       query.noeuropeonly ? EUROPE_ONLY : ""
     ].filter(i => !!i),
     sources: [
