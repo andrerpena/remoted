@@ -14,7 +14,7 @@ export const HeadJobPage: React.FunctionComponent<HeadJobPageProps> = ({
   return (
     <Head>
       <title>
-        Remote job: {title} at {companyDisplayName} | Remoted
+        Remote job: {title} at {companyDisplayName} - Remoted.io
       </title>
       <meta
         key={"description"}

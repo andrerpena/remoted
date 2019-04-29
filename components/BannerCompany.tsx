@@ -32,7 +32,7 @@ export const BannerCompany: React.FunctionComponent<BannerCompanyProps> = ({
           return (
             <>
               <Head>
-                <title>Remote jobs at {displayName} | Remoted</title>
+                <title>Remote jobs at {displayName} - Remoted.io</title>
               </Head>
               {imageUrl && (
                 <figure className="image">

@@ -27,7 +27,8 @@ export function Header({ query, onFilter }: JobListCollectionHeaderProps) {
     <div className="header">
       <Head>
         <title>
-          Remote job aggregator for developers and IT professionals | Remoted
+          Remoted.io - A remote job aggregator for developers and IT
+          professionals
         </title>
       </Head>
       {!query.company && !query.tag && <Hero />}
