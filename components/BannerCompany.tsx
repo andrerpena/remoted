@@ -39,9 +39,9 @@ export const BannerCompany: React.FunctionComponent<BannerCompanyProps> = ({
                   <img src={imageUrl} alt="" />
                 </figure>
               )}
-              <span className="banner-title">
+              <h1 className="banner-title">
                 <span>Remote jobs at {displayName}</span>
-              </span>
+              </h1>
             </>
           );
         }}

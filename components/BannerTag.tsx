@@ -26,11 +26,11 @@ export const BannerTag: React.FunctionComponent<BannerTagProps> = ({
             style={icon.color ? { color: icon.color } : {}}
           />
         )}
-        <span className="banner-title">
+        <h1 className="banner-title">
           <span>Remote</span>
           <span className="title-tag">{tag}</span>
           <span>jobs</span>
-        </span>
+        </h1>
       </div>
     </>
   );
