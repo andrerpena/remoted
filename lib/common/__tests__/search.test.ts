@@ -40,7 +40,7 @@ describe("search", () => {
           stackoverflow: true
         })
       ).toEqual(
-        "All remote jobs from sources: StackOverflow and WeWorkRemotely"
+        "All remote jobs you can work anywhere, with salary details and from StackOverflow"
       );
     });
     it("should work with salary and 2 sources", () => {
@@ -63,7 +63,7 @@ describe("search", () => {
           weworkremotely: true
         })
       ).toEqual(
-        "All remote jobs you can work anywhere and from sources: StackOverflow and WeWorkRemotely"
+        "All remote jobs you can work anywhere, with salary details and from sources: StackOverflow and WeWorkRemotely"
       );
     });
   });
