@@ -12,7 +12,9 @@ export interface RemotedDatabase extends massive.Database {
   tag: Writable;
   job_tag: Writable;
   getTags: (options: any) => Promise<TagCount[]>;
-  getJobsSourceMaps: () => Promise<DbJob[]>;
+  getJobsSourceMap: () => Promise<DbJob[]>;
+  getCompaniesSourceMap: () => Promise<DbCompany[]>;
+  getTagsSourceMap: () => Promise<DbTag[]>;
 }
 
 export interface DbCompany extends AnyObject<any> {

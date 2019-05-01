@@ -4,7 +4,7 @@ export const AUTHENTIC_JOBS = "authentic-jobs";
 
 export const sources: { [key: string]: string } = {
   [WE_WORK_REMOTELY]: "WeWorkRemotely",
-  [STACKOVERFLOW]: "Stackoverflow",
+  [STACKOVERFLOW]: "StackOverflow",
   [AUTHENTIC_JOBS]: "AuthenticJobs"
 };
 

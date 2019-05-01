@@ -3,19 +3,19 @@ import { readConfig } from "../config";
 import { RemotedDatabase } from "./model";
 import * as monitor from "pg-monitor";
 
-let db: RemotedDatabase;
-let testDb: RemotedDatabase;
+let db: Promise<RemotedDatabase>;
+let testDb: Promise<RemotedDatabase>;
 
 export async function buildDb(): Promise<RemotedDatabase> {
   if (db) return db;
-  db = (await massive(readConfig().connection)) as RemotedDatabase;
-  return db;
+  return (db = massive(readConfig().connection) as Promise<RemotedDatabase>);
 }
 
 export async function buildTestDb(): Promise<RemotedDatabase> {
   if (testDb) return testDb;
-  testDb = (await massive(readConfig().testConnection)) as RemotedDatabase;
+  testDb = massive(readConfig().testConnection) as Promise<RemotedDatabase>;
+  const result = await testDb;
   // Uncomment to activate monitoring
-  monitor.attach(testDb.driverConfig);
-  return testDb;
+  monitor.attach(result.driverConfig);
+  return result;
 }
