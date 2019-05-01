@@ -22,14 +22,14 @@ describe("search", () => {
     });
     it("should work with 1 source", () => {
       expect(getSearchTagLineFor({ stackoverflow: true })).toEqual(
-        "All remote jobs from Stackoverflow"
+        "All remote jobs from StackOverflow"
       );
     });
     it("should work with 2 sources", () => {
       expect(
         getSearchTagLineFor({ stackoverflow: true, weworkremotely: true })
       ).toEqual(
-        "All remote jobs from sources: Stackoverflow and WeWorkRemotely"
+        "All remote jobs from sources: StackOverflow and WeWorkRemotely"
       );
     });
     it("should work with anywhere, salary and a source", () => {
@@ -40,7 +40,7 @@ describe("search", () => {
           stackoverflow: true
         })
       ).toEqual(
-        "All remote jobs from sources: Stackoverflow and WeWorkRemotely"
+        "All remote jobs from sources: StackOverflow and WeWorkRemotely"
       );
     });
     it("should work with salary and 2 sources", () => {
@@ -51,7 +51,7 @@ describe("search", () => {
           weworkremotely: true
         })
       ).toEqual(
-        "All remote jobs with salary details and from sources: Stackoverflow and WeWorkRemotely"
+        "All remote jobs with salary details and from sources: StackOverflow and WeWorkRemotely"
       );
     });
     it("should work with anywhere, salary and 2 sources", () => {
@@ -63,7 +63,7 @@ describe("search", () => {
           weworkremotely: true
         })
       ).toEqual(
-        "All remote jobs you can work anywhere and from sources: Stackoverflow and WeWorkRemotely"
+        "All remote jobs you can work anywhere and from sources: StackOverflow and WeWorkRemotely"
       );
     });
   });
