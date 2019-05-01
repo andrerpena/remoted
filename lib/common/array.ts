@@ -12,7 +12,7 @@ export function naturalJoin(items: string[]): string {
   if (items.length === 2) {
     return `${items[0]} and ${items[1]}`;
   }
-  return `${items.slice(0, items.length - 2).join(", ") +
+  return `${items.slice(0, items.length - 1).join(", ") +
     " and " +
     items[items.length - 1]}`;
 }

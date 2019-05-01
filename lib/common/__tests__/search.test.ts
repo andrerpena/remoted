@@ -32,6 +32,17 @@ describe("search", () => {
         "All remote jobs from sources: Stackoverflow and WeWorkRemotely"
       );
     });
+    it("should work with anywhere, salary and a source", () => {
+      expect(
+        getSearchTagLineFor({
+          anywhere: true,
+          salary: true,
+          stackoverflow: true
+        })
+      ).toEqual(
+        "All remote jobs from sources: Stackoverflow and WeWorkRemotely"
+      );
+    });
     it("should work with salary and 2 sources", () => {
       expect(
         getSearchTagLineFor({
