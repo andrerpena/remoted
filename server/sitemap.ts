@@ -23,11 +23,28 @@ const getCompaniesUrls = async () => {
 const getTagsUrls = async () => {
   const db = await buildDb();
   const tags = await db.getTagsSourceMap();
-  return tags.map(j => ({
-    url: linkToTagCanonical({ tag: j.name }),
-    changefreq: "daily",
-    priotity: 1.0
-  }));
+  return [
+    ...tags.map(j => ({
+      url: linkToTagCanonical({ tag: j.name }),
+      changefreq: "daily",
+      priotity: 1.0
+    })),
+    ...tags.map(j => ({
+      url: linkToTagCanonical({ tag: j.name, anywhere: true }),
+      changefreq: "daily",
+      priotity: 1.0
+    })),
+    ...tags.map(j => ({
+      url: linkToTagCanonical({ tag: j.name, salary: true }),
+      changefreq: "daily",
+      priotity: 1.0
+    })),
+    ...tags.map(j => ({
+      url: linkToTagCanonical({ tag: j.name, anywhere: true, salary: true }),
+      changefreq: "daily",
+      priotity: 1.0
+    }))
+  ];
 };
 
 const getJobUrls = async () => {

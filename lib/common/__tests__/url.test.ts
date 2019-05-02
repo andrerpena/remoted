@@ -1,6 +1,7 @@
 import {
   buildQuery,
-  extractTagFromPath,
+  buildQueryIntoPath,
+  extractIndexQueryFromPath,
   linkToTagCanonical,
   removeQueryString
 } from "../url";
@@ -22,6 +23,19 @@ describe("url", () => {
     it("should work with multiple parameters", () => {
       expect(buildQuery({ a: false, b: 2, n: "andre" })).toEqual(
         "a=false&b=2&n=andre"
+      );
+    });
+  });
+  describe("buildQueryIntoPath", () => {
+    it("should work when there is nothing", () => {
+      expect(buildQueryIntoPath({})).toEqual("");
+    });
+    it("should work with one number parameter", () => {
+      expect(buildQueryIntoPath({ a: 2 })).toEqual("a");
+    });
+    it("should work with multiple parameters", () => {
+      expect(buildQueryIntoPath({ n: "andre", a: false, b: 2 })).toEqual(
+        "a-b-n"
       );
     });
   });
@@ -47,16 +61,30 @@ describe("url", () => {
   });
   describe("extractTagFromPath", () => {
     it("should work when Regex matches", () => {
-      const tag = extractTagFromPath("remote-reactjs-jobs");
-      expect(tag).toEqual("reactjs");
+      const tag = extractIndexQueryFromPath("remote-reactjs-jobs");
+      expect(tag).toEqual({
+        tag: "reactjs"
+      });
     });
     it("should work with dashes", () => {
-      const tag = extractTagFromPath("remote-amazon-web-service-jobs");
-      expect(tag).toEqual("amazon-web-service");
+      const tag = extractIndexQueryFromPath("remote-amazon-web-service-jobs");
+      expect(tag).toEqual({
+        tag: "amazon-web-service"
+      });
     });
     it("should return null when it does not match", () => {
-      const tag = extractTagFromPath("remote2-amazon-web-service-jobs");
+      const tag = extractIndexQueryFromPath("remote2-amazon-web-service-jobs");
       expect(tag).toEqual(null);
+    });
+    it("should work with additional parameters", () => {
+      const tag = extractIndexQueryFromPath(
+        "remote-amazon-web-service-jobs-anywhere-salary"
+      );
+      expect(tag).toEqual({
+        anywhere: true,
+        salary: true,
+        tag: "amazon-web-service"
+      });
     });
   });
   describe("linkToTagCanonical", () => {

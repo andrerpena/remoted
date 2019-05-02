@@ -33,6 +33,21 @@ export const buildQuery = function(data: { [key: string]: any }) {
   return query.join("&");
 };
 
+export const buildQueryIntoPath = function(data: { [key: string]: any }) {
+  // Create a query array to hold the key/value pairs
+  const pathSegments = [];
+  // Loop through the data object
+  for (let key in data) {
+    if (data.hasOwnProperty(key)) {
+      // Encode each key and value, concatenate them into a string, and push them to the array
+      pathSegments.push(encodeURIComponent(key));
+    }
+  }
+  // Join each item in the array with a `&` and return the resulting string
+  const result = pathSegments.sort().join("-");
+  return result ? "-" + result : result;
+};
+
 export function cleanUpFilters(
   query: any,
   excludeTag: boolean,
@@ -78,10 +93,8 @@ export function linkToTagCanonical(filters?: FilterQuery) {
   if (!filters || !filters.tag) {
     return linkToFilters(filters);
   }
-  const query = buildQuery(cleanUpFilters(filters, true, true));
-  return `/remote-${encodeURIComponent(filters.tag)}-jobs${
-    query ? `?${query}` : ""
-  }`;
+  const queryInPath = buildQueryIntoPath(cleanUpFilters(filters, true, true));
+  return `/remote-${encodeURIComponent(filters.tag)}-jobs${queryInPath}`;
 }
 
 export function linkToCompanyCanonical(filters?: FilterQuery) {
@@ -98,13 +111,24 @@ export function removeQueryString(url: string) {
   return url ? url.split("?")[0] : "";
 }
 
-export function extractTagFromPath(path: string): string | null {
+export function extractIndexQueryFromPath(
+  path: string
+): null | Record<string, string> {
   if (!path) {
     return null;
   }
-  const match = path.toLowerCase().match(/remote-(.*)-jobs/);
+  const match = path.toLowerCase().match(/^^remote-(.*)-jobs([a-z0-9-]*)$$/);
   if (match) {
-    return match[1];
+    const result: Record<string, string> = {
+      tag: match[1]
+    };
+    if (match[2]) {
+      const segments = match[2].split("-").filter(s => !!s);
+      for (const segment of segments) {
+        result[segment] = "true";
+      }
+    }
+    return result;
   }
   return null;
 }

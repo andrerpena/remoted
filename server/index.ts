@@ -3,7 +3,7 @@ import * as express from "express";
 import { fromExpressRequest } from "../lib/server/url";
 import { apolloServer } from "./graphql/apollo-server";
 import { config } from "dotenv";
-import { extractTagFromPath } from "../lib/common/url";
+import { extractIndexQueryFromPath } from "../lib/common/url";
 import { buildSiteMap } from "./sitemap";
 
 config();
@@ -44,9 +44,9 @@ nextServer.prepare().then(() => {
   app.get("/:path", (req, res) => {
     const path = req.params.path;
     // process tag
-    const tag = extractTagFromPath(path);
-    if (tag) {
-      return nextServer.render(req, res, "/", { ...req.query, tag });
+    const indexQuery = extractIndexQueryFromPath(path);
+    if (indexQuery) {
+      return nextServer.render(req, res, "/", { ...req.query, ...indexQuery });
     }
     return nextRequestHandler(req, res, fromExpressRequest(req));
   });

@@ -3,6 +3,7 @@ import { getIconForTag } from "../lib/common/tag-icons";
 import Head from "next-server/head";
 import { getSearchTagLineFor } from "../lib/common/search";
 import { IndexQuery } from "../lib/common/query-types";
+import { toTitleCase } from "../lib/common/tags";
 
 export interface BannerTagProps {
   query: IndexQuery;
@@ -30,7 +31,7 @@ export const BannerTag: React.FunctionComponent<BannerTagProps> = ({
         )}
         <h1 className="banner-title">
           <span>Remote</span>
-          <span className="title-tag">{query.tag}</span>
+          <span className="title-tag">{toTitleCase(query.tag)}</span>
           <span>jobs</span>
         </h1>
       </div>
