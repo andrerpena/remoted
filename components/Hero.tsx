@@ -10,7 +10,7 @@ export const Hero: React.FunctionComponent<{}> = () => {
         <Logo size={"large"} />
       </div>
       <div className="description">
-        <span>Work anywhere. Go remoted.</span>
+        <span>Work Anywhere. Go Remoted.</span>
         <span className="learn-more" onClick={() => setOpen(!open)}>
           <i className={classNames("fas", open ? "fa-times" : "fa-plus")} />
           {open ? "Learn less" : "Learn more"}.

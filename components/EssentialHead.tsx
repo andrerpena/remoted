@@ -36,7 +36,7 @@ export const EssentialHead = () => (
       <meta name="theme-color" content="#209cee" />
       <meta
         name="description"
-        content="Remote job aggregator for developers and IT professionals. Remoted.io indexes data from Stackoverflow, WeWorkRemotely and AuthenticJobs."
+        content="Remoted.io is the best remote job aggregator for developers and IT professionals. Find the perfect remote job today and work anywhere"
       />
       <link
         href="https://fonts.googleapis.com/css?family=Fredoka+One"

@@ -27,14 +27,13 @@ export function Header({ query, onFilter }: JobListCollectionHeaderProps) {
     <div className="header">
       <Head>
         <title>
-          Remoted.io - A remote job aggregator for developers and IT
-          professionals
+          Remoted.io - Remote job aggregator for developers and IT professionals
         </title>
       </Head>
       {!query.company && !query.tag && <Hero />}
       {query.company && <BannerCompany company={query.company} />}
       {!showSearch && query.tag && (
-        <BannerTag tag={query.tag} onHeaderClick={() => setShowSearch(true)} />
+        <BannerTag query={query} onHeaderClick={() => setShowSearch(true)} />
       )}
       {!query.company && (
         <ApolloConsumer>

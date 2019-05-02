@@ -1,23 +1,25 @@
 import * as React from "react";
 import { getIconForTag } from "../lib/common/tag-icons";
 import Head from "next-server/head";
+import { getSearchTagLineFor } from "../lib/common/search";
+import { IndexQuery } from "../lib/common/query-types";
 
 export interface BannerTagProps {
-  tag: string;
+  query: IndexQuery;
   onHeaderClick: () => void;
 }
 
 export const BannerTag: React.FunctionComponent<BannerTagProps> = ({
-  tag,
+  query,
   onHeaderClick
 }) => {
-  const icon = getIconForTag(tag);
+  const icon = getIconForTag(query.tag);
   const prefix = icon ? icon.prefix || "fab" : "";
 
   return (
     <>
       <Head>
-        <title>Remote {tag} jobs - Remoted.io</title>
+        <title>{getSearchTagLineFor(query)} - Remoted.io</title>
       </Head>
       <div className="banner-header clickable" onClick={() => onHeaderClick()}>
         {icon && (
@@ -28,7 +30,7 @@ export const BannerTag: React.FunctionComponent<BannerTagProps> = ({
         )}
         <h1 className="banner-title">
           <span>Remote</span>
-          <span className="title-tag">{tag}</span>
+          <span className="title-tag">{query.tag}</span>
           <span>jobs</span>
         </h1>
       </div>

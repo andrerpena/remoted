@@ -66,5 +66,18 @@ describe("search", () => {
         "All remote jobs you can work anywhere, with salary details and from sources: StackOverflow and WeWorkRemotely"
       );
     });
+    it("should work with tags and anywhere, salary and 2 sources", () => {
+      expect(
+        getSearchTagLineFor({
+          tag: "react-js",
+          anywhere: true,
+          salary: true,
+          stackoverflow: true,
+          weworkremotely: true
+        })
+      ).toEqual(
+        "Remote React-Js jobs you can work anywhere, with salary details and from sources: StackOverflow and WeWorkRemotely"
+      );
+    });
   });
 });

@@ -6,8 +6,12 @@ import {
   WE_WORK_REMOTELY
 } from "./sources";
 import { naturalJoin } from "./array";
+import { toTitleCase } from "./tags";
 
 export const getSearchTagLineFor = (query: Partial<IndexQuery>) => {
+  const prefix = query.tag
+    ? `Remote ${toTitleCase(query.tag)} jobs`
+    : `All remote jobs`;
   let parts: string[] = [];
   let sourceDetails: string[] = [];
   let locationDetails: string[] = [];
@@ -39,7 +43,7 @@ export const getSearchTagLineFor = (query: Partial<IndexQuery>) => {
   }
 
   if (!parts.length && !sourceDetails.length && !locationDetails.length) {
-    return "All remote jobs";
+    return prefix;
   }
 
   // anywhere and salary
@@ -53,5 +57,5 @@ export const getSearchTagLineFor = (query: Partial<IndexQuery>) => {
   if (locationDetails.length) {
     parts.push(`excluding ${naturalJoin(locationDetails)} jobs`);
   }
-  return `All remote jobs ${naturalJoin(parts)}`;
+  return `${prefix} ${naturalJoin(parts)}`;
 };
