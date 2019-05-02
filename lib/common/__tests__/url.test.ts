@@ -31,11 +31,11 @@ describe("url", () => {
       expect(buildQueryIntoPath({})).toEqual("");
     });
     it("should work with one number parameter", () => {
-      expect(buildQueryIntoPath({ a: 2 })).toEqual("a");
+      expect(buildQueryIntoPath({ a: 2 })).toEqual("-a");
     });
     it("should work with multiple parameters", () => {
       expect(buildQueryIntoPath({ n: "andre", a: false, b: 2 })).toEqual(
-        "a-b-n"
+        "-a-b-n"
       );
     });
   });
@@ -81,8 +81,8 @@ describe("url", () => {
         "remote-amazon-web-service-jobs-anywhere-salary"
       );
       expect(tag).toEqual({
-        anywhere: true,
-        salary: true,
+        anywhere: "true",
+        salary: "true",
         tag: "amazon-web-service"
       });
     });
@@ -110,7 +110,7 @@ describe("url", () => {
     });
     it("should work with query and other parameters", () => {
       expect(linkToTagCanonical({ tag: "reactjs", salary: true })).toEqual(
-        "/remote-reactjs-jobs?salary=true"
+        "/remote-reactjs-jobs-salary"
       );
     });
   });
