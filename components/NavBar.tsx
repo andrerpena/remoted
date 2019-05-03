@@ -2,7 +2,6 @@ import "./NavBar.scss";
 import { Logo } from "./Logo";
 import * as React from "react";
 import * as classNames from "classnames";
-import Link from "next/link";
 
 export interface NavBarProps {
   hideLogo?: boolean;

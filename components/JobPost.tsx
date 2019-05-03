@@ -56,7 +56,7 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
     const postedOn = source ? getSourceDisplayName(this.props.job.source) : "";
 
     return (
-      <li className="job-post">
+      <li className={classNames("job-post", { open: this.state.open })}>
         <div
           className={classNames("box-white-content", "job-post-header", {
             open: this.state.open

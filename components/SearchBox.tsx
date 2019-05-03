@@ -12,7 +12,7 @@ export type SearchBoxProps = {
   query: IndexQuery;
 };
 
-const activeButtonClass = "is-primary";
+const activeButtonClass = "is-light";
 
 export const SearchBox: React.FunctionComponent<SearchBoxProps> = ({
   displaySearchBar,
@@ -27,7 +27,6 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = ({
     salary,
     nousonly,
     nonorthamericaonly,
-    noukonly,
     noeuropeonly,
     stackoverflow,
     authenticjobs,
@@ -43,7 +42,6 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = ({
     salary,
     nousonly,
     nonorthamericaonly,
-    noukonly,
     noeuropeonly,
     stackoverflow,
     authenticjobs,
