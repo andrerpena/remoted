@@ -7,10 +7,9 @@ export interface LogoProps {
 }
 
 export const Logo = (props: LogoProps) => (
-  <div className={classNames("logo", props.size)}>
-    <span className="logo-icon-wrapper">
-      <i className="fas fa-location-arrow" />
-    </span>
-    <span className="text">remoted</span>
-  </div>
+  <a href={"/"}>
+    <div className={classNames("logo", props.size)}>
+      <img src={"/static/logo_full.png"} alt={"logo"} />
+    </div>
+  </a>
 );

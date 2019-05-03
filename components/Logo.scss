@@ -1,36 +1,15 @@
 @import "../styles/common";
 
 .logo {
+  img {
+    width: 140px;
+    vertical-align: bottom;
+  }
   &.small {
-    .logo-icon-wrapper {
-      background-color: $primary;
-      color: white;
-      padding: 4px 7px;
-      border-radius: $radius;
-      width: 20px;
-      height: 25px;
-    }
-    .text {
-      padding-left: $size-7;
-      font-family: "Fredoka One", cursive;
-      font-size: 22px;
-    }
   }
   &.large {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    .logo-icon-wrapper {
-      background-color: $primary;
-      color: white;
-      padding: 5px 13px;
-      border-radius: $radius;
-      font-size: 28px;
-    }
-    .text {
-      padding-left: $size-5;
-      font-family: "Fredoka One", cursive;
-      font-size: 44px;
+    img {
+      width: 250px;
     }
   }
 }
