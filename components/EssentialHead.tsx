@@ -33,7 +33,7 @@ export const EssentialHead = () => (
         name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
       />
-      <meta name="theme-color" content="#209cee" />
+      <meta name="theme-color" content="#f04b41" />
       <meta
         name="description"
         content="Remoted.io is the best remote job aggregator for developers and IT professionals. Find the perfect remote job today and work anywhere"
