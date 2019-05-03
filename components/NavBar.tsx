@@ -18,13 +18,7 @@ export const NavBar = ({ hideLogo }: NavBarProps) => {
     >
       <div className="container">
         <div className="navbar-brand">
-          {!hideLogo && (
-            <Link href="/">
-              <a className="navbar-item">
-                <Logo size={"small"} />
-              </a>
-            </Link>
-          )}
+          {!hideLogo && <Logo size={"small"} className="navbar-item" />}
           <a
             role="button"
             className={classNames("navbar-burger", "burger", {
