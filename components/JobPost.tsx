@@ -97,7 +97,6 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
           <JobApply
             applyUrl={url}
             jobId={id}
-            hideSecondaryButtons={true}
             onClose={() => this.handleToggle()}
           />
           <JobDescription

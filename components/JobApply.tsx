@@ -11,34 +11,36 @@ export const JobApply: React.FunctionComponent<{
 }> = ({ applyUrl, jobId, hideSecondaryButtons, onClose }) => {
   return (
     <div className="job-apply">
-      <div className="columns is-mobile">
-        <div className="column is-full">
-          <div className="job-actions-wrapper">
-            {!hideSecondaryButtons && onClose && (
-              <a
-                className={`button`}
-                onClick={e => {
-                  e.preventDefault();
-                  onClose();
-                }}
-              >
-                ❌ Close
-              </a>
-            )}
-            {!hideSecondaryButtons && (
-              <Link href={linkToJob(jobId)} as={linkToJobCanonical(jobId)}>
-                <a className={`button`}>🔗 Permalink</a>
-              </Link>
-            )}
+      <div className="field has-addons">
+        {!hideSecondaryButtons && onClose && (
+          <p className="control">
             <a
-              className={classNames(`button`, "is-primary")}
-              target="_blank"
-              href={applyUrl}
+              className={`button`}
+              onClick={e => {
+                e.preventDefault();
+                onClose();
+              }}
             >
-              🎯 Apply for this job
+              ❌
             </a>
-          </div>
-        </div>
+          </p>
+        )}
+        {!hideSecondaryButtons && (
+          <p className="control">
+            <Link href={linkToJob(jobId)} as={linkToJobCanonical(jobId)}>
+              <a className={`button`}>🔗</a>
+            </Link>
+          </p>
+        )}
+        <p className="control">
+          <a
+            className={classNames(`button`, "is-primary")}
+            target="_blank"
+            href={applyUrl}
+          >
+            🎯 Apply for this job
+          </a>
+        </p>
       </div>
     </div>
   );

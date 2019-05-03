@@ -13,9 +13,15 @@ export const SEO = {
     site_name: "Remoted.io",
     images: [
       {
-        url: "https://remoted.io/static/logo.png",
-        width: 160,
-        height: 160,
+        url: "https://remoted.io/static/logo_circle.png",
+        width: 272,
+        height: 272,
+        alt: "Remoted.io logo"
+      },
+      {
+        url: "https://remoted.io/static/logo_full.png",
+        width: 600,
+        height: 97,
         alt: "Remoted.io logo"
       }
     ]
