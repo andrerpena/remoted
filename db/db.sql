@@ -135,7 +135,8 @@ CREATE TABLE public.job (
     salary_currency character varying(10),
     url character varying(300),
     source character varying(50) NOT NULL,
-    location_tag character varying(100)
+    location_tag character varying(100),
+    location_details_id integer
 );
 
 
@@ -187,6 +188,44 @@ CREATE SEQUENCE public.jobs_id_seq
 --
 
 ALTER SEQUENCE public.jobs_id_seq OWNED BY public.job.id;
+
+
+--
+-- Name: location_details; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.location_details (
+    id integer NOT NULL,
+    worldwide_ok boolean,
+    preferred_continent_codes character varying(2)[],
+    preferred_country_codes character varying(2)[],
+    preferred_timezone_min integer,
+    preferred_timezone_max integer,
+    required_continent_codes character varying(2)[],
+    required_country_codes character varying(2)[],
+    required_timezone_min integer,
+    required_timezone_max integer
+);
+
+
+--
+-- Name: location_details_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.location_details_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: location_details_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.location_details_id_seq OWNED BY public.location_details.id;
 
 
 --
@@ -246,6 +285,13 @@ ALTER TABLE ONLY public.job_tag ALTER COLUMN id SET DEFAULT nextval('public.job_
 
 
 --
+-- Name: location_details id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.location_details ALTER COLUMN id SET DEFAULT nextval('public.location_details_id_seq'::regclass);
+
+
+--
 -- Name: company companies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -267,6 +313,14 @@ ALTER TABLE ONLY public.job_tag
 
 ALTER TABLE ONLY public.job
     ADD CONSTRAINT jobs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: location_details location_details_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.location_details
+    ADD CONSTRAINT location_details_pk PRIMARY KEY (id);
 
 
 --
@@ -318,6 +372,14 @@ CREATE UNIQUE INDEX tag_name_uindex ON public.tag USING btree (name);
 
 ALTER TABLE ONLY public.job
     ADD CONSTRAINT job_company_id_fk FOREIGN KEY (company_id) REFERENCES public.company(id);
+
+
+--
+-- Name: job job_location_details_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.job
+    ADD CONSTRAINT job_location_details_id_fk FOREIGN KEY (location_details_id) REFERENCES public.location_details(id);
 
 
 --
