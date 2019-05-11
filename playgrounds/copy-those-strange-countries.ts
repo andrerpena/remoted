@@ -33,7 +33,7 @@
 //   if (continent !== null) {
 //     adjustedCountries.push({
 //       name: country.name,
-//       continentCode: continent,
+//       regions: continent,
 //       iso31662: country["alpha-2"]
 //     });
 //   }

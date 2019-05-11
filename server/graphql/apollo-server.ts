@@ -14,6 +14,10 @@ import {
 } from "./services/company-service";
 import { getTagCountGroups, getTags } from "./services/tag-service";
 import { RemotedDatabase } from "../db/model";
+import {
+  getLocationDetailsForCompany,
+  getLocationDetailsForJob
+} from "./services/location-details";
 
 config();
 
@@ -86,6 +90,16 @@ const resolvers: Resolvers = {
     company: async _parent => {
       const db = await buildDb();
       return getCompanyByJobPublicId(db, _parent.id);
+    },
+    locationDetails: async _parent => {
+      const db = await buildDb();
+      return getLocationDetailsForJob(db, _parent.id);
+    }
+  },
+  Company: {
+    locationDetails: async _parent => {
+      const db = await buildDb();
+      return getLocationDetailsForCompany(db, _parent.id);
     }
   }
 };

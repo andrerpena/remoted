@@ -340,50 +340,14 @@
             "deprecationReason": null
           },
           {
-            "name": "locationRaw",
+            "name": "locationDetails",
             "description": "",
             "args": [],
-            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "locationRequired",
-            "description": "",
-            "args": [],
-            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "locationPreferred",
-            "description": "",
-            "args": [],
-            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "locationPreferredTimeZone",
-            "description": "",
-            "args": [],
-            "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "locationPreferredTimeZoneTolerance",
-            "description": "",
-            "args": [],
-            "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "locationTag",
-            "description": "",
-            "args": [],
-            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "type": {
+              "kind": "OBJECT",
+              "name": "LocationDetails",
+              "ofType": null
+            },
             "isDeprecated": false,
             "deprecationReason": null
           },
@@ -519,6 +483,141 @@
             "description": "",
             "args": [],
             "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "locationDetails",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "LocationDetails",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "LocationDetails",
+        "description": "",
+        "fields": [
+          {
+            "name": "raw",
+            "description": "",
+            "args": [],
+            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "worldwide",
+            "description": "",
+            "args": [],
+            "type": { "kind": "SCALAR", "name": "Boolean", "ofType": null },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "preferredRegions",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "preferredCountries",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "preferredTimeZoneMin",
+            "description": "",
+            "args": [],
+            "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "preferredTimeZoneMax",
+            "description": "",
+            "args": [],
+            "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "requiredRegions",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "requiredCountries",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "requiredTimeZoneMin",
+            "description": "",
+            "args": [],
+            "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "requiredTimeZoneMax",
+            "description": "",
+            "args": [],
+            "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
             "isDeprecated": false,
             "deprecationReason": null
           }
@@ -779,39 +878,13 @@
             "defaultValue": null
           },
           {
-            "name": "locationRaw",
+            "name": "locationDetails",
             "description": "",
-            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
-            "defaultValue": null
-          },
-          {
-            "name": "locationRequired",
-            "description": "",
-            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
-            "defaultValue": null
-          },
-          {
-            "name": "locationPreferred",
-            "description": "",
-            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
-            "defaultValue": null
-          },
-          {
-            "name": "locationPreferredTimezone",
-            "description": "",
-            "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
-            "defaultValue": null
-          },
-          {
-            "name": "locationPreferredTimezoneTolerance",
-            "description": "",
-            "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
-            "defaultValue": null
-          },
-          {
-            "name": "locationTag",
-            "description": "",
-            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "LocationDetailsInput",
+              "ofType": null
+            },
             "defaultValue": null
           },
           {
@@ -868,6 +941,109 @@
               "name": null,
               "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
             },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "LocationDetailsInput",
+        "description": "",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "raw",
+            "description": "",
+            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "defaultValue": null
+          },
+          {
+            "name": "worldwide",
+            "description": "",
+            "type": { "kind": "SCALAR", "name": "Boolean", "ofType": null },
+            "defaultValue": null
+          },
+          {
+            "name": "preferredRegions",
+            "description": "",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "preferredCountries",
+            "description": "",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "preferredTimeZoneMin",
+            "description": "",
+            "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
+            "defaultValue": null
+          },
+          {
+            "name": "preferredTimeZoneMax",
+            "description": "",
+            "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
+            "defaultValue": null
+          },
+          {
+            "name": "requiredRegions",
+            "description": "",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "requiredCountries",
+            "description": "",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "requiredTimeZoneMin",
+            "description": "",
+            "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
+            "defaultValue": null
+          },
+          {
+            "name": "requiredTimeZoneMax",
+            "description": "",
+            "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
             "defaultValue": null
           }
         ],

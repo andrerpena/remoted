@@ -1,42 +1,26 @@
-// import * as countries from "./server/locations/countries.json";
-// import { ContinentCode, CountryData } from "./server/locations/continents";
-// import * as fs from "fs";
-//
-// const adjustedCountries: CountryData[] = [];
-//
-// function getContinent(country: any): ContinentCode | null {
-//   switch (country.region) {
-//     case "Asia":
-//       return "AS";
-//     case "Americas":
-//       if (country["intermediate-region"] === "Caribbean") {
-//         return "NA";
-//       }
-//       if (country["intermediate-region"] === "South America") {
-//         return "SA";
-//       }
-//       return "NA";
-//     case "Europe":
-//       return "EU";
-//     case "Africa":
-//       return "AF";
-//     case "Oceania":
-//       return "OC";
-//   }
-//   console.log("Could not get country");
-//   console.log(country);
-//   return null;
-// }
-//
-// for (let country of countries) {
-//   const continent = getContinent(country);
-//   if (continent !== null) {
-//     adjustedCountries.push({
-//       name: country.name,
-//       continentCode: continent,
-//       iso31662: country["alpha-2"]
-//     });
-//   }
-// }
-//
-// fs.writeFileSync("./countries.json", JSON.stringify(adjustedCountries, null, 4));
+import * as countries from "./server/locations/countries_raw.json";
+import * as fs from "fs";
+import { CountryData, Region } from "./server/locations";
+
+const adjustedCountries: CountryData[] = [];
+
+for (let country of countries) {
+  adjustedCountries.push({
+    displayName: country.name,
+    regions: [
+      country["intermediate-region"] as Region,
+      country["sub-region"] as Region,
+      country["region"] as Region
+    ].filter(i => !!i),
+    iso31662Name: country["alpha-2"]
+  });
+}
+
+fs.writeFileSync(
+  "./server/locations/countries.ts",
+  `import { CountryData } from "./index";\n\nexport const countries: CountryData[] = ${JSON.stringify(
+    adjustedCountries,
+    null,
+    4
+  )}`
+);

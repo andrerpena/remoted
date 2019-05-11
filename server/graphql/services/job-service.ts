@@ -4,6 +4,7 @@ import {
   DbJob,
   DbJobInput,
   DbJobTag,
+  DbLocationDetails,
   DbTag,
   RemotedDatabase
 } from "../../db/model";
@@ -14,6 +15,7 @@ import { generateSlug, makeId } from "../../../lib/server/id";
 import { Nullable } from "../../../lib/common/types";
 import { isSourceValid } from "../../../lib/common/sources";
 import { removeQueryString } from "../../../lib/common/url";
+import { getDbLocationDetailsInputFromLocationDetailsInput } from "./location-details";
 
 export async function getJob(
   db: RemotedDatabase,
@@ -97,6 +99,25 @@ export async function addJob(
   }
 
   // Add location details
+  if (jobInput.locationDetails) {
+    const dbLocationDetailsInput = getDbLocationDetailsInputFromLocationDetailsInput(
+      jobInput.locationDetails
+    );
+    const dbLocationDetailsForJob = (await db.location_details.insert({
+      ...dbLocationDetailsInput
+    })) as DbLocationDetails;
+    dbJob.location_details_id = dbLocationDetailsForJob.id;
+    await db.job.save(dbJob);
+
+    // Add location details to company if it does not exist
+    if (!dbCompany.location_details_id) {
+      const dbLocationDetailsForCompany = (await db.location_details.insert({
+        ...dbLocationDetailsInput
+      })) as DbLocationDetails;
+      dbCompany.location_details_id = dbLocationDetailsForCompany.id;
+      await db.company.save(dbCompany);
+    }
+  }
 
   return getJobFromDbJob(dbJob);
 }
@@ -154,13 +175,6 @@ export function getJobFromDbJob(dbJob: DbJob): Job {
     tags: dbJob.tags.split(" "),
     createdAt: dbJob.created_at.toISOString(),
     publishedAt: dbJob.published_at.toISOString(),
-    locationRaw: dbJob.location_raw,
-    locationRequired: dbJob.location_required,
-    locationPreferred: dbJob.location_preferred,
-    locationPreferredTimeZone: dbJob.location_preferred_timezone,
-    locationPreferredTimeZoneTolerance:
-      dbJob.location_preferred_timezone_tolerance,
-    locationTag: dbJob.location_tag,
     salaryRaw: dbJob.salary_raw,
     salaryExact: dbJob.salary_exact,
     salaryMin: dbJob.salary_min,
@@ -195,13 +209,6 @@ export function getDbJobInputFromJobInput(
     company_id: options.companyId,
     company_name: options.companyName,
     company_display_name: options.companyDisplayName,
-    location_raw: jobInput.locationRaw || null,
-    location_required: jobInput.locationRequired || null,
-    location_preferred: jobInput.locationPreferred || null,
-    location_preferred_timezone: jobInput.locationPreferredTimezone || null,
-    location_preferred_timezone_tolerance:
-      jobInput.locationPreferredTimezoneTolerance || null,
-    location_tag: jobInput.locationTag || null,
     salary_raw: jobInput.salaryRaw || null,
     salary_exact: jobInput.salaryExact || null,
     salary_min: jobInput.salaryMin || null,

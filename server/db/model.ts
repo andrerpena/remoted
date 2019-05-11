@@ -25,20 +25,24 @@ export interface DbCompany extends AnyObject<any> {
   display_name: string;
   image_url?: string;
   image_url_20_20?: string;
+  location_details_id?: number;
 }
 
 export interface DbLocationDetails extends AnyObject<any> {
   id: number;
-  worldwide_ok: boolean;
-  preferred_continent_codes: string[];
-  preferred_country_codes: string[];
-  preferred_timezone_min: number;
-  preferred_timezone_max: number;
-  required_continent_codes: string[];
-  required_country_codes: string[];
-  required_timezone_min: number;
-  required_timezone_max: number;
+  raw_text: string;
+  worldwide_ok: Nullable<boolean>;
+  preferred_regions: Nullable<string[]>;
+  preferred_country_codes: Nullable<string[]>;
+  preferred_timezone_min: Nullable<number>;
+  preferred_timezone_max: Nullable<number>;
+  required_regions: Nullable<string[]>;
+  required_country_codes: Nullable<string[]>;
+  required_timezone_min: Nullable<number>;
+  required_timezone_max: Nullable<number>;
 }
+
+export type DbLocationDetailsInput = PartialBy<DbLocationDetails, "id">;
 
 export type DbCompanyInput = PartialBy<DbCompany, "id">;
 
@@ -54,12 +58,14 @@ export interface DbJob {
   created_at: Date;
   published_at: Date;
   tags: string;
-  location_raw: Nullable<string>;
-  location_required: Nullable<string>;
-  location_preferred: Nullable<string>;
-  location_preferred_timezone: Nullable<number>;
-  location_preferred_timezone_tolerance: Nullable<number>;
-  location_tag: Nullable<string>;
+  // deprecated location
+  location_raw?: Nullable<string>;
+  location_required?: Nullable<string>;
+  location_preferred?: Nullable<string>;
+  location_preferred_timezone?: Nullable<number>;
+  location_preferred_timezone_tolerance?: Nullable<number>;
+  location_tag?: Nullable<string>;
+  // end - deprecated location
   salary_raw: Nullable<string>;
   salary_exact: Nullable<number>;
   salary_min: Nullable<number>;
@@ -68,6 +74,7 @@ export interface DbJob {
   salary_equity: Nullable<boolean>;
   url: string;
   source: string;
+  location_details_id?: number;
 }
 
 export type DbJobInput = PartialBy<

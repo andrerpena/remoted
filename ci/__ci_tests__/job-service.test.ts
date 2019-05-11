@@ -11,7 +11,6 @@ import {
   getJob
 } from "../../server/graphql/services/job-service";
 import { clearDb } from "../../lib/server/db-ci-helpers";
-import { NORTH_AMERICA_ONLY, US_ONLY } from "../../lib/common/location";
 
 let db: RemotedDatabase;
 
@@ -226,121 +225,121 @@ describe("job-service", () => {
       expect(data.map(d => d.title)).toEqual(["dev job 1", "dev job 0"]);
     });
 
-    describe("location tag", () => {
-      it("should work when you specify the tag that does not exist", async () => {
-        const data = await getJobs(db, 10, 0);
-        expect(data.length).toEqual(10);
+    // describe("location tag", () => {
+    //   it("should work when you specify the tag that does not exist", async () => {
+    //     const data = await getJobs(db, 10, 0);
+    //     expect(data.length).toEqual(10);
+    //
+    //     const data2 = await getJobs(db, 10, 0, "tag-that-does-not-exist");
+    //     expect(data2.length).toEqual(0);
+    //   });
+    //
+    //   it("should work US is NOT excluded", async () => {
+    //     // US-ONLY
+    //     await addJob(db, {
+    //       title: `dev job`,
+    //       description: "This is a job",
+    //       publishedAt: new Date().toISOString(),
+    //       locationTag: US_ONLY,
+    //       companyId: companyPublicId,
+    //       tags: ["react"],
+    //       url: `URL`,
+    //       source: "stackoverflow"
+    //     });
+    //
+    //     const data = await getJobs(db, 20, 0);
+    //     expect(data.length).toEqual(11);
+    //   });
+    //
+    //   it("should work US is excluded", async () => {
+    //     // US-ONLY
+    //     await addJob(db, {
+    //       title: `dev job`,
+    //       description: "This is a job",
+    //       publishedAt: new Date().toISOString(),
+    //       locationTag: US_ONLY,
+    //       companyId: companyPublicId,
+    //       tags: ["react"],
+    //       url: `URL`,
+    //       source: "stackoverflow"
+    //     });
+    //
+    //     const data = await getJobs(db, 20, 0, null, null, [US_ONLY]);
+    //     expect(data.length).toEqual(10);
+    //   });
+    //
+    //   it("should exclude multiple", async () => {
+    //     // US-ONLY
+    //     await addJob(db, {
+    //       title: `dev job`,
+    //       description: "This is a job",
+    //       publishedAt: new Date().toISOString(),
+    //       locationTag: US_ONLY,
+    //       companyId: companyPublicId,
+    //       tags: ["react"],
+    //       url: `URL`,
+    //       source: "stackoverflow"
+    //     });
+    //
+    //     await addJob(db, {
+    //       title: `dev job`,
+    //       description: "This is a job",
+    //       publishedAt: new Date().toISOString(),
+    //       locationTag: NORTH_AMERICA_ONLY,
+    //       companyId: companyPublicId,
+    //       tags: ["react"],
+    //       url: `URL2`,
+    //       source: "stackoverflow"
+    //     });
+    //
+    //     const data = await getJobs(db, 20, 0, null, null, [
+    //       US_ONLY,
+    //       NORTH_AMERICA_ONLY
+    //     ]);
+    //     expect(data.length).toEqual(10);
+    //   });
+    // });
 
-        const data2 = await getJobs(db, 10, 0, "tag-that-does-not-exist");
-        expect(data2.length).toEqual(0);
-      });
-
-      it("should work US is NOT excluded", async () => {
-        // US-ONLY
-        await addJob(db, {
-          title: `dev job`,
-          description: "This is a job",
-          publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
-          companyId: companyPublicId,
-          tags: ["react"],
-          url: `URL`,
-          source: "stackoverflow"
-        });
-
-        const data = await getJobs(db, 20, 0);
-        expect(data.length).toEqual(11);
-      });
-
-      it("should work US is excluded", async () => {
-        // US-ONLY
-        await addJob(db, {
-          title: `dev job`,
-          description: "This is a job",
-          publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
-          companyId: companyPublicId,
-          tags: ["react"],
-          url: `URL`,
-          source: "stackoverflow"
-        });
-
-        const data = await getJobs(db, 20, 0, null, null, [US_ONLY]);
-        expect(data.length).toEqual(10);
-      });
-
-      it("should exclude multiple", async () => {
-        // US-ONLY
-        await addJob(db, {
-          title: `dev job`,
-          description: "This is a job",
-          publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
-          companyId: companyPublicId,
-          tags: ["react"],
-          url: `URL`,
-          source: "stackoverflow"
-        });
-
-        await addJob(db, {
-          title: `dev job`,
-          description: "This is a job",
-          publishedAt: new Date().toISOString(),
-          locationTag: NORTH_AMERICA_ONLY,
-          companyId: companyPublicId,
-          tags: ["react"],
-          url: `URL2`,
-          source: "stackoverflow"
-        });
-
-        const data = await getJobs(db, 20, 0, null, null, [
-          US_ONLY,
-          NORTH_AMERICA_ONLY
-        ]);
-        expect(data.length).toEqual(10);
-      });
-    });
-
-    describe("anywhere", () => {
-      it("should work when region free is not specified", async () => {
-        const data = await getJobs(db, 20, 0);
-        expect(data.length).toEqual(10);
-      });
-
-      it("should work when region free is specified and location tag exists", async () => {
-        // US-ONLY
-        await addJob(db, {
-          title: `dev job`,
-          description: "This is a job",
-          publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
-          companyId: companyPublicId,
-          tags: ["react"],
-          url: `URL`,
-          source: "stackoverflow"
-        });
-
-        const data = await getJobs(db, 20, 0, null, true);
-        expect(data.length).toEqual(10);
-      });
-
-      it("should work when region free is specified and location required exists", async () => {
-        // US-ONLY
-        await addJob(db, {
-          title: `dev job`,
-          description: "This is a job",
-          publishedAt: new Date().toISOString(),
-          locationRequired: "Brazil",
-          companyId: companyPublicId,
-          tags: ["react"],
-          url: `URL`,
-          source: "stackoverflow"
-        });
-
-        const data = await getJobs(db, 20, 0, null, true);
-        expect(data.length).toEqual(10);
-      });
-    });
+    // describe("anywhere", () => {
+    //   it("should work when region free is not specified", async () => {
+    //     const data = await getJobs(db, 20, 0);
+    //     expect(data.length).toEqual(10);
+    //   });
+    //
+    //   it("should work when region free is specified and location tag exists", async () => {
+    //     // US-ONLY
+    //     await addJob(db, {
+    //       title: `dev job`,
+    //       description: "This is a job",
+    //       publishedAt: new Date().toISOString(),
+    //       locationTag: US_ONLY,
+    //       companyId: companyPublicId,
+    //       tags: ["react"],
+    //       url: `URL`,
+    //       source: "stackoverflow"
+    //     });
+    //
+    //     const data = await getJobs(db, 20, 0, null, true);
+    //     expect(data.length).toEqual(10);
+    //   });
+    //
+    //   it("should work when region free is specified and location required exists", async () => {
+    //     // US-ONLY
+    //     await addJob(db, {
+    //       title: `dev job`,
+    //       description: "This is a job",
+    //       publishedAt: new Date().toISOString(),
+    //       locationRequired: "Brazil",
+    //       companyId: companyPublicId,
+    //       tags: ["react"],
+    //       url: `URL`,
+    //       source: "stackoverflow"
+    //     });
+    //
+    //     const data = await getJobs(db, 20, 0, null, true);
+    //     expect(data.length).toEqual(10);
+    //   });
+    // });
 
     describe("tag", () => {
       it("should work when only asking for react (10 were added)", async () => {
@@ -352,7 +351,6 @@ describe("job-service", () => {
           title: `dev job`,
           description: "This is a job",
           publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
           companyId: companyPublicId,
           tags: ["angular"],
           url: `URL`,
@@ -377,7 +375,6 @@ describe("job-service", () => {
           title: `dev job`,
           description: "This is a job",
           publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
           companyId: companyPublicId,
           tags: ["angular"],
           url: `URL`,
@@ -392,7 +389,6 @@ describe("job-service", () => {
           title: `dev job`,
           description: "This is a job",
           publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
           companyId: companyPublicId,
           tags: ["angular"],
           url: `URL`,
@@ -407,7 +403,6 @@ describe("job-service", () => {
           title: `dev job`,
           description: "This is a job",
           publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
           companyId: companyPublicId,
           tags: ["angular"],
           url: `URL`,
@@ -429,7 +424,6 @@ describe("job-service", () => {
           title: `dev job`,
           description: "This is a job",
           publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
           companyId: companyPublicId,
           tags: ["angular"],
           url: `URL`,
@@ -446,7 +440,6 @@ describe("job-service", () => {
           title: `dev job`,
           description: "This is a job",
           publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
           companyId: companyPublicId,
           tags: ["angular"],
           url: `URL`,
@@ -457,7 +450,6 @@ describe("job-service", () => {
           title: `dev job`,
           description: "This is a job",
           publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
           companyId: companyPublicId,
           tags: ["angular"],
           url: `URL2`,
@@ -511,7 +503,6 @@ describe("job-service", () => {
           title: `dev job`,
           description: "This is a job",
           publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
           companyId: dbCompany.public_id,
           tags: ["angular"],
           url: `URL`,

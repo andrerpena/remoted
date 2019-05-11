@@ -17,17 +17,7 @@ export interface JobInput {
 
   companyId: string;
 
-  locationRaw?: Maybe<string>;
-
-  locationRequired?: Maybe<string>;
-
-  locationPreferred?: Maybe<string>;
-
-  locationPreferredTimezone?: Maybe<number>;
-
-  locationPreferredTimezoneTolerance?: Maybe<number>;
-
-  locationTag?: Maybe<string>;
+  locationDetails?: Maybe<LocationDetailsInput>;
 
   salaryRaw?: Maybe<string>;
 
@@ -44,6 +34,28 @@ export interface JobInput {
   url: string;
 
   source: string;
+}
+
+export interface LocationDetailsInput {
+  raw?: Maybe<string>;
+
+  worldwide?: Maybe<boolean>;
+
+  preferredRegions?: Maybe<string[]>;
+
+  preferredCountries?: Maybe<string[]>;
+
+  preferredTimeZoneMin?: Maybe<number>;
+
+  preferredTimeZoneMax?: Maybe<number>;
+
+  requiredRegions?: Maybe<string[]>;
+
+  requiredCountries?: Maybe<string[]>;
+
+  requiredTimeZoneMin?: Maybe<number>;
+
+  requiredTimeZoneMax?: Maybe<number>;
 }
 
 export interface CompanyInput {
@@ -85,17 +97,7 @@ export interface Job {
 
   publishedAt: string;
 
-  locationRaw?: Maybe<string>;
-
-  locationRequired?: Maybe<string>;
-
-  locationPreferred?: Maybe<string>;
-
-  locationPreferredTimeZone?: Maybe<number>;
-
-  locationPreferredTimeZoneTolerance?: Maybe<number>;
-
-  locationTag?: Maybe<string>;
+  locationDetails?: Maybe<LocationDetails>;
 
   salaryRaw?: Maybe<string>;
 
@@ -124,6 +126,30 @@ export interface Company {
   imageUrl?: Maybe<string>;
 
   imageUrl20x20?: Maybe<string>;
+
+  locationDetails?: Maybe<LocationDetails>;
+}
+
+export interface LocationDetails {
+  raw?: Maybe<string>;
+
+  worldwide?: Maybe<boolean>;
+
+  preferredRegions?: Maybe<string[]>;
+
+  preferredCountries?: Maybe<string[]>;
+
+  preferredTimeZoneMin?: Maybe<number>;
+
+  preferredTimeZoneMax?: Maybe<number>;
+
+  requiredRegions?: Maybe<string[]>;
+
+  requiredCountries?: Maybe<string[]>;
+
+  requiredTimeZoneMin?: Maybe<number>;
+
+  requiredTimeZoneMax?: Maybe<number>;
 }
 
 export interface TagCountGroup {
@@ -338,33 +364,11 @@ export namespace JobResolvers {
 
     publishedAt?: PublishedAtResolver<string, TypeParent, Context>;
 
-    locationRaw?: LocationRawResolver<Maybe<string>, TypeParent, Context>;
-
-    locationRequired?: LocationRequiredResolver<
-      Maybe<string>,
+    locationDetails?: LocationDetailsResolver<
+      Maybe<LocationDetails>,
       TypeParent,
       Context
     >;
-
-    locationPreferred?: LocationPreferredResolver<
-      Maybe<string>,
-      TypeParent,
-      Context
-    >;
-
-    locationPreferredTimeZone?: LocationPreferredTimeZoneResolver<
-      Maybe<number>,
-      TypeParent,
-      Context
-    >;
-
-    locationPreferredTimeZoneTolerance?: LocationPreferredTimeZoneToleranceResolver<
-      Maybe<number>,
-      TypeParent,
-      Context
-    >;
-
-    locationTag?: LocationTagResolver<Maybe<string>, TypeParent, Context>;
 
     salaryRaw?: SalaryRawResolver<Maybe<string>, TypeParent, Context>;
 
@@ -423,33 +427,8 @@ export namespace JobResolvers {
     Parent = Job,
     Context = {}
   > = Resolver<R, Parent, Context>;
-  export type LocationRawResolver<
-    R = Maybe<string>,
-    Parent = Job,
-    Context = {}
-  > = Resolver<R, Parent, Context>;
-  export type LocationRequiredResolver<
-    R = Maybe<string>,
-    Parent = Job,
-    Context = {}
-  > = Resolver<R, Parent, Context>;
-  export type LocationPreferredResolver<
-    R = Maybe<string>,
-    Parent = Job,
-    Context = {}
-  > = Resolver<R, Parent, Context>;
-  export type LocationPreferredTimeZoneResolver<
-    R = Maybe<number>,
-    Parent = Job,
-    Context = {}
-  > = Resolver<R, Parent, Context>;
-  export type LocationPreferredTimeZoneToleranceResolver<
-    R = Maybe<number>,
-    Parent = Job,
-    Context = {}
-  > = Resolver<R, Parent, Context>;
-  export type LocationTagResolver<
-    R = Maybe<string>,
+  export type LocationDetailsResolver<
+    R = Maybe<LocationDetails>,
     Parent = Job,
     Context = {}
   > = Resolver<R, Parent, Context>;
@@ -506,6 +485,12 @@ export namespace CompanyResolvers {
     imageUrl?: ImageUrlResolver<Maybe<string>, TypeParent, Context>;
 
     imageUrl20x20?: ImageUrl20x20Resolver<Maybe<string>, TypeParent, Context>;
+
+    locationDetails?: LocationDetailsResolver<
+      Maybe<LocationDetails>,
+      TypeParent,
+      Context
+    >;
   }
 
   export type IdResolver<R = string, Parent = Company, Context = {}> = Resolver<
@@ -531,6 +516,118 @@ export namespace CompanyResolvers {
   export type ImageUrl20x20Resolver<
     R = Maybe<string>,
     Parent = Company,
+    Context = {}
+  > = Resolver<R, Parent, Context>;
+  export type LocationDetailsResolver<
+    R = Maybe<LocationDetails>,
+    Parent = Company,
+    Context = {}
+  > = Resolver<R, Parent, Context>;
+}
+
+export namespace LocationDetailsResolvers {
+  export interface Resolvers<Context = {}, TypeParent = LocationDetails> {
+    raw?: RawResolver<Maybe<string>, TypeParent, Context>;
+
+    worldwide?: WorldwideResolver<Maybe<boolean>, TypeParent, Context>;
+
+    preferredRegions?: PreferredRegionsResolver<
+      Maybe<string[]>,
+      TypeParent,
+      Context
+    >;
+
+    preferredCountries?: PreferredCountriesResolver<
+      Maybe<string[]>,
+      TypeParent,
+      Context
+    >;
+
+    preferredTimeZoneMin?: PreferredTimeZoneMinResolver<
+      Maybe<number>,
+      TypeParent,
+      Context
+    >;
+
+    preferredTimeZoneMax?: PreferredTimeZoneMaxResolver<
+      Maybe<number>,
+      TypeParent,
+      Context
+    >;
+
+    requiredRegions?: RequiredRegionsResolver<
+      Maybe<string[]>,
+      TypeParent,
+      Context
+    >;
+
+    requiredCountries?: RequiredCountriesResolver<
+      Maybe<string[]>,
+      TypeParent,
+      Context
+    >;
+
+    requiredTimeZoneMin?: RequiredTimeZoneMinResolver<
+      Maybe<number>,
+      TypeParent,
+      Context
+    >;
+
+    requiredTimeZoneMax?: RequiredTimeZoneMaxResolver<
+      Maybe<number>,
+      TypeParent,
+      Context
+    >;
+  }
+
+  export type RawResolver<
+    R = Maybe<string>,
+    Parent = LocationDetails,
+    Context = {}
+  > = Resolver<R, Parent, Context>;
+  export type WorldwideResolver<
+    R = Maybe<boolean>,
+    Parent = LocationDetails,
+    Context = {}
+  > = Resolver<R, Parent, Context>;
+  export type PreferredRegionsResolver<
+    R = Maybe<string[]>,
+    Parent = LocationDetails,
+    Context = {}
+  > = Resolver<R, Parent, Context>;
+  export type PreferredCountriesResolver<
+    R = Maybe<string[]>,
+    Parent = LocationDetails,
+    Context = {}
+  > = Resolver<R, Parent, Context>;
+  export type PreferredTimeZoneMinResolver<
+    R = Maybe<number>,
+    Parent = LocationDetails,
+    Context = {}
+  > = Resolver<R, Parent, Context>;
+  export type PreferredTimeZoneMaxResolver<
+    R = Maybe<number>,
+    Parent = LocationDetails,
+    Context = {}
+  > = Resolver<R, Parent, Context>;
+  export type RequiredRegionsResolver<
+    R = Maybe<string[]>,
+    Parent = LocationDetails,
+    Context = {}
+  > = Resolver<R, Parent, Context>;
+  export type RequiredCountriesResolver<
+    R = Maybe<string[]>,
+    Parent = LocationDetails,
+    Context = {}
+  > = Resolver<R, Parent, Context>;
+  export type RequiredTimeZoneMinResolver<
+    R = Maybe<number>,
+    Parent = LocationDetails,
+    Context = {}
+  > = Resolver<R, Parent, Context>;
+  export type RequiredTimeZoneMaxResolver<
+    R = Maybe<number>,
+    Parent = LocationDetails,
     Context = {}
   > = Resolver<R, Parent, Context>;
 }
@@ -636,6 +733,7 @@ export interface IResolvers<Context = {}> {
   Query?: QueryResolvers.Resolvers<Context>;
   Job?: JobResolvers.Resolvers<Context>;
   Company?: CompanyResolvers.Resolvers<Context>;
+  LocationDetails?: LocationDetailsResolvers.Resolvers<Context>;
   TagCountGroup?: TagCountGroupResolvers.Resolvers<Context>;
   TagCount?: TagCountResolvers.Resolvers<Context>;
   Mutation?: MutationResolvers.Resolvers<Context>;

@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Job } from "../graphql-types";
 import { getSalaryText } from "../lib/common/salary";
-import { getLocationTagDisplay } from "../lib/common/location";
 import { isJobPostTooOld } from "../lib/common/job-post-utils";
 
 export function JobDetails({ job }: { job: Job }) {
@@ -9,11 +8,7 @@ export function JobDetails({ job }: { job: Job }) {
   const isPostTooOld = isJobPostTooOld(new Date(job.publishedAt));
   return (
     <>
-      {(salaryText ||
-        job.locationPreferred ||
-        job.locationRequired ||
-        job.locationTag ||
-        isPostTooOld) && (
+      {(salaryText || job.locationDetails || isPostTooOld) && (
         <div className="job-info">
           {isPostTooOld && (
             <span className="info-block not-available">
@@ -23,16 +18,16 @@ export function JobDetails({ job }: { job: Job }) {
           {salaryText && (
             <span className="info-block salary">{salaryText}.</span>
           )}
-          {job.locationTag && (
-            <span className="info-block">
-              Required: {getLocationTagDisplay(job.locationTag)}.
-            </span>
-          )}
-          {job.locationRequired && !job.locationTag && (
-            <span className="info-block location">
-              Required: {job.locationRequired}.
-            </span>
-          )}
+          {/*{job.locationTag && (*/}
+          {/*  <span className="info-block">*/}
+          {/*    Required: {getLocationTagDisplay(job.locationTag)}.*/}
+          {/*  </span>*/}
+          {/*)}*/}
+          {/*{job.locationRequired && !job.locationTag && (*/}
+          {/*  <span className="info-block location">*/}
+          {/*    Required: {job.locationRequired}.*/}
+          {/*  </span>*/}
+          {/*)}*/}
         </div>
       )}
     </>
