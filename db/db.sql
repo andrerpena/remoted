@@ -204,7 +204,8 @@ CREATE TABLE public.location_details (
     required_continent_codes character varying(2)[],
     required_country_codes character varying(2)[],
     required_timezone_min integer,
-    required_timezone_max integer
+    required_timezone_max integer,
+    raw_text text
 );
 
 

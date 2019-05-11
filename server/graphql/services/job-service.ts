@@ -7,7 +7,7 @@ import {
   DbTag,
   RemotedDatabase
 } from "../../db/model";
-import { insertDbRecord } from "../../db/services/db-helpers";
+import { insertDbRecord } from "../../db/db-helpers";
 import { convertToHtml } from "../../../lib/server/markdown";
 import { Job, JobInput } from "../../../graphql-types";
 import { generateSlug, makeId } from "../../../lib/server/id";
@@ -77,7 +77,7 @@ export async function addJob(
 
   const dbJob = await (insertDbRecord(db.job, dbJobInput) as Promise<DbJob>);
 
-  const tags: string[] = [];
+  // Add job_tags
   if (dbJobInput.tags) {
     const tagsSplit = dbJobInput.tags.split(" ");
     for (let i = 0; i < tagsSplit.length; i++) {
@@ -89,13 +89,14 @@ export async function addJob(
           relevance: 1
         } as DbTag)) as DbTag;
       }
-      tags.push(dbTag.name);
       await db.job_tag.insert({
         job_id: dbJob.id,
         tag_id: dbTag.id
       } as DbJobTag);
     }
   }
+
+  // Add location details
 
   return getJobFromDbJob(dbJob);
 }

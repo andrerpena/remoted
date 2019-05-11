@@ -80,11 +80,14 @@ input JobInput {
   publishedAt: String!
   companyId: String!
   locationRaw: String
-  locationRequired: String
-  locationPreferred: String
-  locationPreferredTimezone: Int
-  locationPreferredTimezoneTolerance: Int
-  locationTag: String
+  locationPreferredContinentCodes: [String!]
+  locationPreferredCountryCodes: [String!]
+  locationPreferredTimezoneMin: Int
+  locationPreferredTimezoneMax: Int
+  locationRequiredContinentCodes: [String!]
+  locationRequiredCountryCodes: [String!]
+  locationRequiredTimezoneMin: Int
+  locationRequiredTimezoneMax: Int
   salaryRaw: String
   salaryExact: Int
   salaryMin: Int
