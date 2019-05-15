@@ -17,7 +17,7 @@ import { RemotedDatabase } from "../db/model";
 import {
   getLocationDetailsForCompany,
   getLocationDetailsForJob
-} from "./services/location-details";
+} from "./services/location-details-service";
 
 config();
 

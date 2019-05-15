@@ -15,7 +15,7 @@ import { generateSlug, makeId } from "../../../lib/server/id";
 import { Nullable } from "../../../lib/common/types";
 import { isSourceValid } from "../../../lib/common/sources";
 import { removeQueryString } from "../../../lib/common/url";
-import { getDbLocationDetailsInputFromLocationDetailsInput } from "./location-details";
+import { getDbLocationDetailsInputFromLocationDetailsInput } from "./location-details-service";
 
 export async function getJob(
   db: RemotedDatabase,

@@ -11,6 +11,7 @@ export function getDbLocationDetailsInputFromLocationDetailsInput(
   input: LocationDetailsInput
 ): DbLocationDetailsInput {
   return {
+    raw_text: input.raw,
     preferred_regions: input.preferredRegions,
     preferred_country_codes: input.preferredCountries,
     preferred_timezone_min: input.preferredTimeZoneMin,
