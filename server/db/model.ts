@@ -11,7 +11,6 @@ export interface RemotedDatabase extends massive.Database {
   stackoverflow_tags_cache: Writable;
   tag: Writable;
   job_tag: Writable;
-  location_details: Writable;
   getTags: (options: any) => Promise<TagCount[]>;
   getJobsSourceMap: () => Promise<DbJob[]>;
   getCompaniesSourceMap: () => Promise<DbCompany[]>;
@@ -25,19 +24,6 @@ export interface DbCompany extends AnyObject<any> {
   display_name: string;
   image_url?: string;
   image_url_20_20?: string;
-}
-
-export interface DbLocationDetails extends AnyObject<any> {
-  id: number;
-  worldwide_ok: boolean;
-  preferred_continent_codes: string[];
-  preferred_country_codes: string[];
-  preferred_timezone_min: number;
-  preferred_timezone_max: number;
-  required_continent_codes: string[];
-  required_country_codes: string[];
-  required_timezone_min: number;
-  required_timezone_max: number;
 }
 
 export type DbCompanyInput = PartialBy<DbCompany, "id">;
@@ -86,3 +72,10 @@ export interface DbTag {
   name: string;
   relevance: number;
 }
+
+export type DbTagInsert = PartialBy<DbTag, "id">;
+
+export type DbCompanyUrl = {
+  id: number;
+  company_id: number;
+};
