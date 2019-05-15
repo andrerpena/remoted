@@ -113,7 +113,7 @@ export async function addJob(
     if (!dbCompany.location_details_id) {
       const dbLocationDetailsForCompany = (await db.location_details.insert({
         ...dbLocationDetailsInput
-      })) as DbLocationDetails;
+      } as DbLocationDetails)) as DbLocationDetails;
       dbCompany.location_details_id = dbLocationDetailsForCompany.id;
       await db.company.save(dbCompany);
     }

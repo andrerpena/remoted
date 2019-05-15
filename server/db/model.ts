@@ -31,15 +31,11 @@ export interface DbCompany extends AnyObject<any> {
 export interface DbLocationDetails extends AnyObject<any> {
   id: number;
   raw_text: string;
-  worldwide_ok: Nullable<boolean>;
-  preferred_regions: Nullable<string[]>;
-  preferred_country_codes: Nullable<string[]>;
-  preferred_timezone_min: Nullable<number>;
-  preferred_timezone_max: Nullable<number>;
-  required_regions: Nullable<string[]>;
-  required_country_codes: Nullable<string[]>;
-  required_timezone_min: Nullable<number>;
-  required_timezone_max: Nullable<number>;
+  worldwide_confirmed: Nullable<boolean>;
+  regions: Nullable<string[]>;
+  countries: Nullable<string[]>;
+  timezone_min: Nullable<number>;
+  timezone_max: Nullable<number>;
 }
 
 export type DbLocationDetailsInput = PartialBy<DbLocationDetails, "id">;

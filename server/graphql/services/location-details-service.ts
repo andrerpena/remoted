@@ -12,14 +12,10 @@ export function getDbLocationDetailsInputFromLocationDetailsInput(
 ): DbLocationDetailsInput {
   return {
     raw_text: input.raw,
-    preferred_regions: input.preferredRegions,
-    preferred_country_codes: input.preferredCountries,
-    preferred_timezone_min: input.preferredTimeZoneMin,
-    preferred_timezone_max: input.preferredTimeZoneMax,
-    required_regions: input.preferredRegions,
-    required_country_codes: input.preferredCountries,
-    required_timezone_min: input.preferredTimeZoneMin,
-    required_timezone_max: input.preferredTimeZoneMax
+    regions: input.regions,
+    countries: input.countries,
+    timezone_min: input.timeZoneMin,
+    timezone_max: input.timeZoneMax
   };
 }
 
@@ -28,14 +24,10 @@ export function getLocationDetailsFromDbLocationDetails(
 ): LocationDetails {
   return {
     raw: dbLocationDetails.raw_text,
-    preferredRegions: dbLocationDetails.preferred_regions,
-    preferredCountries: dbLocationDetails.preferred_country_codes,
-    preferredTimeZoneMin: dbLocationDetails.preferred_timezone_min,
-    preferredTimeZoneMax: dbLocationDetails.preferred_timezone_max,
-    requiredRegions: dbLocationDetails.preferred_regions,
-    requiredCountries: dbLocationDetails.preferred_country_codes,
-    requiredTimeZoneMin: dbLocationDetails.preferred_timezone_min,
-    requiredTimeZoneMax: dbLocationDetails.preferred_timezone_max
+    regions: dbLocationDetails.regions,
+    countries: dbLocationDetails.countries,
+    timeZoneMin: dbLocationDetails.timezone_min,
+    timeZoneMax: dbLocationDetails.timezone_max
   };
 }
 

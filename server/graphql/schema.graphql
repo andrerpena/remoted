@@ -27,15 +27,11 @@ type Mutation {
 
 type LocationDetails {
   raw: String
-  worldwide: Boolean
-  preferredRegions: [String!]
-  preferredCountries: [String!]
-  preferredTimeZoneMin: Int
-  preferredTimeZoneMax: Int
-  requiredRegions: [String!]
-  requiredCountries: [String!]
-  requiredTimeZoneMin: Int
-  requiredTimeZoneMax: Int
+  worldwideConfirmed: Boolean
+  regions: [String!]
+  countries: [String!]
+  timeZoneMin: Int
+  timeZoneMax: Int
 }
 
 type Job {
@@ -84,15 +80,10 @@ type Company {
 
 input LocationDetailsInput {
   raw: String
-  worldwide: Boolean
-  preferredRegions: [String!]
-  preferredCountries: [String!]
-  preferredTimeZoneMin: Int
-  preferredTimeZoneMax: Int
-  requiredRegions: [String!]
-  requiredCountries: [String!]
-  requiredTimeZoneMin: Int
-  requiredTimeZoneMax: Int
+  regions: [String!]
+  countries: [String!]
+  timeZoneMin: Int
+  timeZoneMax: Int
 }
 
 input JobInput {

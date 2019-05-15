@@ -39,23 +39,13 @@ export interface JobInput {
 export interface LocationDetailsInput {
   raw?: Maybe<string>;
 
-  worldwide?: Maybe<boolean>;
+  regions?: Maybe<string[]>;
 
-  preferredRegions?: Maybe<string[]>;
+  countries?: Maybe<string[]>;
 
-  preferredCountries?: Maybe<string[]>;
+  timeZoneMin?: Maybe<number>;
 
-  preferredTimeZoneMin?: Maybe<number>;
-
-  preferredTimeZoneMax?: Maybe<number>;
-
-  requiredRegions?: Maybe<string[]>;
-
-  requiredCountries?: Maybe<string[]>;
-
-  requiredTimeZoneMin?: Maybe<number>;
-
-  requiredTimeZoneMax?: Maybe<number>;
+  timeZoneMax?: Maybe<number>;
 }
 
 export interface CompanyInput {
@@ -133,23 +123,15 @@ export interface Company {
 export interface LocationDetails {
   raw?: Maybe<string>;
 
-  worldwide?: Maybe<boolean>;
+  worldwideConfirmed?: Maybe<boolean>;
 
-  preferredRegions?: Maybe<string[]>;
+  regions?: Maybe<string[]>;
 
-  preferredCountries?: Maybe<string[]>;
+  countries?: Maybe<string[]>;
 
-  preferredTimeZoneMin?: Maybe<number>;
+  timeZoneMin?: Maybe<number>;
 
-  preferredTimeZoneMax?: Maybe<number>;
-
-  requiredRegions?: Maybe<string[]>;
-
-  requiredCountries?: Maybe<string[]>;
-
-  requiredTimeZoneMin?: Maybe<number>;
-
-  requiredTimeZoneMax?: Maybe<number>;
+  timeZoneMax?: Maybe<number>;
 }
 
 export interface TagCountGroup {
@@ -529,55 +511,19 @@ export namespace LocationDetailsResolvers {
   export interface Resolvers<Context = {}, TypeParent = LocationDetails> {
     raw?: RawResolver<Maybe<string>, TypeParent, Context>;
 
-    worldwide?: WorldwideResolver<Maybe<boolean>, TypeParent, Context>;
-
-    preferredRegions?: PreferredRegionsResolver<
-      Maybe<string[]>,
+    worldwideConfirmed?: WorldwideConfirmedResolver<
+      Maybe<boolean>,
       TypeParent,
       Context
     >;
 
-    preferredCountries?: PreferredCountriesResolver<
-      Maybe<string[]>,
-      TypeParent,
-      Context
-    >;
+    regions?: RegionsResolver<Maybe<string[]>, TypeParent, Context>;
 
-    preferredTimeZoneMin?: PreferredTimeZoneMinResolver<
-      Maybe<number>,
-      TypeParent,
-      Context
-    >;
+    countries?: CountriesResolver<Maybe<string[]>, TypeParent, Context>;
 
-    preferredTimeZoneMax?: PreferredTimeZoneMaxResolver<
-      Maybe<number>,
-      TypeParent,
-      Context
-    >;
+    timeZoneMin?: TimeZoneMinResolver<Maybe<number>, TypeParent, Context>;
 
-    requiredRegions?: RequiredRegionsResolver<
-      Maybe<string[]>,
-      TypeParent,
-      Context
-    >;
-
-    requiredCountries?: RequiredCountriesResolver<
-      Maybe<string[]>,
-      TypeParent,
-      Context
-    >;
-
-    requiredTimeZoneMin?: RequiredTimeZoneMinResolver<
-      Maybe<number>,
-      TypeParent,
-      Context
-    >;
-
-    requiredTimeZoneMax?: RequiredTimeZoneMaxResolver<
-      Maybe<number>,
-      TypeParent,
-      Context
-    >;
+    timeZoneMax?: TimeZoneMaxResolver<Maybe<number>, TypeParent, Context>;
   }
 
   export type RawResolver<
@@ -585,47 +531,27 @@ export namespace LocationDetailsResolvers {
     Parent = LocationDetails,
     Context = {}
   > = Resolver<R, Parent, Context>;
-  export type WorldwideResolver<
+  export type WorldwideConfirmedResolver<
     R = Maybe<boolean>,
     Parent = LocationDetails,
     Context = {}
   > = Resolver<R, Parent, Context>;
-  export type PreferredRegionsResolver<
+  export type RegionsResolver<
     R = Maybe<string[]>,
     Parent = LocationDetails,
     Context = {}
   > = Resolver<R, Parent, Context>;
-  export type PreferredCountriesResolver<
+  export type CountriesResolver<
     R = Maybe<string[]>,
     Parent = LocationDetails,
     Context = {}
   > = Resolver<R, Parent, Context>;
-  export type PreferredTimeZoneMinResolver<
+  export type TimeZoneMinResolver<
     R = Maybe<number>,
     Parent = LocationDetails,
     Context = {}
   > = Resolver<R, Parent, Context>;
-  export type PreferredTimeZoneMaxResolver<
-    R = Maybe<number>,
-    Parent = LocationDetails,
-    Context = {}
-  > = Resolver<R, Parent, Context>;
-  export type RequiredRegionsResolver<
-    R = Maybe<string[]>,
-    Parent = LocationDetails,
-    Context = {}
-  > = Resolver<R, Parent, Context>;
-  export type RequiredCountriesResolver<
-    R = Maybe<string[]>,
-    Parent = LocationDetails,
-    Context = {}
-  > = Resolver<R, Parent, Context>;
-  export type RequiredTimeZoneMinResolver<
-    R = Maybe<number>,
-    Parent = LocationDetails,
-    Context = {}
-  > = Resolver<R, Parent, Context>;
-  export type RequiredTimeZoneMaxResolver<
+  export type TimeZoneMaxResolver<
     R = Maybe<number>,
     Parent = LocationDetails,
     Context = {}

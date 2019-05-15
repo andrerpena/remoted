@@ -518,7 +518,7 @@
             "deprecationReason": null
           },
           {
-            "name": "worldwide",
+            "name": "worldwideConfirmed",
             "description": "",
             "args": [],
             "type": { "kind": "SCALAR", "name": "Boolean", "ofType": null },
@@ -526,7 +526,7 @@
             "deprecationReason": null
           },
           {
-            "name": "preferredRegions",
+            "name": "regions",
             "description": "",
             "args": [],
             "type": {
@@ -542,7 +542,7 @@
             "deprecationReason": null
           },
           {
-            "name": "preferredCountries",
+            "name": "countries",
             "description": "",
             "args": [],
             "type": {
@@ -558,7 +558,7 @@
             "deprecationReason": null
           },
           {
-            "name": "preferredTimeZoneMin",
+            "name": "timeZoneMin",
             "description": "",
             "args": [],
             "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
@@ -566,55 +566,7 @@
             "deprecationReason": null
           },
           {
-            "name": "preferredTimeZoneMax",
-            "description": "",
-            "args": [],
-            "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "requiredRegions",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "requiredCountries",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "requiredTimeZoneMin",
-            "description": "",
-            "args": [],
-            "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "requiredTimeZoneMax",
+            "name": "timeZoneMax",
             "description": "",
             "args": [],
             "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
@@ -961,13 +913,7 @@
             "defaultValue": null
           },
           {
-            "name": "worldwide",
-            "description": "",
-            "type": { "kind": "SCALAR", "name": "Boolean", "ofType": null },
-            "defaultValue": null
-          },
-          {
-            "name": "preferredRegions",
+            "name": "regions",
             "description": "",
             "type": {
               "kind": "LIST",
@@ -981,7 +927,7 @@
             "defaultValue": null
           },
           {
-            "name": "preferredCountries",
+            "name": "countries",
             "description": "",
             "type": {
               "kind": "LIST",
@@ -995,53 +941,13 @@
             "defaultValue": null
           },
           {
-            "name": "preferredTimeZoneMin",
+            "name": "timeZoneMin",
             "description": "",
             "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
             "defaultValue": null
           },
           {
-            "name": "preferredTimeZoneMax",
-            "description": "",
-            "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
-            "defaultValue": null
-          },
-          {
-            "name": "requiredRegions",
-            "description": "",
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
-              }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "requiredCountries",
-            "description": "",
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
-              }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "requiredTimeZoneMin",
-            "description": "",
-            "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
-            "defaultValue": null
-          },
-          {
-            "name": "requiredTimeZoneMax",
+            "name": "timeZoneMax",
             "description": "",
             "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
             "defaultValue": null

@@ -37,7 +37,6 @@ describe("Location details service", () => {
     });
     it("should work happy case", async () => {
       const europe: Region = "Europe";
-      const america: Region = "Americas";
       const job = await addJob(db, {
         title: `awesome dev job`,
         description: "This is a job",
@@ -48,15 +47,10 @@ describe("Location details service", () => {
         source: "stackoverflow",
         locationDetails: {
           raw: "germany please",
-          preferredRegions: [europe],
-          preferredCountries: ["DE"],
-          preferredTimeZoneMin: 0,
-          preferredTimeZoneMax: 2,
-          requiredRegions: [europe, america],
-          requiredCountries: ["DE", "FR"],
-          requiredTimeZoneMin: -1,
-          requiredTimeZoneMax: 3,
-          worldwide: false
+          regions: [europe],
+          countries: ["US"],
+          timeZoneMin: -5,
+          timeZoneMax: 2
         }
       });
 
