@@ -7,6 +7,8 @@ You are more than welcome to participate to help making https://remoted.io/ the 
 - [🤦‍♀️ Give feedback, 🔥 report bugs, ❤ suggest improvements and 🙋‍♀️ ask questions here!](https://github.com/remoted-io/remoted/issues)
 
 Other useful links:
+- [Remoted.io](https://remoted.io)
 - [Remoted GraphQL API](https://remoted.io/graphql)
+- [JobSeeker source code](https://github.com/remoted-io/jobseeker)
 
 Made with ❤ by [Andre Pena](https://twitter.com/andrerpena).
