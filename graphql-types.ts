@@ -37,7 +37,7 @@ export interface JobInput {
 }
 
 export interface LocationDetailsInput {
-  raw?: Maybe<string>;
+  description?: Maybe<string>;
 
   regions?: Maybe<string[]>;
 
@@ -121,7 +121,7 @@ export interface Company {
 }
 
 export interface LocationDetails {
-  raw?: Maybe<string>;
+  description?: Maybe<string>;
 
   worldwideConfirmed?: Maybe<boolean>;
 
@@ -509,7 +509,7 @@ export namespace CompanyResolvers {
 
 export namespace LocationDetailsResolvers {
   export interface Resolvers<Context = {}, TypeParent = LocationDetails> {
-    raw?: RawResolver<Maybe<string>, TypeParent, Context>;
+    description?: DescriptionResolver<Maybe<string>, TypeParent, Context>;
 
     worldwideConfirmed?: WorldwideConfirmedResolver<
       Maybe<boolean>,
@@ -526,7 +526,7 @@ export namespace LocationDetailsResolvers {
     timeZoneMax?: TimeZoneMaxResolver<Maybe<number>, TypeParent, Context>;
   }
 
-  export type RawResolver<
+  export type DescriptionResolver<
     R = Maybe<string>,
     Parent = LocationDetails,
     Context = {}

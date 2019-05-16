@@ -510,7 +510,7 @@
         "description": "",
         "fields": [
           {
-            "name": "raw",
+            "name": "description",
             "description": "",
             "args": [],
             "type": { "kind": "SCALAR", "name": "String", "ofType": null },
@@ -907,7 +907,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "raw",
+            "name": "description",
             "description": "",
             "type": { "kind": "SCALAR", "name": "String", "ofType": null },
             "defaultValue": null

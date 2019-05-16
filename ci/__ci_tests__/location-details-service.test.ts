@@ -13,6 +13,7 @@ import {
   getLocationDetailsForCompany,
   getLocationDetailsForJob
 } from "../../server/graphql/services/location-details-service";
+import { LocationDetails } from "../../graphql-types";
 
 let db: RemotedDatabase;
 
@@ -46,7 +47,7 @@ describe("Location details service", () => {
         url: `URL`,
         source: "stackoverflow",
         locationDetails: {
-          raw: "germany please",
+          description: "germany please",
           regions: [europe],
           countries: ["US"],
           timeZoneMin: -5,
@@ -79,11 +80,11 @@ describe("Location details service", () => {
       const locationDetails = await getLocationDetailsForJob(db, job.id);
       expect(locationDetails).toEqual({
         countries: ["US"],
-        raw: "germany please",
+        description: "germany please",
         regions: ["Europe"],
         timeZoneMax: 2,
         timeZoneMin: -5
-      });
+      } as LocationDetails);
 
       const companyLocation = await getLocationDetailsForCompany(
         db,
@@ -91,11 +92,11 @@ describe("Location details service", () => {
       );
       expect(companyLocation).toEqual({
         countries: ["US"],
-        raw: "germany please",
+        description: "germany please",
         regions: ["Europe"],
         timeZoneMax: 2,
         timeZoneMin: -5
-      });
+      } as LocationDetails);
     });
   });
 });

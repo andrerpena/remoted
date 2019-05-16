@@ -202,7 +202,7 @@ CREATE TABLE public.location_details (
     countries character varying(2)[],
     timezone_min integer,
     timezone_max integer,
-    raw_text text
+    description text
 );
 
 

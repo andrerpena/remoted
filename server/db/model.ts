@@ -30,7 +30,7 @@ export interface DbCompany extends AnyObject<any> {
 
 export interface DbLocationDetails extends AnyObject<any> {
   id: number;
-  raw_text: string;
+  description: string;
   worldwide_confirmed: Nullable<boolean>;
   regions: Nullable<string[]>;
   countries: Nullable<string[]>;
