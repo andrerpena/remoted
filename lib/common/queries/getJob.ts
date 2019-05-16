@@ -21,12 +21,14 @@ export const getJobQuery = gql`
         displayName
         imageUrl
       }
-      locationRaw
-      locationRequired
-      locationTag
-      locationPreferred
-      locationPreferredTimeZone
-      locationPreferredTimeZoneTolerance
+      locationDetails {
+        countries
+        regions
+        raw
+        timeZoneMin
+        timeZoneMax
+        worldwideConfirmed
+      }
       salaryMin
       salaryMax
       salaryCurrency
