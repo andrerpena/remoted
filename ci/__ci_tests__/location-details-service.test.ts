@@ -78,15 +78,11 @@ describe("Location details service", () => {
 
       const locationDetails = await getLocationDetailsForJob(db, job.id);
       expect(locationDetails).toEqual({
-        preferredCountries: ["DE"],
-        preferredRegions: ["Europe"],
-        preferredTimeZoneMax: 2,
-        preferredTimeZoneMin: 0,
+        countries: ["US"],
         raw: "germany please",
-        requiredCountries: ["DE"],
-        requiredRegions: ["Europe"],
-        requiredTimeZoneMax: 2,
-        requiredTimeZoneMin: 0
+        regions: ["Europe"],
+        timeZoneMax: 2,
+        timeZoneMin: -5
       });
 
       const companyLocation = await getLocationDetailsForCompany(
@@ -94,15 +90,11 @@ describe("Location details service", () => {
         companyPublicId
       );
       expect(companyLocation).toEqual({
-        preferredCountries: ["DE"],
-        preferredRegions: ["Europe"],
-        preferredTimeZoneMax: 2,
-        preferredTimeZoneMin: 0,
+        countries: ["US"],
         raw: "germany please",
-        requiredCountries: ["DE"],
-        requiredRegions: ["Europe"],
-        requiredTimeZoneMax: 2,
-        requiredTimeZoneMin: 0
+        regions: ["Europe"],
+        timeZoneMax: 2,
+        timeZoneMin: -5
       });
     });
   });
