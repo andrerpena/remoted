@@ -49,7 +49,7 @@ export const getJobsQuery = gql`
       locationDetails {
         countries
         regions
-        raw
+        description
         timeZoneMin
         timeZoneMax
         worldwideConfirmed
