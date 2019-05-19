@@ -39,13 +39,15 @@ export interface JobInput {
 export interface LocationDetailsInput {
   description?: Maybe<string>;
 
-  regions?: Maybe<string[]>;
+  acceptedRegions?: Maybe<string[]>;
 
-  countries?: Maybe<string[]>;
+  acceptedCountries?: Maybe<string[]>;
 
   timeZoneMin?: Maybe<number>;
 
   timeZoneMax?: Maybe<number>;
+
+  headquartersLocation?: Maybe<string>;
 }
 
 export interface CompanyInput {
@@ -125,13 +127,15 @@ export interface LocationDetails {
 
   worldwideConfirmed?: Maybe<boolean>;
 
-  regions?: Maybe<string[]>;
+  acceptedRegions?: Maybe<string[]>;
 
-  countries?: Maybe<string[]>;
+  acceptedCountries?: Maybe<string[]>;
 
   timeZoneMin?: Maybe<number>;
 
   timeZoneMax?: Maybe<number>;
+
+  headquartersLocation?: Maybe<string>;
 }
 
 export interface TagCountGroup {
@@ -517,13 +521,27 @@ export namespace LocationDetailsResolvers {
       Context
     >;
 
-    regions?: RegionsResolver<Maybe<string[]>, TypeParent, Context>;
+    acceptedRegions?: AcceptedRegionsResolver<
+      Maybe<string[]>,
+      TypeParent,
+      Context
+    >;
 
-    countries?: CountriesResolver<Maybe<string[]>, TypeParent, Context>;
+    acceptedCountries?: AcceptedCountriesResolver<
+      Maybe<string[]>,
+      TypeParent,
+      Context
+    >;
 
     timeZoneMin?: TimeZoneMinResolver<Maybe<number>, TypeParent, Context>;
 
     timeZoneMax?: TimeZoneMaxResolver<Maybe<number>, TypeParent, Context>;
+
+    headquartersLocation?: HeadquartersLocationResolver<
+      Maybe<string>,
+      TypeParent,
+      Context
+    >;
   }
 
   export type DescriptionResolver<
@@ -536,12 +554,12 @@ export namespace LocationDetailsResolvers {
     Parent = LocationDetails,
     Context = {}
   > = Resolver<R, Parent, Context>;
-  export type RegionsResolver<
+  export type AcceptedRegionsResolver<
     R = Maybe<string[]>,
     Parent = LocationDetails,
     Context = {}
   > = Resolver<R, Parent, Context>;
-  export type CountriesResolver<
+  export type AcceptedCountriesResolver<
     R = Maybe<string[]>,
     Parent = LocationDetails,
     Context = {}
@@ -553,6 +571,11 @@ export namespace LocationDetailsResolvers {
   > = Resolver<R, Parent, Context>;
   export type TimeZoneMaxResolver<
     R = Maybe<number>,
+    Parent = LocationDetails,
+    Context = {}
+  > = Resolver<R, Parent, Context>;
+  export type HeadquartersLocationResolver<
+    R = Maybe<string>,
     Parent = LocationDetails,
     Context = {}
   > = Resolver<R, Parent, Context>;

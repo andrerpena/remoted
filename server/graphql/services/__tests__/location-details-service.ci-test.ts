@@ -48,8 +48,8 @@ describe("Location details service", () => {
         source: "stackoverflow",
         locationDetails: {
           description: "germany please",
-          regions: [europe],
-          countries: ["US"],
+          acceptedRegions: [europe],
+          acceptedCountries: ["US"],
           timeZoneMin: -5,
           timeZoneMax: 2
         }
@@ -79,11 +79,13 @@ describe("Location details service", () => {
 
       const locationDetails = await getLocationDetailsForJob(db, job.id);
       expect(locationDetails).toEqual({
-        countries: ["US"],
+        acceptedCountries: ["US"],
+        acceptedRegions: ["Europe"],
         description: "germany please",
-        regions: ["Europe"],
+        headquartersLocation: null,
         timeZoneMax: 2,
-        timeZoneMin: -5
+        timeZoneMin: -5,
+        worldwideConfirmed: null
       } as LocationDetails);
 
       const companyLocation = await getLocationDetailsForCompany(
@@ -91,11 +93,13 @@ describe("Location details service", () => {
         companyPublicId
       );
       expect(companyLocation).toEqual({
-        countries: ["US"],
+        acceptedCountries: ["US"],
+        acceptedRegions: ["Europe"],
         description: "germany please",
-        regions: ["Europe"],
+        headquartersLocation: null,
         timeZoneMax: 2,
-        timeZoneMin: -5
+        timeZoneMin: -5,
+        worldwideConfirmed: null
       } as LocationDetails);
     });
   });

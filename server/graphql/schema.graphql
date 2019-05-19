@@ -28,10 +28,11 @@ type Mutation {
 type LocationDetails {
   description: String
   worldwideConfirmed: Boolean
-  regions: [String!]
-  countries: [String!]
+  acceptedRegions: [String!]
+  acceptedCountries: [String!]
   timeZoneMin: Int
   timeZoneMax: Int
+  headquartersLocation: String
 }
 
 type Job {
@@ -80,10 +81,11 @@ type Company {
 
 input LocationDetailsInput {
   description: String
-  regions: [String!]
-  countries: [String!]
+  acceptedRegions: [String!]
+  acceptedCountries: [String!]
   timeZoneMin: Int
   timeZoneMax: Int
+  headquartersLocation: String
 }
 
 input JobInput {

@@ -12,10 +12,11 @@ export function getDbLocationDetailsInputFromLocationDetailsInput(
 ): DbLocationDetailsInput {
   return {
     description: input.description,
-    accepted_regions: input.regions,
-    accepted_countries: input.countries,
+    accepted_regions: input.acceptedRegions,
+    accepted_countries: input.acceptedCountries,
     timezone_min: input.timeZoneMin,
-    timezone_max: input.timeZoneMax
+    timezone_max: input.timeZoneMax,
+    headquarters_location: input.headquartersLocation
   };
 }
 
@@ -24,10 +25,12 @@ export function getLocationDetailsFromDbLocationDetails(
 ): LocationDetails {
   return {
     description: dbLocationDetails.description,
-    regions: dbLocationDetails.accepted_regions,
-    countries: dbLocationDetails.accepted_countries,
+    acceptedRegions: dbLocationDetails.accepted_regions,
+    acceptedCountries: dbLocationDetails.accepted_countries,
     timeZoneMin: dbLocationDetails.timezone_min,
-    timeZoneMax: dbLocationDetails.timezone_max
+    timeZoneMax: dbLocationDetails.timezone_max,
+    headquartersLocation: dbLocationDetails.headquarters_location,
+    worldwideConfirmed: dbLocationDetails.worldwide_confirmed
   };
 }
 

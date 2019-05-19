@@ -22,8 +22,8 @@ export const getJobQuery = gql`
         imageUrl
       }
       locationDetails {
-        countries
-        regions
+        acceptedCountries
+        acceptedRegions
         description
         timeZoneMin
         timeZoneMax

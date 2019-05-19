@@ -526,7 +526,7 @@
             "deprecationReason": null
           },
           {
-            "name": "regions",
+            "name": "acceptedRegions",
             "description": "",
             "args": [],
             "type": {
@@ -542,7 +542,7 @@
             "deprecationReason": null
           },
           {
-            "name": "countries",
+            "name": "acceptedCountries",
             "description": "",
             "args": [],
             "type": {
@@ -570,6 +570,14 @@
             "description": "",
             "args": [],
             "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "headquartersLocation",
+            "description": "",
+            "args": [],
+            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
             "isDeprecated": false,
             "deprecationReason": null
           }
@@ -913,7 +921,7 @@
             "defaultValue": null
           },
           {
-            "name": "regions",
+            "name": "acceptedRegions",
             "description": "",
             "type": {
               "kind": "LIST",
@@ -927,7 +935,7 @@
             "defaultValue": null
           },
           {
-            "name": "countries",
+            "name": "acceptedCountries",
             "description": "",
             "type": {
               "kind": "LIST",
@@ -950,6 +958,12 @@
             "name": "timeZoneMax",
             "description": "",
             "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
+            "defaultValue": null
+          },
+          {
+            "name": "headquartersLocation",
+            "description": "",
+            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
             "defaultValue": null
           }
         ],
