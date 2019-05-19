@@ -1,6 +1,6 @@
 import * as countries from "./server/locations/countries_raw.json";
 import * as fs from "fs";
-import { CountryData, Region } from "./server/locations";
+import { CountryData, Region } from "./lib/common";
 
 const adjustedCountries: CountryData[] = [];
 

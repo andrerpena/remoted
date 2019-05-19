@@ -8,7 +8,7 @@ import { addCompany } from "../company-service";
 import { addJob } from "../job-service";
 import { RemotedDatabase } from "../../../db/model";
 import { clearDb } from "../../../../lib/server/db-ci-helpers";
-import { Region } from "../../../locations";
+import { Region } from "../../../../lib/common";
 import {
   getLocationDetailsForCompany,
   getLocationDetailsForJob

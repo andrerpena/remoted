@@ -1,8 +1,10 @@
 /**
  * Joins an array of strings in natural language
- * @param items
  */
-export function naturalJoin(items: string[]): string {
+export function naturalJoin(
+  items: string[],
+  conjunction: string = "and"
+): string {
   if (!items) {
     return "";
   }
@@ -10,9 +12,9 @@ export function naturalJoin(items: string[]): string {
     return items[0];
   }
   if (items.length === 2) {
-    return `${items[0]} and ${items[1]}`;
+    return `${items[0]} ${conjunction} ${items[1]}`;
   }
   return `${items.slice(0, items.length - 1).join(", ") +
-    " and " +
+    ` ${conjunction} ` +
     items[items.length - 1]}`;
 }
