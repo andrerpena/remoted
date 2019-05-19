@@ -32,10 +32,12 @@ export interface DbLocationDetails extends AnyObject<any> {
   id: number;
   description: string;
   worldwide_confirmed: Nullable<boolean>;
-  regions: Nullable<string[]>;
-  countries: Nullable<string[]>;
+  accepted_regions: Nullable<string[]>;
+  accepted_countries: Nullable<string[]>;
   timezone_min: Nullable<number>;
   timezone_max: Nullable<number>;
+  headquarters_location: Nullable<string>;
+  enable_automatic_updates: Nullable<boolean>;
 }
 
 export type DbLocationDetailsInput = PartialBy<DbLocationDetails, "id">;

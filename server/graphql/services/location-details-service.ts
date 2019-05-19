@@ -12,8 +12,8 @@ export function getDbLocationDetailsInputFromLocationDetailsInput(
 ): DbLocationDetailsInput {
   return {
     description: input.description,
-    regions: input.regions,
-    countries: input.countries,
+    accepted_regions: input.regions,
+    accepted_countries: input.countries,
     timezone_min: input.timeZoneMin,
     timezone_max: input.timeZoneMax
   };
@@ -24,8 +24,8 @@ export function getLocationDetailsFromDbLocationDetails(
 ): LocationDetails {
   return {
     description: dbLocationDetails.description,
-    regions: dbLocationDetails.regions,
-    countries: dbLocationDetails.countries,
+    regions: dbLocationDetails.accepted_regions,
+    countries: dbLocationDetails.accepted_countries,
     timeZoneMin: dbLocationDetails.timezone_min,
     timeZoneMax: dbLocationDetails.timezone_max
   };

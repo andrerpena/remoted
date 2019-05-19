@@ -1,19 +1,19 @@
-import { buildTestDb } from "../../server/db/build-db";
+import { buildTestDb } from "../../../db/build-db";
 
 import { config } from "dotenv";
 
 config();
 
-import { addCompany } from "../../server/graphql/services/company-service";
-import { addJob } from "../../server/graphql/services/job-service";
-import { RemotedDatabase } from "../../server/db/model";
-import { clearDb } from "../../lib/server/db-ci-helpers";
-import { Region } from "../../server/locations";
+import { addCompany } from "../company-service";
+import { addJob } from "../job-service";
+import { RemotedDatabase } from "../../../db/model";
+import { clearDb } from "../../../../lib/server/db-ci-helpers";
+import { Region } from "../../../locations";
 import {
   getLocationDetailsForCompany,
   getLocationDetailsForJob
-} from "../../server/graphql/services/location-details-service";
-import { LocationDetails } from "../../graphql-types";
+} from "../location-details-service";
+import { LocationDetails } from "../../../../graphql-types";
 
 let db: RemotedDatabase;
 

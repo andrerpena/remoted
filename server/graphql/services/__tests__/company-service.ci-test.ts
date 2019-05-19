@@ -1,14 +1,14 @@
-import { buildTestDb } from "../../server/db/build-db";
+import { buildTestDb } from "../../../db/build-db";
 import { config } from "dotenv";
 
 config();
-import { DbCompany, RemotedDatabase } from "../../server/db/model";
+import { DbCompany, RemotedDatabase } from "../../../db/model";
 import {
   addCompany,
   getCompanyByDisplayName,
   getCompanyByPublicId
-} from "../../server/graphql/services/company-service";
-import { clearDb } from "../../lib/server/db-ci-helpers";
+} from "../company-service";
+import { clearDb } from "../../../../lib/server/db-ci-helpers";
 
 let db: RemotedDatabase;
 

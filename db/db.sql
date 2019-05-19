@@ -198,11 +198,13 @@ ALTER SEQUENCE public.jobs_id_seq OWNED BY public.job.id;
 CREATE TABLE public.location_details (
     id integer NOT NULL,
     worldwide_confirmed boolean,
-    regions character varying(50)[],
-    countries character varying(2)[],
+    accepted_regions character varying(50)[],
+    accepted_countries character varying(2)[],
     timezone_min integer,
     timezone_max integer,
-    description text
+    description text,
+    headquarters_location character varying(200),
+    enable_automatic_updates boolean
 );
 
 

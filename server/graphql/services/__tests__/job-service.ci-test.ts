@@ -1,16 +1,12 @@
-import { buildTestDb } from "../../server/db/build-db";
+import { buildTestDb } from "../../../db/build-db";
 
 import { config } from "dotenv";
 
 config();
-import { DbCompany, RemotedDatabase } from "../../server/db/model";
-import { addCompany } from "../../server/graphql/services/company-service";
-import {
-  getJobs,
-  addJob,
-  getJob
-} from "../../server/graphql/services/job-service";
-import { clearDb } from "../../lib/server/db-ci-helpers";
+import { DbCompany, RemotedDatabase } from "../../../db/model";
+import { addCompany } from "../company-service";
+import { getJobs, addJob, getJob } from "../job-service";
+import { clearDb } from "../../../../lib/server/db-ci-helpers";
 
 let db: RemotedDatabase;
 
