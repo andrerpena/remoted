@@ -366,7 +366,7 @@ describe("job-service", () => {
           source: "stackoverflow",
           salaryExact: 10000
         });
-        const data = await getJobs(db, 20, 0, null, null, null, true);
+        const data = await getJobs(db, 20, 0, null, null, null, null, true);
         expect(data.length).toEqual(1);
       });
       it("should work when min salary is specified", async () => {
@@ -380,7 +380,7 @@ describe("job-service", () => {
           source: "stackoverflow",
           salaryMin: 10000
         });
-        const data = await getJobs(db, 20, 0, null, null, null, true);
+        const data = await getJobs(db, 20, 0, null, null, null, null, true);
         expect(data.length).toEqual(1);
       });
       it("should work when max salary is specified", async () => {
@@ -394,7 +394,7 @@ describe("job-service", () => {
           source: "stackoverflow",
           salaryMax: 10000
         });
-        const data = await getJobs(db, 20, 0, null, null, null, true);
+        const data = await getJobs(db, 20, 0, null, null, null, null, true);
         expect(data.length).toEqual(1);
       });
     });
@@ -415,7 +415,7 @@ describe("job-service", () => {
           source: "we-work-remotely",
           salaryExact: 10000
         });
-        const data = await getJobs(db, 20, 0, null, null, null, null, [
+        const data = await getJobs(db, 20, 0, null, null, null, null, null, [
           "we-work-remotely"
         ]);
         expect(data.length).toEqual(1);
@@ -441,7 +441,7 @@ describe("job-service", () => {
           source: "authentic-jobs",
           salaryExact: 10000
         });
-        const data = await getJobs(db, 20, 0, null, null, null, null, [
+        const data = await getJobs(db, 20, 0, null, null, null, null, null, [
           "we-work-remotely",
           "authentic-jobs"
         ]);
@@ -460,6 +460,7 @@ describe("job-service", () => {
           undefined,
           undefined,
           undefined,
+          undefined,
           companyPublicId
         );
         expect(data.length).toEqual(10);
@@ -469,6 +470,7 @@ describe("job-service", () => {
           db,
           20,
           0,
+          undefined,
           undefined,
           undefined,
           undefined,
@@ -498,6 +500,7 @@ describe("job-service", () => {
           db,
           20,
           0,
+          undefined,
           undefined,
           undefined,
           undefined,

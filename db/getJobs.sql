@@ -3,12 +3,21 @@
 -- _offset
 -- _tag
 -- _anywhere
--- _excludeLocationTags
+-- _excludeCountries
+-- _excludeRegions
 -- _salary
 -- _sources
 -- _companyId
-select *
-from job u
+select u.*,
+       ld.worldwide_confirmed as loc_worldwide_confirmed,
+       ld.accepted_regions as loc_accepted_regions,
+       ld.accepted_countries as loc_accepted_countries,
+       ld.timezone_min as loc_timezone_min,
+       ld.timezone_max as loc_timezone_max,
+       ld.description as loc_description,
+       ld.headquarters_location as loc_headquarts_location,
+       ld.accepted_regions as loc_accepted_regions
+from job u left outer join location_details ld on u.location_details_id = ld.id
 where (
               (${_tag} is null or exists(
                       select t.id
@@ -19,11 +28,15 @@ where (
                   ))
               and (
                       ${_anywhere} is null
-                      or (location_tag is null and u.location_required is null)
+                      or (ld.accepted_countries is null and ld.accepted_regions is null)
                   )
               and (
-                      ${_excludeLocationTags} is null
-                      or location_tag is null or location_tag != ALL (${_excludeLocationTags})
+                      ${_excludeCountries} is null
+                      or ld.accepted_countries is null or not (ld.accepted_countries && (${_excludeCountries}))
+                  )
+              and (
+                      ${_excludeRegions} is null
+                      or ld.accepted_regions is null or not (ld.accepted_regions && (${_excludeRegions}))
                   )
               and (
                       ${_salary} is not true or

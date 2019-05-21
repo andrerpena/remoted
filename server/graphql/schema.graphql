@@ -10,7 +10,8 @@ type Query {
     tag: String
     salary: Boolean
     anywhere: Boolean
-    excludeLocationTags: [String!]
+    excludeRegions: [String!]
+    excludeCountries: [String!]
     sources: [String!]
     companyId: String
   ): [Job]

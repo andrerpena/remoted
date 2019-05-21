@@ -90,3 +90,8 @@ export function getTimezoneText(
     timezoneMin
   )} to UTC ${convertNaturalIntegerToString(timezoneMax)}`;
 }
+
+export const US_ONLY = "us-only";
+export const NORTH_AMERICA_ONLY = "north-america-only";
+export const EUROPE_ONLY = "europe-only";
+export const UK_ONLY = "uk-only";

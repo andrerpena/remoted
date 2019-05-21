@@ -10,7 +10,8 @@ export type GetJobsVariables = {
   salary?: boolean;
   anywhere?: boolean;
   companyId?: string;
-  excludeLocationTags?: string[];
+  excludeCountries?: string[];
+  excludeRegions?: string[];
   sources?: string[];
 };
 

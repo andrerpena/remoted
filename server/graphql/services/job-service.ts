@@ -128,7 +128,8 @@ export async function getJobs(
   offset: number,
   tag?: Nullable<string>,
   anywhere?: Nullable<boolean>,
-  excludeLocationTags?: Nullable<string[]>,
+  excludeCountries?: Nullable<string[]>,
+  excludeRegions?: Nullable<string[]>,
   salary?: Nullable<boolean>,
   sources?: Nullable<string[]>,
   companyPublicId?: Nullable<string>
@@ -152,10 +153,10 @@ export async function getJobs(
     _offset: offset,
     _tag: tag || null,
     _anywhere: anywhere || null,
-    _excludeLocationTags:
-      excludeLocationTags && excludeLocationTags.length
-        ? excludeLocationTags
-        : null,
+    _excludeCountries:
+      excludeCountries && excludeCountries.length ? excludeCountries : null,
+    _excludeRegions:
+      excludeRegions && excludeRegions.length ? excludeRegions : null,
     _sources: sources && sources.length ? sources : null,
     _salary: salary || null,
     _companyId: companyId || null

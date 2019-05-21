@@ -8,12 +8,12 @@ import { addCompany } from "../company-service";
 import { addJob } from "../job-service";
 import { RemotedDatabase } from "../../../db/model";
 import { clearDb } from "../../../../lib/server/db-ci-helpers";
-import { Region } from "../../../../lib/common";
 import {
   getLocationDetailsForCompany,
   getLocationDetailsForJob
 } from "../location-details-service";
 import { LocationDetails } from "../../../../graphql-types";
+import { Region } from "../../../../lib/common/location";
 
 let db: RemotedDatabase;
 

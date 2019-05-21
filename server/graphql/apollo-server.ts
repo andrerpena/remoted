@@ -55,7 +55,8 @@ const resolvers: Resolvers = {
         args.offset || 0,
         args.tag,
         args.anywhere,
-        args.excludeLocationTags,
+        args.excludeCountries,
+        args.excludeRegions,
         args.salary,
         args.sources,
         args.companyId
