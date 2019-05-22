@@ -5,7 +5,7 @@ import { config } from "dotenv";
 config();
 import { DbCompany, RemotedDatabase } from "../../../db/model";
 import { addCompany } from "../company-service";
-import { getJobs, addJob, getJob } from "../job-service";
+import { searchJobs, addJob, getJob } from "../job-service";
 import { clearDb } from "../../../../lib/server/db-ci-helpers";
 
 let db: RemotedDatabase;
@@ -83,7 +83,7 @@ describe("job-service", () => {
         url: "URL",
         source: "stackoverflow"
       });
-      const data = await getJobs(db, 10, 0);
+      const data = await searchJobs(db, 10, 0);
       expect(data.length).toBe(1);
       expect(data[0]).toMatchObject({
         title: "developer",
@@ -144,7 +144,7 @@ describe("job-service", () => {
       });
     });
   });
-  describe("getJobs", () => {
+  describe("searchJobs", () => {
     let companyPublicId = "";
     beforeEach(async () => {
       const company = await addCompany(db, {
@@ -171,9 +171,10 @@ describe("job-service", () => {
     });
 
     it("default behavior", async () => {
-      const data = await getJobs(db, 10, 0);
+      const data = await searchJobs(db, 10, 0);
       expect(Array.isArray(data)).toBe(true);
       expect(data.length).toBe(10);
+      console.log(data[0]);
       expect(data[0]).toMatchObject({
         createdAt: expect.any(String),
         description: "This is a job",
@@ -193,29 +194,29 @@ describe("job-service", () => {
     });
 
     it("getting more data should return just 10", async () => {
-      const data = await getJobs(db, 20, 0);
+      const data = await searchJobs(db, 20, 0);
       expect(Array.isArray(data)).toBe(true);
       expect(data.length).toBe(10);
     });
 
     it("should work with half of the data", async () => {
-      const data = await getJobs(db, 10, 5);
+      const data = await searchJobs(db, 10, 5);
       expect(Array.isArray(data)).toBe(true);
       expect(data.length).toBe(5);
     });
 
     it("the job title should be correct", async () => {
-      const data = await getJobs(db, 10, 8);
+      const data = await searchJobs(db, 10, 8);
       expect(Array.isArray(data)).toBe(true);
       expect(data.map(d => d.title)).toEqual(["dev job 1", "dev job 0"]);
     });
 
     // describe("location tag", () => {
     //   it("should work when you specify the tag that does not exist", async () => {
-    //     const data = await getJobs(db, 10, 0);
+    //     const data = await searchJobs(db, 10, 0);
     //     expect(data.length).toEqual(10);
     //
-    //     const data2 = await getJobs(db, 10, 0, "tag-that-does-not-exist");
+    //     const data2 = await searchJobs(db, 10, 0, "tag-that-does-not-exist");
     //     expect(data2.length).toEqual(0);
     //   });
     //
@@ -232,7 +233,7 @@ describe("job-service", () => {
     //       source: "stackoverflow"
     //     });
     //
-    //     const data = await getJobs(db, 20, 0);
+    //     const data = await searchJobs(db, 20, 0);
     //     expect(data.length).toEqual(11);
     //   });
     //
@@ -249,7 +250,7 @@ describe("job-service", () => {
     //       source: "stackoverflow"
     //     });
     //
-    //     const data = await getJobs(db, 20, 0, null, null, [US_ONLY]);
+    //     const data = await searchJobs(db, 20, 0, null, null, [US_ONLY]);
     //     expect(data.length).toEqual(10);
     //   });
     //
@@ -277,7 +278,7 @@ describe("job-service", () => {
     //       source: "stackoverflow"
     //     });
     //
-    //     const data = await getJobs(db, 20, 0, null, null, [
+    //     const data = await searchJobs(db, 20, 0, null, null, [
     //       US_ONLY,
     //       NORTH_AMERICA_ONLY
     //     ]);
@@ -287,7 +288,7 @@ describe("job-service", () => {
 
     // describe("anywhere", () => {
     //   it("should work when region free is not specified", async () => {
-    //     const data = await getJobs(db, 20, 0);
+    //     const data = await searchJobs(db, 20, 0);
     //     expect(data.length).toEqual(10);
     //   });
     //
@@ -304,7 +305,7 @@ describe("job-service", () => {
     //       source: "stackoverflow"
     //     });
     //
-    //     const data = await getJobs(db, 20, 0, null, true);
+    //     const data = await searchJobs(db, 20, 0, null, true);
     //     expect(data.length).toEqual(10);
     //   });
     //
@@ -321,14 +322,14 @@ describe("job-service", () => {
     //       source: "stackoverflow"
     //     });
     //
-    //     const data = await getJobs(db, 20, 0, null, true);
+    //     const data = await searchJobs(db, 20, 0, null, true);
     //     expect(data.length).toEqual(10);
     //   });
     // });
 
     describe("tag", () => {
       it("should work when only asking for react (10 were added)", async () => {
-        const data = await getJobs(db, 20, 0, "react");
+        const data = await searchJobs(db, 20, 0, "react");
         expect(data.length).toEqual(10);
       });
       it("should work when only asking for a tag with only 1 job", async () => {
@@ -341,18 +342,18 @@ describe("job-service", () => {
           url: `URL`,
           source: "stackoverflow"
         });
-        const data = await getJobs(db, 20, 0, "angular");
+        const data = await searchJobs(db, 20, 0, "angular");
         expect(data.length).toEqual(1);
       });
       it("should work when asking for a tag that does not exist", async () => {
-        const data = await getJobs(db, 20, 0, "react2");
+        const data = await searchJobs(db, 20, 0, "react2");
         expect(data.length).toEqual(0);
       });
     });
 
     describe("salary", () => {
       it("should work when salary is not specified", async () => {
-        const data = await getJobs(db, 20, 0);
+        const data = await searchJobs(db, 20, 0);
         expect(data.length).toEqual(10);
       });
       it("should work when exact salary is specified", async () => {
@@ -366,7 +367,7 @@ describe("job-service", () => {
           source: "stackoverflow",
           salaryExact: 10000
         });
-        const data = await getJobs(db, 20, 0, null, null, null, null, true);
+        const data = await searchJobs(db, 20, 0, null, null, null, null, true);
         expect(data.length).toEqual(1);
       });
       it("should work when min salary is specified", async () => {
@@ -380,7 +381,7 @@ describe("job-service", () => {
           source: "stackoverflow",
           salaryMin: 10000
         });
-        const data = await getJobs(db, 20, 0, null, null, null, null, true);
+        const data = await searchJobs(db, 20, 0, null, null, null, null, true);
         expect(data.length).toEqual(1);
       });
       it("should work when max salary is specified", async () => {
@@ -394,14 +395,14 @@ describe("job-service", () => {
           source: "stackoverflow",
           salaryMax: 10000
         });
-        const data = await getJobs(db, 20, 0, null, null, null, null, true);
+        const data = await searchJobs(db, 20, 0, null, null, null, null, true);
         expect(data.length).toEqual(1);
       });
     });
 
     describe("sources", () => {
       it("should work with stackoverflow", async () => {
-        const data = await getJobs(db, 20, 0);
+        const data = await searchJobs(db, 20, 0);
         expect(data.length).toEqual(10);
       });
       it("should work with we-work-remotely", async () => {
@@ -415,7 +416,7 @@ describe("job-service", () => {
           source: "we-work-remotely",
           salaryExact: 10000
         });
-        const data = await getJobs(db, 20, 0, null, null, null, null, null, [
+        const data = await searchJobs(db, 20, 0, null, null, null, null, null, [
           "we-work-remotely"
         ]);
         expect(data.length).toEqual(1);
@@ -441,7 +442,7 @@ describe("job-service", () => {
           source: "authentic-jobs",
           salaryExact: 10000
         });
-        const data = await getJobs(db, 20, 0, null, null, null, null, null, [
+        const data = await searchJobs(db, 20, 0, null, null, null, null, null, [
           "we-work-remotely",
           "authentic-jobs"
         ]);
@@ -451,7 +452,7 @@ describe("job-service", () => {
 
     describe("company", () => {
       it("should work when company is specified", async () => {
-        const data = await getJobs(
+        const data = await searchJobs(
           db,
           20,
           0,
@@ -466,7 +467,7 @@ describe("job-service", () => {
         expect(data.length).toEqual(10);
       });
       it("should work when the company specified does not have any job or does not exist", async () => {
-        const data = await getJobs(
+        const data = await searchJobs(
           db,
           20,
           0,
@@ -496,7 +497,7 @@ describe("job-service", () => {
           source: "we-work-remotely",
           salaryExact: 10000
         });
-        const data = await getJobs(
+        const data = await searchJobs(
           db,
           20,
           0,

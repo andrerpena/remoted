@@ -122,7 +122,7 @@ export async function addJob(
   return getJobFromDbJob(dbJob);
 }
 
-export async function getJobs(
+export async function searchJobs(
   db: RemotedDatabase,
   limit: number,
   offset: number,

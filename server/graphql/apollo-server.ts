@@ -4,7 +4,7 @@ import { Request } from "express";
 import { RemotedContext } from "./remotedContext";
 import { buildDb } from "../db/build-db";
 import { PAGE_SIZE } from "../../lib/common/constants";
-import { addJob, getJob, getJobs } from "./services/job-service";
+import { addJob, getJob, searchJobs } from "./services/job-service";
 import { IResolvers } from "../../graphql-types";
 import { config } from "dotenv";
 import {
@@ -49,7 +49,7 @@ const resolvers: Resolvers = {
         throw new Error("LIMIT cannot be greater than 100");
       }
       const db = await buildDb();
-      return getJobs(
+      return searchJobs(
         db,
         args.limit || PAGE_SIZE,
         args.offset || 0,
