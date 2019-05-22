@@ -45,6 +45,7 @@ export type DbLocationDetailsInput = PartialBy<DbLocationDetails, "id">;
 export type DbCompanyInput = PartialBy<DbCompany, "id">;
 
 export interface DbJob {
+  [key: string]: any;
   id: number;
   public_id: string;
   title: string;

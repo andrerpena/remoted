@@ -159,7 +159,15 @@ describe("job-service", () => {
           companyId: company.id,
           tags: ["react"],
           url: `URL_${i}`,
-          source: "stackoverflow"
+          source: "stackoverflow",
+          locationDetails: {
+            acceptedCountries: ["US"],
+            acceptedRegions: ["North America"],
+            headquartersLocation: "New York, US",
+            description: "Candidates should be from the US",
+            timeZoneMin: -4,
+            timeZoneMax: 0
+          }
         });
       }
       const dbCompany = (await db.company.findOne({
@@ -189,7 +197,15 @@ describe("job-service", () => {
         salaryRaw: null,
         tags: ["react"],
         title: "dev job 9",
-        url: "URL_9"
+        url: "URL_9",
+        locationDetails: {
+          acceptedCountries: ["US"],
+          acceptedRegions: ["North America"],
+          headquartersLocation: "New York, US",
+          description: "Candidates should be from the US",
+          timeZoneMin: -4,
+          timeZoneMax: 0
+        }
       });
     });
 
@@ -211,121 +227,91 @@ describe("job-service", () => {
       expect(data.map(d => d.title)).toEqual(["dev job 1", "dev job 0"]);
     });
 
-    // describe("location tag", () => {
-    //   it("should work when you specify the tag that does not exist", async () => {
-    //     const data = await searchJobs(db, 10, 0);
-    //     expect(data.length).toEqual(10);
-    //
-    //     const data2 = await searchJobs(db, 10, 0, "tag-that-does-not-exist");
-    //     expect(data2.length).toEqual(0);
-    //   });
-    //
-    //   it("should work US is NOT excluded", async () => {
-    //     // US-ONLY
-    //     await addJob(db, {
-    //       title: `dev job`,
-    //       description: "This is a job",
-    //       publishedAt: new Date().toISOString(),
-    //       locationTag: US_ONLY,
-    //       companyId: companyPublicId,
-    //       tags: ["react"],
-    //       url: `URL`,
-    //       source: "stackoverflow"
-    //     });
-    //
-    //     const data = await searchJobs(db, 20, 0);
-    //     expect(data.length).toEqual(11);
-    //   });
-    //
-    //   it("should work US is excluded", async () => {
-    //     // US-ONLY
-    //     await addJob(db, {
-    //       title: `dev job`,
-    //       description: "This is a job",
-    //       publishedAt: new Date().toISOString(),
-    //       locationTag: US_ONLY,
-    //       companyId: companyPublicId,
-    //       tags: ["react"],
-    //       url: `URL`,
-    //       source: "stackoverflow"
-    //     });
-    //
-    //     const data = await searchJobs(db, 20, 0, null, null, [US_ONLY]);
-    //     expect(data.length).toEqual(10);
-    //   });
-    //
-    //   it("should exclude multiple", async () => {
-    //     // US-ONLY
-    //     await addJob(db, {
-    //       title: `dev job`,
-    //       description: "This is a job",
-    //       publishedAt: new Date().toISOString(),
-    //       locationTag: US_ONLY,
-    //       companyId: companyPublicId,
-    //       tags: ["react"],
-    //       url: `URL`,
-    //       source: "stackoverflow"
-    //     });
-    //
-    //     await addJob(db, {
-    //       title: `dev job`,
-    //       description: "This is a job",
-    //       publishedAt: new Date().toISOString(),
-    //       locationTag: NORTH_AMERICA_ONLY,
-    //       companyId: companyPublicId,
-    //       tags: ["react"],
-    //       url: `URL2`,
-    //       source: "stackoverflow"
-    //     });
-    //
-    //     const data = await searchJobs(db, 20, 0, null, null, [
-    //       US_ONLY,
-    //       NORTH_AMERICA_ONLY
-    //     ]);
-    //     expect(data.length).toEqual(10);
-    //   });
-    // });
+    describe("locationDetails", () => {
+      it("should return nothing when excluding US", async () => {
+        const data = await searchJobs(db, 10, 0, null, null, ["US"]);
+        expect(data.length).toEqual(0);
+      });
+      it("should return nothing when excluding North America", async () => {
+        const data = await searchJobs(db, 10, 0, null, null, null, [
+          "North America"
+        ]);
+        expect(data.length).toEqual(0);
+      });
+      it("should return 10 if creating a job with an excluded country", async () => {
+        await addJob(db, {
+          title: `BR JOB`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationDetails: {
+            acceptedCountries: ["BR"]
+          },
+          companyId: companyPublicId,
+          tags: ["react"],
+          url: `URL`,
+          source: "stackoverflow"
+        });
+        const data = await searchJobs(db, 20, 0, null, null, ["BR"]);
+        expect(data.length).toEqual(10);
+        // None of them should be BR JOB
+        expect(data.filter(j => j.title !== "BR JOB").length).toEqual(10);
+      });
+      it("should only the BR job if excluding US", async () => {
+        await addJob(db, {
+          title: `BR JOB`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationDetails: {
+            acceptedCountries: ["BR"]
+          },
+          companyId: companyPublicId,
+          tags: ["react"],
+          url: `URL`,
+          source: "stackoverflow"
+        });
+        const data = await searchJobs(db, 20, 0, null, null, ["US"]);
+        expect(data.length).toEqual(1);
+      });
 
-    // describe("anywhere", () => {
-    //   it("should work when region free is not specified", async () => {
-    //     const data = await searchJobs(db, 20, 0);
-    //     expect(data.length).toEqual(10);
-    //   });
-    //
-    //   it("should work when region free is specified and location tag exists", async () => {
-    //     // US-ONLY
-    //     await addJob(db, {
-    //       title: `dev job`,
-    //       description: "This is a job",
-    //       publishedAt: new Date().toISOString(),
-    //       locationTag: US_ONLY,
-    //       companyId: companyPublicId,
-    //       tags: ["react"],
-    //       url: `URL`,
-    //       source: "stackoverflow"
-    //     });
-    //
-    //     const data = await searchJobs(db, 20, 0, null, true);
-    //     expect(data.length).toEqual(10);
-    //   });
-    //
-    //   it("should work when region free is specified and location required exists", async () => {
-    //     // US-ONLY
-    //     await addJob(db, {
-    //       title: `dev job`,
-    //       description: "This is a job",
-    //       publishedAt: new Date().toISOString(),
-    //       locationRequired: "Brazil",
-    //       companyId: companyPublicId,
-    //       tags: ["react"],
-    //       url: `URL`,
-    //       source: "stackoverflow"
-    //     });
-    //
-    //     const data = await searchJobs(db, 20, 0, null, true);
-    //     expect(data.length).toEqual(10);
-    //   });
-    // });
+      it("should working exclude multiple countries", async () => {
+        // US-ONLY
+        await addJob(db, {
+          title: `dev job`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationDetails: {
+            acceptedCountries: ["BR"]
+          },
+          companyId: companyPublicId,
+          tags: ["react"],
+          url: `URL-BR`,
+          source: "stackoverflow"
+        });
+
+        await addJob(db, {
+          title: `dev job`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationDetails: {
+            acceptedCountries: ["GB"]
+          },
+          companyId: companyPublicId,
+          tags: ["react"],
+          url: `URL-GB`,
+          source: "stackoverflow"
+        });
+
+        const data = await searchJobs(db, 20, 0, null, null, ["BR", "US"]);
+        expect(data.length).toEqual(1);
+      });
+    });
+
+    describe("anywhere", () => {
+      it("should return all jobs", async () => {
+        const data = await searchJobs(db, 20, 0);
+        expect(data.length).toEqual(10);
+      });
+    });
 
     describe("tag", () => {
       it("should work when only asking for react (10 were added)", async () => {

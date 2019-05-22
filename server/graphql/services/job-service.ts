@@ -163,7 +163,17 @@ export async function searchJobs(
   });
 
   return dbJobs.map((j: DbJob) => {
-    return getJobFromDbJob(j);
+    const job = getJobFromDbJob(j);
+    job.locationDetails = {
+      worldwideConfirmed: j["loc_worldwide_confirmed"],
+      acceptedRegions: j["loc_accepted_regions"],
+      acceptedCountries: j["loc_accepted_countries"],
+      timeZoneMin: j["loc_timezone_min"],
+      timeZoneMax: j["loc_timezone_max"],
+      headquartersLocation: j["loc_headquarters_location"],
+      description: j["loc_description"]
+    };
+    return job;
   });
 }
 

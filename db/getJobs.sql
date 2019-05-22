@@ -15,8 +15,8 @@ select u.*,
        ld.timezone_min as loc_timezone_min,
        ld.timezone_max as loc_timezone_max,
        ld.description as loc_description,
-       ld.headquarters_location as loc_headquarts_location,
-       ld.accepted_regions as loc_accepted_regions
+       ld.headquarters_location as loc_headquarters_location
+
 from job u left outer join location_details ld on u.location_details_id = ld.id
 where (
               (${_tag} is null or exists(
@@ -32,11 +32,11 @@ where (
                   )
               and (
                       ${_excludeCountries} is null
-                      or ld.accepted_countries is null or not (ld.accepted_countries && (${_excludeCountries}))
+                      or ld.accepted_countries is null or not (ld.accepted_countries && (${_excludeCountries}::varchar[]))
                   )
               and (
                       ${_excludeRegions} is null
-                      or ld.accepted_regions is null or not (ld.accepted_regions && (${_excludeRegions}))
+                      or ld.accepted_regions is null or not (ld.accepted_regions && (${_excludeRegions}::varchar[]))
                   )
               and (
                       ${_salary} is not true or
