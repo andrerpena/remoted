@@ -10,12 +10,13 @@ import {
 } from "../../db/model";
 import { insertDbRecord } from "../../db/db-helpers";
 import { convertToHtml } from "../../../lib/server/markdown";
-import { Job, JobInput } from "../../../graphql-types";
+import { Job, JobInput, LocationDetailsInput } from "../../../graphql-types";
 import { generateSlug, makeId } from "../../../lib/server/id";
 import { Nullable } from "../../../lib/common/types";
 import { isSourceValid } from "../../../lib/common/sources";
 import { removeQueryString } from "../../../lib/common/url";
-import { getDbLocationDetailsInputFromLocationDetailsInput } from "./location-details-service";
+import Maybe from "graphql/tsutils/Maybe";
+import { merge } from "../../../lib/common/object";
 
 export async function getJob(
   db: RemotedDatabase,
@@ -36,6 +37,111 @@ export async function getJob(
     return null;
   }
   return getJobFromDbJob(dbJob);
+}
+
+/**
+ * Updates the job and the company location details based on the input
+ */
+export async function updateLocationDetails(
+  db: RemotedDatabase,
+  jobPublicId: string,
+  companyPublicId: string,
+  input: Maybe<LocationDetailsInput>
+): Promise<void> {
+  // rules:
+  // if there are no job location details and no company location details, update the company
+  // if there is no job location details and there is company location details, update the job
+
+  // Initial checks
+  const dbJob = await db.job.findOne({
+    public_id: jobPublicId
+  });
+  if (!dbJob) {
+    throw new Error(
+      `Cannot update location details. Could not find job with public IP for ${jobPublicId}`
+    );
+  }
+  if (dbJob.location_details_id) {
+    throw new Error(
+      `Cannot update location details. Job has already a location details object. Job public id: ${jobPublicId}`
+    );
+  }
+
+  // Get the company so that it can be denormalized
+  let dbCompany = (await db.company.findOne({
+    public_id: companyPublicId
+  } as DbCompanyInput)) as DbCompany;
+  if (!dbCompany) {
+    // TODO: log error here
+    return;
+  }
+
+  // if locationDetails is falsy but the company has it, we get com the company and put it on the job
+  if (!input && !dbCompany.location_details_id) {
+    // nothing to do here
+    return;
+  }
+
+  // build the merged version
+  const dbCompanyLocationDetails = dbCompany.location_details_id
+    ? await db.location_details.findOne({
+        id: dbCompany.location_details_id
+      })
+    : {};
+
+  const dbJobLocationDetails: Partial<DbLocationDetails> = !input
+    ? {}
+    : {
+        accepted_countries: input.acceptedCountries || null,
+        accepted_regions: input.acceptedRegions || null,
+        timezone_min: input.timeZoneMin || null,
+        timezone_max: input.timeZoneMax || null,
+        description: input.description || null,
+        headquarters_location: input.headquartersLocation || null
+      };
+
+  const dbMerged = merge(dbCompanyLocationDetails, dbJobLocationDetails);
+
+  // if the company does not have any, save a version for the company
+  if (!dbCompany.location_details_id) {
+    const savedCompanyLocationDetails = await db.location_details.insert({
+      ...dbMerged,
+      id: undefined
+    });
+    await db.company.update(
+      {
+        id: dbCompany.id
+      },
+      {
+        location_details_id: savedCompanyLocationDetails.id
+      }
+    );
+  } else {
+    // if the company already have one, we will update it
+    await db.location_details.update(
+      {
+        id: dbCompany.location_details_id
+      },
+      {
+        ...dbMerged,
+        id: undefined
+      }
+    );
+  }
+
+  // Save the location details for the job
+  const savedJobLocationDetails = await db.location_details.insert({
+    ...dbMerged,
+    id: undefined
+  });
+  await db.job.update(
+    {
+      id: dbJob.id
+    },
+    {
+      location_details_id: savedJobLocationDetails.id
+    }
+  );
 }
 
 export async function addJob(
@@ -99,25 +205,12 @@ export async function addJob(
   }
 
   // Add location details
-  if (jobInput.locationDetails) {
-    const dbLocationDetailsInput = getDbLocationDetailsInputFromLocationDetailsInput(
-      jobInput.locationDetails
-    );
-    const dbLocationDetailsForJob = (await db.location_details.insert({
-      ...dbLocationDetailsInput
-    })) as DbLocationDetails;
-    dbJob.location_details_id = dbLocationDetailsForJob.id;
-    await db.job.save(dbJob);
-
-    // Add location details to company if it does not exist
-    if (!dbCompany.location_details_id) {
-      const dbLocationDetailsForCompany = (await db.location_details.insert({
-        ...dbLocationDetailsInput
-      } as DbLocationDetails)) as DbLocationDetails;
-      dbCompany.location_details_id = dbLocationDetailsForCompany.id;
-      await db.company.save(dbCompany);
-    }
-  }
+  await updateLocationDetails(
+    db,
+    dbJob.public_id,
+    dbCompany.public_id,
+    jobInput.locationDetails
+  );
 
   return getJobFromDbJob(dbJob);
 }

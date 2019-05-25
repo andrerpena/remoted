@@ -1,26 +1,31 @@
-// import * as countries from "./server/locations/countries_raw.json";
-// import * as fs from "fs";
-// import { CountryData, Region } from "./lib/common";
-//
-// const adjustedCountries: CountryData[] = [];
-//
-// for (let country of countries) {
-//   adjustedCountries.push({
-//     displayName: country.name,
-//     regions: [
-//       country["intermediate-region"] as Region,
-//       country["sub-region"] as Region,
-//       country["region"] as Region
-//     ].filter(i => !!i),
-//     iso31662Name: country["alpha-2"]
-//   });
-// }
-//
-// fs.writeFileSync(
-//   "./server/locations/countries.ts",
-//   `import { CountryData } from "./index";\n\nexport const countries: CountryData[] = ${JSON.stringify(
-//     adjustedCountries,
-//     null,
-//     4
-//   )}`
-// );
+import { config } from "dotenv";
+
+config();
+
+import { buildDb } from "./server/db/build-db";
+import { DbJob } from "./server/db/model";
+import { LocationDetailsInput } from "./graphql-types";
+
+function isNullish(input: any): boolean {
+  return input === null || input === undefined;
+}
+
+buildDb().then(async db => {
+  const jobs = (await db.query("select * from job")) as DbJob[];
+  for (let job of jobs) {
+    const locationDetails: LocationDetailsInput = {};
+
+    if (!isNullish(job.location_preferred_timezone)) {
+      let tolerance = 0;
+      if (!isNullish(job.location_preferred_timezone_tolerance)) {
+        tolerance = job.location_preferred_timezone_tolerance as number;
+      }
+      locationDetails.timeZoneMin =
+        (job.location_preferred_timezone as number) - tolerance;
+      locationDetails.timeZoneMax =
+        (job.location_preferred_timezone as number) + tolerance;
+    }
+
+    job.location_required;
+  }
+});

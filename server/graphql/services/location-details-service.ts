@@ -2,23 +2,9 @@ import {
   DbCompany,
   DbJob,
   DbLocationDetails,
-  DbLocationDetailsInput,
   RemotedDatabase
 } from "../../db/model";
-import { LocationDetails, LocationDetailsInput } from "../../../graphql-types";
-
-export function getDbLocationDetailsInputFromLocationDetailsInput(
-  input: LocationDetailsInput
-): DbLocationDetailsInput {
-  return {
-    description: input.description,
-    accepted_regions: input.acceptedRegions,
-    accepted_countries: input.acceptedCountries,
-    timezone_min: input.timeZoneMin,
-    timezone_max: input.timeZoneMax,
-    headquarters_location: input.headquartersLocation
-  };
-}
+import { LocationDetails } from "../../../graphql-types";
 
 export function getLocationDetailsFromDbLocationDetails(
   dbLocationDetails: DbLocationDetails
