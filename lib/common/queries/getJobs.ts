@@ -23,7 +23,8 @@ export const getJobsQuery = gql`
     $salary: Boolean
     $anywhere: Boolean
     $companyId: String
-    $excludeLocationTags: [String!]
+    $excludeCountries: [String!]
+    $excludeRegions: [String!]
     $sources: [String!]
   ) {
     getJobs(
@@ -33,7 +34,8 @@ export const getJobsQuery = gql`
       salary: $salary
       anywhere: $anywhere
       companyId: $companyId
-      excludeLocationTags: $excludeLocationTags
+      excludeCountries: $excludeCountries
+      excludeRegions: $excludeRegions
       sources: $sources
     ) {
       id
