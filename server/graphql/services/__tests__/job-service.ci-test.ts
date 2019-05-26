@@ -5,8 +5,17 @@ import { config } from "dotenv";
 config();
 import { DbCompany, RemotedDatabase } from "../../../db/model";
 import { addCompany } from "../company-service";
-import { searchJobs, addJob, getJob } from "../job-service";
+import {
+  searchJobs,
+  addJob,
+  getJob,
+  updateLocationDetails
+} from "../job-service";
 import { clearDb } from "../../../../lib/server/db-ci-helpers";
+import {
+  getLocationDetailsForCompany,
+  getLocationDetailsForJob
+} from "../location-details-service";
 
 let db: RemotedDatabase;
 
@@ -496,6 +505,82 @@ describe("job-service", () => {
           dbCompany.public_id
         );
         expect(data.length).toEqual(1);
+      });
+    });
+  });
+  describe("updateLocationDetails", () => {
+    it("should work when there is no job details", async () => {
+      const company = await addCompany(db, {
+        displayName: "c-1"
+      });
+      if (!company) {
+        throw new Error("company not saved");
+      }
+      const job = await addJob(db, {
+        title: "developer",
+        description: "hello us only",
+        companyId: company.id,
+        publishedAt: new Date().toISOString(),
+        tags: ["react"],
+        url: "URL",
+        source: "stackoverflow"
+      });
+      if (!job) {
+        throw new Error("job not saved");
+      }
+      await updateLocationDetails(db, job.id, company.id, undefined);
+    });
+    it("should add a location description to both the job and the company", async () => {
+      const company = await addCompany(db, {
+        displayName: "c-1"
+      });
+      if (!company) {
+        throw new Error("company not saved");
+      }
+      const job = await addJob(db, {
+        title: "developer",
+        description: "hello us only",
+        companyId: company.id,
+        publishedAt: new Date().toISOString(),
+        tags: ["react"],
+        url: "URL",
+        source: "stackoverflow"
+      });
+      if (!job) {
+        throw new Error("job not saved");
+      }
+      await updateLocationDetails(db, job.id, company.id, {
+        acceptedRegions: ["North America"],
+        acceptedCountries: ["US"],
+        headquartersLocation: "New York",
+        description: "Super good job",
+        timeZoneMin: -8,
+        timeZoneMax: -3
+      });
+
+      const companyLocationDetails = await getLocationDetailsForCompany(
+        db,
+        company.id
+      );
+      expect(companyLocationDetails).toEqual({
+        acceptedCountries: ["US"],
+        acceptedRegions: ["North America"],
+        description: "Super good job",
+        headquartersLocation: "New York",
+        timeZoneMax: -3,
+        timeZoneMin: -8,
+        worldwideConfirmed: null
+      });
+
+      const jobLocationDetails = await getLocationDetailsForJob(db, job.id);
+      expect(jobLocationDetails).toEqual({
+        acceptedCountries: ["US"],
+        acceptedRegions: ["North America"],
+        description: "Super good job",
+        headquartersLocation: "New York",
+        timeZoneMax: -3,
+        timeZoneMin: -8,
+        worldwideConfirmed: null
       });
     });
   });

@@ -101,12 +101,12 @@ export async function updateLocationDetails(
       };
 
   const dbMerged = merge(dbCompanyLocationDetails, dbJobLocationDetails);
+  delete dbMerged.id;
 
   // if the company does not have any, save a version for the company
   if (!dbCompany.location_details_id) {
     const savedCompanyLocationDetails = await db.location_details.insert({
-      ...dbMerged,
-      id: undefined
+      ...dbMerged
     });
     await db.company.update(
       {
@@ -131,8 +131,7 @@ export async function updateLocationDetails(
 
   // Save the location details for the job
   const savedJobLocationDetails = await db.location_details.insert({
-    ...dbMerged,
-    id: undefined
+    ...dbMerged
   });
   await db.job.update(
     {
