@@ -31,12 +31,6 @@
       cursor: pointer;
     }
   }
-
-  &.open {
-    @media screen and (max-width: $desktop) {
-      margin: $size-8;
-    }
-  }
 }
 
 .job-post-tags {
@@ -143,7 +137,6 @@
 
 .job-post-extension {
   display: none;
-  padding-top: 0;
 
   &.open {
     display: block;
@@ -160,7 +153,7 @@
 }
 
 .job-description {
-  margin: $size-5;
+  margin-bottom: $size-5;
 }
 
 .job-post-body-more-info {
