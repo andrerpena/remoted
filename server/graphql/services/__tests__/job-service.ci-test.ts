@@ -16,6 +16,7 @@ import {
   getLocationDetailsForCompany,
   getLocationDetailsForJob
 } from "../location-details-service";
+import { Job } from "../../../../graphql-types";
 
 let db: RemotedDatabase;
 
@@ -576,6 +577,126 @@ describe("job-service", () => {
       expect(jobLocationDetails).toEqual({
         acceptedCountries: ["US"],
         acceptedRegions: ["North America"],
+        description: "Super good job",
+        headquartersLocation: "New York",
+        timeZoneMax: -3,
+        timeZoneMin: -8,
+        worldwideConfirmed: null
+      });
+    });
+    it("should update the company location details when the new is different", async () => {
+      const company = await addCompany(db, {
+        displayName: "c-1"
+      });
+      if (!company) {
+        throw new Error("company not saved");
+      }
+      await addJob(db, {
+        title: "developer",
+        description: "hello us only",
+        companyId: company.id,
+        publishedAt: new Date().toISOString(),
+        tags: ["react"],
+        url: "URL",
+        source: "stackoverflow",
+        locationDetails: {
+          acceptedRegions: ["North America"],
+          acceptedCountries: ["US"],
+          headquartersLocation: "New York",
+          description: "Super good job",
+          timeZoneMin: -8,
+          timeZoneMax: -3
+        }
+      });
+
+      (await addJob(db, {
+        title: "developer",
+        description: "hello us only",
+        companyId: company.id,
+        publishedAt: new Date().toISOString(),
+        tags: ["react"],
+        url: "URL-2",
+        source: "stackoverflow",
+        locationDetails: {
+          acceptedRegions: ["North America"],
+          acceptedCountries: ["US", "BR"],
+          headquartersLocation: "New York",
+          description: "Super good job",
+          timeZoneMin: -8,
+          timeZoneMax: -3
+        }
+      })) as Job;
+
+      const companyLocationDetails = await getLocationDetailsForCompany(
+        db,
+        company.id
+      );
+      expect(companyLocationDetails).toEqual({
+        acceptedCountries: ["US", "BR"],
+        acceptedRegions: ["North America"],
+        description: "Super good job",
+        headquartersLocation: "New York",
+        timeZoneMax: -3,
+        timeZoneMin: -8,
+        worldwideConfirmed: null
+      });
+    });
+    it("The job should have the location details of the company if it the job does have location details but not complete", async () => {
+      const company = await addCompany(db, {
+        displayName: "c-1"
+      });
+      if (!company) {
+        throw new Error("company not saved");
+      }
+      await addJob(db, {
+        title: "developer",
+        description: "hello us only",
+        companyId: company.id,
+        publishedAt: new Date().toISOString(),
+        tags: ["react"],
+        url: "URL",
+        source: "stackoverflow",
+        locationDetails: {
+          acceptedRegions: ["North America"],
+          acceptedCountries: ["US"],
+          headquartersLocation: "New York",
+          description: "Super good job",
+          timeZoneMin: -8,
+          timeZoneMax: -3
+        }
+      });
+
+      const job2 = (await addJob(db, {
+        title: "developer",
+        description: "hello us only",
+        companyId: company.id,
+        publishedAt: new Date().toISOString(),
+        tags: ["react"],
+        url: "URL-2",
+        source: "stackoverflow",
+        locationDetails: {
+          acceptedRegions: ["Americas"]
+        }
+      })) as Job;
+
+      const companyLocationDetails = await getLocationDetailsForCompany(
+        db,
+        company.id
+      );
+      expect(companyLocationDetails).toEqual({
+        acceptedCountries: ["US"],
+        acceptedRegions: ["Americas"],
+        description: "Super good job",
+        headquartersLocation: "New York",
+        timeZoneMax: -3,
+        timeZoneMin: -8,
+        worldwideConfirmed: null
+      });
+
+      const job2LocationDetails = await getLocationDetailsForJob(db, job2.id);
+      expect(job2LocationDetails).toEqual({
+        acceptedCountries: ["US"],
+        acceptedRegions: ["Americas"],
         description: "Super good job",
         headquartersLocation: "New York",
         timeZoneMax: -3,

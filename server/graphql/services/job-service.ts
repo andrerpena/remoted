@@ -123,8 +123,7 @@ export async function updateLocationDetails(
         id: dbCompany.location_details_id
       },
       {
-        ...dbMerged,
-        id: undefined
+        ...dbMerged
       }
     );
   }
