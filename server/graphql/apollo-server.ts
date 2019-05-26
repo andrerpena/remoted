@@ -4,7 +4,7 @@ import { Request } from "express";
 import { RemotedContext } from "./remotedContext";
 import { buildDb } from "../db/build-db";
 import { PAGE_SIZE } from "../../lib/common/constants";
-import { addJob, getJob, getJobs } from "./services/job-service";
+import { addJob, getJob, searchJobs } from "./services/job-service";
 import { IResolvers } from "../../graphql-types";
 import { config } from "dotenv";
 import {
@@ -14,6 +14,10 @@ import {
 } from "./services/company-service";
 import { getTagCountGroups, getTags } from "./services/tag-service";
 import { RemotedDatabase } from "../db/model";
+import {
+  getLocationDetailsForCompany,
+  getLocationDetailsForJob
+} from "./services/location-details-service";
 
 config();
 
@@ -45,13 +49,14 @@ const resolvers: Resolvers = {
         throw new Error("LIMIT cannot be greater than 100");
       }
       const db = await buildDb();
-      return getJobs(
+      return searchJobs(
         db,
         args.limit || PAGE_SIZE,
         args.offset || 0,
         args.tag,
         args.anywhere,
-        args.excludeLocationTags,
+        args.excludeCountries,
+        args.excludeRegions,
         args.salary,
         args.sources,
         args.companyId
@@ -86,6 +91,16 @@ const resolvers: Resolvers = {
     company: async _parent => {
       const db = await buildDb();
       return getCompanyByJobPublicId(db, _parent.id);
+    },
+    locationDetails: async _parent => {
+      const db = await buildDb();
+      return getLocationDetailsForJob(db, _parent.id);
+    }
+  },
+  Company: {
+    locationDetails: async _parent => {
+      const db = await buildDb();
+      return getLocationDetailsForCompany(db, _parent.id);
     }
   }
 };

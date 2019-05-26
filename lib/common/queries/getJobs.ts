@@ -10,7 +10,8 @@ export type GetJobsVariables = {
   salary?: boolean;
   anywhere?: boolean;
   companyId?: string;
-  excludeLocationTags?: string[];
+  excludeCountries?: string[];
+  excludeRegions?: string[];
   sources?: string[];
 };
 
@@ -22,7 +23,8 @@ export const getJobsQuery = gql`
     $salary: Boolean
     $anywhere: Boolean
     $companyId: String
-    $excludeLocationTags: [String!]
+    $excludeCountries: [String!]
+    $excludeRegions: [String!]
     $sources: [String!]
   ) {
     getJobs(
@@ -32,7 +34,8 @@ export const getJobsQuery = gql`
       salary: $salary
       anywhere: $anywhere
       companyId: $companyId
-      excludeLocationTags: $excludeLocationTags
+      excludeCountries: $excludeCountries
+      excludeRegions: $excludeRegions
       sources: $sources
     ) {
       id
@@ -46,12 +49,14 @@ export const getJobsQuery = gql`
         displayName
         imageUrl
       }
-      locationRaw
-      locationRequired
-      locationTag
-      locationPreferred
-      locationPreferredTimeZone
-      locationPreferredTimeZoneTolerance
+      locationDetails {
+        acceptedCountries
+        acceptedRegions
+        description
+        timeZoneMin
+        timeZoneMax
+        worldwideConfirmed
+      }
       salaryMin
       salaryMax
       salaryCurrency

@@ -1,37 +1,92 @@
-export function getLocationTagDisplay(locationTag: string) {
-  switch (locationTag) {
-    case "north-america-and-europe-only":
-      return "North America and Europe only";
-    case "us-and-europe-only":
-      return "US and Europe only";
-    case "americas-and-europe-only":
-      return "Americas and Europe only";
-    case "north-america-only":
-      return "North America only";
-    case "americas-only":
-      return "Americas only";
-    case "us-only":
-      return "US only";
-    case "europe-only":
-      return "Europe only";
-    case "uk-only":
-      return "UK only";
-    case "emea-only":
-      return "EMEA only";
-    case "mena-only":
-      return "MENA only";
-    case "africa-only":
-      return "Africa only";
-    case "oceania-only":
-      return "Oceania only";
-    case "australia-only":
-      return "Australia only";
-    default:
-      return null;
-  }
+import { countries } from "./countries";
+import { naturalJoin } from "./array";
+
+export type Region =
+  | "Southern Asia"
+  | "Asia"
+  | "Northern Europe"
+  | "Europe"
+  | "Southern Europe"
+  | "Northern Africa"
+  | "Africa"
+  | "Caribbean"
+  | "Americas"
+  | "South America"
+  | "Australia and New Zealand"
+  | "Oceania"
+  | "Western Europe"
+  | "Eastern Europe"
+  | "Middle Africa"
+  | "Sub-Saharan Africa"
+  | "South-eastern Asia"
+  | "Eastern Asia"
+  | "Eastern Africa"
+  | "Central America"
+  | "Polynesia"
+  | "Western Africa"
+  | "Southern Africa"
+  | "Melanesia"
+  | "North America"
+  | "Micronesia"
+  | "Channel Islands"
+  | "Central Asia"
+  | "Middle East";
+
+export interface CountryData {
+  displayName: string;
+  iso31662Name: string;
+  regions: Region[];
 }
 
-export const US_ONLY = "us-only";
-export const NORTH_AMERICA_ONLY = "north-america-only";
-export const EUROPE_ONLY = "europe-only";
-export const UK_ONLY = "uk-only";
+export interface CountryIndex {
+  [key: string]: CountryData;
+}
+
+const countryIndex = countries.reduce(
+  (accumulated: CountryIndex, current: CountryData) => {
+    accumulated[current.iso31662Name] = current;
+    return accumulated;
+  },
+  {} as CountryIndex
+);
+
+export function getAcceptedLocationText(
+  acceptedCountries?: string[] | null,
+  acceptedRegions?: string[] | null
+): string {
+  const countries = (acceptedCountries
+    ? acceptedCountries
+        .map(c => (countryIndex[c] ? countryIndex[c].displayName : null))
+        .filter(c => !!c)
+    : []) as string[];
+  const regions = acceptedRegions
+    ? acceptedRegions.filter(ac => !!ac)
+    : ([] as string[]);
+  return naturalJoin([...countries, ...regions], "or");
+}
+
+function convertNaturalIntegerToString(n: number): string {
+  if (n > 0) {
+    return `+${n}`;
+  }
+  return `${n}`;
+}
+
+export function getTimezoneText(
+  timezoneMin?: number | null,
+  timezoneMax?: number | null
+): string {
+  if (
+    timezoneMin === null ||
+    timezoneMin === undefined ||
+    (timezoneMax === null || timezoneMax === undefined)
+  ) {
+    return "";
+  }
+  if (timezoneMin === timezoneMax) {
+    return `UTC ${convertNaturalIntegerToString(timezoneMin)}`;
+  }
+  return `UTC ${convertNaturalIntegerToString(
+    timezoneMin
+  )} to UTC ${convertNaturalIntegerToString(timezoneMax)}`;
+}

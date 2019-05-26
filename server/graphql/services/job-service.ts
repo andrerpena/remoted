@@ -4,16 +4,19 @@ import {
   DbJob,
   DbJobInput,
   DbJobTag,
+  DbLocationDetails,
   DbTag,
   RemotedDatabase
 } from "../../db/model";
-import { insertDbRecord } from "../../db/services/db-helpers";
 import { convertToHtml } from "../../../lib/server/markdown";
-import { Job, JobInput } from "../../../graphql-types";
+import { Job, JobInput, LocationDetailsInput } from "../../../graphql-types";
 import { generateSlug, makeId } from "../../../lib/server/id";
 import { Nullable } from "../../../lib/common/types";
 import { isSourceValid } from "../../../lib/common/sources";
 import { removeQueryString } from "../../../lib/common/url";
+import Maybe from "graphql/tsutils/Maybe";
+import { merge } from "../../../lib/common/object";
+import { insertDbRecord } from "../../db/services/db-helpers";
 
 export async function getJob(
   db: RemotedDatabase,
@@ -34,6 +37,113 @@ export async function getJob(
     return null;
   }
   return getJobFromDbJob(dbJob);
+}
+
+/**
+ * Updates the job and the company location details based on the input
+ */
+export async function updateLocationDetails(
+  db: RemotedDatabase,
+  jobPublicId: string,
+  companyPublicId: string,
+  input: Maybe<LocationDetailsInput>,
+  ignoreIfJobAlreadyHaveLocationDetails: boolean = false
+): Promise<void> {
+  // rules:
+  // if there are no job location details and no company location details, update the company
+  // if there is no job location details and there is company location details, update the job
+
+  // Initial checks
+  const dbJob = await db.job.findOne({
+    public_id: jobPublicId
+  });
+  if (!dbJob) {
+    throw new Error(
+      `Cannot update location details. Could not find job with public IP for ${jobPublicId}`
+    );
+  }
+  if (dbJob.location_details_id) {
+    if (ignoreIfJobAlreadyHaveLocationDetails) {
+      return;
+    }
+    throw new Error(
+      `Cannot update location details. Job has already a location details object. Job public id: ${jobPublicId}`
+    );
+  }
+
+  // Get the company so that it can be denormalized
+  let dbCompany = (await db.company.findOne({
+    public_id: companyPublicId
+  } as DbCompanyInput)) as DbCompany;
+  if (!dbCompany) {
+    // TODO: log error here
+    return;
+  }
+
+  // if locationDetails is falsy but the company has it, we get com the company and put it on the job
+  if (!input && !dbCompany.location_details_id) {
+    // nothing to do here
+    return;
+  }
+
+  // build the merged version
+  const dbCompanyLocationDetails = dbCompany.location_details_id
+    ? await db.location_details.findOne({
+        id: dbCompany.location_details_id
+      })
+    : {};
+
+  const dbJobLocationDetails: Partial<DbLocationDetails> = !input
+    ? {}
+    : {
+        accepted_countries: input.acceptedCountries || null,
+        accepted_regions: input.acceptedRegions || null,
+        timezone_min: input.timeZoneMin || null,
+        timezone_max: input.timeZoneMax || null,
+        description: input.description || null,
+        headquarters_location: input.headquartersLocation || null
+      };
+
+  const dbMerged = merge(dbCompanyLocationDetails, dbJobLocationDetails);
+  delete dbMerged.id;
+
+  // if the company does not have any, save a version for the company
+  if (!dbCompany.location_details_id) {
+    const savedCompanyLocationDetails = await db.location_details.insert({
+      ...dbMerged
+    });
+    await db.company.update(
+      {
+        id: dbCompany.id
+      },
+      {
+        location_details_id: savedCompanyLocationDetails.id
+      }
+    );
+  } else {
+    // if the company already have one, we will update it
+    await db.location_details.update(
+      {
+        id: dbCompany.location_details_id
+      },
+      {
+        ...dbMerged
+      }
+    );
+  }
+
+  // Save the location details for the job
+  const savedJobLocationDetails = await db.location_details.insert({
+    ...dbMerged
+  });
+  await db.job.update(
+    {
+      id: dbJob.id
+    },
+    {
+      location_details_id: savedJobLocationDetails.id
+    }
+  );
 }
 
 export async function addJob(
@@ -77,7 +187,7 @@ export async function addJob(
 
   const dbJob = await (insertDbRecord(db.job, dbJobInput) as Promise<DbJob>);
 
-  const tags: string[] = [];
+  // Add job_tags
   if (dbJobInput.tags) {
     const tagsSplit = dbJobInput.tags.split(" ");
     for (let i = 0; i < tagsSplit.length; i++) {
@@ -89,7 +199,6 @@ export async function addJob(
           relevance: 1
         } as DbTag)) as DbTag;
       }
-      tags.push(dbTag.name);
       await db.job_tag.insert({
         job_id: dbJob.id,
         tag_id: dbTag.id
@@ -97,16 +206,25 @@ export async function addJob(
     }
   }
 
+  // Add location details
+  await updateLocationDetails(
+    db,
+    dbJob.public_id,
+    dbCompany.public_id,
+    jobInput.locationDetails
+  );
+
   return getJobFromDbJob(dbJob);
 }
 
-export async function getJobs(
+export async function searchJobs(
   db: RemotedDatabase,
   limit: number,
   offset: number,
   tag?: Nullable<string>,
   anywhere?: Nullable<boolean>,
-  excludeLocationTags?: Nullable<string[]>,
+  excludeCountries?: Nullable<string[]>,
+  excludeRegions?: Nullable<string[]>,
   salary?: Nullable<boolean>,
   sources?: Nullable<string[]>,
   companyPublicId?: Nullable<string>
@@ -130,17 +248,27 @@ export async function getJobs(
     _offset: offset,
     _tag: tag || null,
     _anywhere: anywhere || null,
-    _excludeLocationTags:
-      excludeLocationTags && excludeLocationTags.length
-        ? excludeLocationTags
-        : null,
+    _excludeCountries:
+      excludeCountries && excludeCountries.length ? excludeCountries : null,
+    _excludeRegions:
+      excludeRegions && excludeRegions.length ? excludeRegions : null,
     _sources: sources && sources.length ? sources : null,
     _salary: salary || null,
     _companyId: companyId || null
   });
 
   return dbJobs.map((j: DbJob) => {
-    return getJobFromDbJob(j);
+    const job = getJobFromDbJob(j);
+    job.locationDetails = {
+      worldwideConfirmed: j["loc_worldwide_confirmed"],
+      acceptedRegions: j["loc_accepted_regions"],
+      acceptedCountries: j["loc_accepted_countries"],
+      timeZoneMin: j["loc_timezone_min"],
+      timeZoneMax: j["loc_timezone_max"],
+      headquartersLocation: j["loc_headquarters_location"],
+      description: j["loc_description"]
+    };
+    return job;
   });
 }
 
@@ -153,13 +281,6 @@ export function getJobFromDbJob(dbJob: DbJob): Job {
     tags: dbJob.tags.split(" "),
     createdAt: dbJob.created_at.toISOString(),
     publishedAt: dbJob.published_at.toISOString(),
-    locationRaw: dbJob.location_raw,
-    locationRequired: dbJob.location_required,
-    locationPreferred: dbJob.location_preferred,
-    locationPreferredTimeZone: dbJob.location_preferred_timezone,
-    locationPreferredTimeZoneTolerance:
-      dbJob.location_preferred_timezone_tolerance,
-    locationTag: dbJob.location_tag,
     salaryRaw: dbJob.salary_raw,
     salaryExact: dbJob.salary_exact,
     salaryMin: dbJob.salary_min,
@@ -194,13 +315,6 @@ export function getDbJobInputFromJobInput(
     company_id: options.companyId,
     company_name: options.companyName,
     company_display_name: options.companyDisplayName,
-    location_raw: jobInput.locationRaw || null,
-    location_required: jobInput.locationRequired || null,
-    location_preferred: jobInput.locationPreferred || null,
-    location_preferred_timezone: jobInput.locationPreferredTimezone || null,
-    location_preferred_timezone_tolerance:
-      jobInput.locationPreferredTimezoneTolerance || null,
-    location_tag: jobInput.locationTag || null,
     salary_raw: jobInput.salaryRaw || null,
     salary_exact: jobInput.salaryExact || null,
     salary_min: jobInput.salaryMin || null,

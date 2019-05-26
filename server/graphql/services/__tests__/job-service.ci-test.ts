@@ -1,17 +1,22 @@
-import { buildTestDb } from "../../server/db/build-db";
+import { buildTestDb } from "../../../db/build-db";
 
 import { config } from "dotenv";
 
 config();
-import { DbCompany, RemotedDatabase } from "../../server/db/model";
-import { addCompany } from "../../server/graphql/services/company-service";
+import { DbCompany, RemotedDatabase } from "../../../db/model";
+import { addCompany } from "../company-service";
 import {
-  getJobs,
+  searchJobs,
   addJob,
-  getJob
-} from "../../server/graphql/services/job-service";
-import { clearDb } from "../../lib/server/db-ci-helpers";
-import { NORTH_AMERICA_ONLY, US_ONLY } from "../../lib/common/location";
+  getJob,
+  updateLocationDetails
+} from "../job-service";
+import { clearDb } from "../../../../lib/server/db-ci-helpers";
+import {
+  getLocationDetailsForCompany,
+  getLocationDetailsForJob
+} from "../location-details-service";
+import { Job } from "../../../../graphql-types";
 
 let db: RemotedDatabase;
 
@@ -44,12 +49,6 @@ describe("job-service", () => {
         description: "hello us only",
         descriptionHtml: "<p>hello us only</p>",
         id: expect.any(String),
-        locationPreferred: null,
-        locationPreferredTimeZone: null,
-        locationPreferredTimeZoneTolerance: null,
-        locationRaw: null,
-        locationRequired: null,
-        locationTag: null,
         publishedAt: expect.any(String),
         salaryCurrency: null,
         salaryEquity: null,
@@ -94,7 +93,7 @@ describe("job-service", () => {
         url: "URL",
         source: "stackoverflow"
       });
-      const data = await getJobs(db, 10, 0);
+      const data = await searchJobs(db, 10, 0);
       expect(data.length).toBe(1);
       expect(data[0]).toMatchObject({
         title: "developer",
@@ -155,7 +154,7 @@ describe("job-service", () => {
       });
     });
   });
-  describe("getJobs", () => {
+  describe("searchJobs", () => {
     let companyPublicId = "";
     beforeEach(async () => {
       const company = await addCompany(db, {
@@ -170,7 +169,15 @@ describe("job-service", () => {
           companyId: company.id,
           tags: ["react"],
           url: `URL_${i}`,
-          source: "stackoverflow"
+          source: "stackoverflow",
+          locationDetails: {
+            acceptedCountries: ["US"],
+            acceptedRegions: ["North America"],
+            headquartersLocation: "New York, US",
+            description: "Candidates should be from the US",
+            timeZoneMin: -4,
+            timeZoneMax: 0
+          }
         });
       }
       const dbCompany = (await db.company.findOne({
@@ -182,19 +189,15 @@ describe("job-service", () => {
     });
 
     it("default behavior", async () => {
-      const data = await getJobs(db, 10, 0);
+      const data = await searchJobs(db, 10, 0);
       expect(Array.isArray(data)).toBe(true);
       expect(data.length).toBe(10);
+      console.log(data[0]);
       expect(data[0]).toMatchObject({
         createdAt: expect.any(String),
         description: "This is a job",
         descriptionHtml: "<p>This is a job</p>",
         id: expect.any(String),
-        locationPreferred: null,
-        locationPreferredTimeZone: null,
-        locationPreferredTimeZoneTolerance: null,
-        locationRaw: null,
-        locationRequired: null,
         publishedAt: expect.any(String),
         salaryCurrency: null,
         salaryEquity: null,
@@ -204,147 +207,125 @@ describe("job-service", () => {
         salaryRaw: null,
         tags: ["react"],
         title: "dev job 9",
-        url: "URL_9"
+        url: "URL_9",
+        locationDetails: {
+          acceptedCountries: ["US"],
+          acceptedRegions: ["North America"],
+          headquartersLocation: "New York, US",
+          description: "Candidates should be from the US",
+          timeZoneMin: -4,
+          timeZoneMax: 0
+        }
       });
     });
 
     it("getting more data should return just 10", async () => {
-      const data = await getJobs(db, 20, 0);
+      const data = await searchJobs(db, 20, 0);
       expect(Array.isArray(data)).toBe(true);
       expect(data.length).toBe(10);
     });
 
     it("should work with half of the data", async () => {
-      const data = await getJobs(db, 10, 5);
+      const data = await searchJobs(db, 10, 5);
       expect(Array.isArray(data)).toBe(true);
       expect(data.length).toBe(5);
     });
 
     it("the job title should be correct", async () => {
-      const data = await getJobs(db, 10, 8);
+      const data = await searchJobs(db, 10, 8);
       expect(Array.isArray(data)).toBe(true);
       expect(data.map(d => d.title)).toEqual(["dev job 1", "dev job 0"]);
     });
 
-    describe("location tag", () => {
-      it("should work when you specify the tag that does not exist", async () => {
-        const data = await getJobs(db, 10, 0);
-        expect(data.length).toEqual(10);
-
-        const data2 = await getJobs(db, 10, 0, "tag-that-does-not-exist");
-        expect(data2.length).toEqual(0);
+    describe("locationDetails", () => {
+      it("should return nothing when excluding US", async () => {
+        const data = await searchJobs(db, 10, 0, null, null, ["US"]);
+        expect(data.length).toEqual(0);
       });
-
-      it("should work US is NOT excluded", async () => {
-        // US-ONLY
-        await addJob(db, {
-          title: `dev job`,
-          description: "This is a job",
-          publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
-          companyId: companyPublicId,
-          tags: ["react"],
-          url: `URL`,
-          source: "stackoverflow"
-        });
-
-        const data = await getJobs(db, 20, 0);
-        expect(data.length).toEqual(11);
-      });
-
-      it("should work US is excluded", async () => {
-        // US-ONLY
-        await addJob(db, {
-          title: `dev job`,
-          description: "This is a job",
-          publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
-          companyId: companyPublicId,
-          tags: ["react"],
-          url: `URL`,
-          source: "stackoverflow"
-        });
-
-        const data = await getJobs(db, 20, 0, null, null, [US_ONLY]);
-        expect(data.length).toEqual(10);
-      });
-
-      it("should exclude multiple", async () => {
-        // US-ONLY
-        await addJob(db, {
-          title: `dev job`,
-          description: "This is a job",
-          publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
-          companyId: companyPublicId,
-          tags: ["react"],
-          url: `URL`,
-          source: "stackoverflow"
-        });
-
-        await addJob(db, {
-          title: `dev job`,
-          description: "This is a job",
-          publishedAt: new Date().toISOString(),
-          locationTag: NORTH_AMERICA_ONLY,
-          companyId: companyPublicId,
-          tags: ["react"],
-          url: `URL2`,
-          source: "stackoverflow"
-        });
-
-        const data = await getJobs(db, 20, 0, null, null, [
-          US_ONLY,
-          NORTH_AMERICA_ONLY
+      it("should return nothing when excluding North America", async () => {
+        const data = await searchJobs(db, 10, 0, null, null, null, [
+          "North America"
         ]);
+        expect(data.length).toEqual(0);
+      });
+      it("should return 10 if creating a job with an excluded country", async () => {
+        await addJob(db, {
+          title: `BR JOB`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationDetails: {
+            acceptedCountries: ["BR"]
+          },
+          companyId: companyPublicId,
+          tags: ["react"],
+          url: `URL`,
+          source: "stackoverflow"
+        });
+        const data = await searchJobs(db, 20, 0, null, null, ["BR"]);
         expect(data.length).toEqual(10);
+        // None of them should be BR JOB
+        expect(data.filter(j => j.title !== "BR JOB").length).toEqual(10);
+      });
+      it("should only the BR job if excluding US", async () => {
+        await addJob(db, {
+          title: `BR JOB`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationDetails: {
+            acceptedCountries: ["BR"]
+          },
+          companyId: companyPublicId,
+          tags: ["react"],
+          url: `URL`,
+          source: "stackoverflow"
+        });
+        const data = await searchJobs(db, 20, 0, null, null, ["US"]);
+        expect(data.length).toEqual(1);
+      });
+
+      it("should working exclude multiple countries", async () => {
+        // US-ONLY
+        await addJob(db, {
+          title: `dev job`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationDetails: {
+            acceptedCountries: ["BR"]
+          },
+          companyId: companyPublicId,
+          tags: ["react"],
+          url: `URL-BR`,
+          source: "stackoverflow"
+        });
+
+        await addJob(db, {
+          title: `dev job`,
+          description: "This is a job",
+          publishedAt: new Date().toISOString(),
+          locationDetails: {
+            acceptedCountries: ["GB"]
+          },
+          companyId: companyPublicId,
+          tags: ["react"],
+          url: `URL-GB`,
+          source: "stackoverflow"
+        });
+
+        const data = await searchJobs(db, 20, 0, null, null, ["BR", "US"]);
+        expect(data.length).toEqual(1);
       });
     });
 
     describe("anywhere", () => {
-      it("should work when region free is not specified", async () => {
-        const data = await getJobs(db, 20, 0);
-        expect(data.length).toEqual(10);
-      });
-
-      it("should work when region free is specified and location tag exists", async () => {
-        // US-ONLY
-        await addJob(db, {
-          title: `dev job`,
-          description: "This is a job",
-          publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
-          companyId: companyPublicId,
-          tags: ["react"],
-          url: `URL`,
-          source: "stackoverflow"
-        });
-
-        const data = await getJobs(db, 20, 0, null, true);
-        expect(data.length).toEqual(10);
-      });
-
-      it("should work when region free is specified and location required exists", async () => {
-        // US-ONLY
-        await addJob(db, {
-          title: `dev job`,
-          description: "This is a job",
-          publishedAt: new Date().toISOString(),
-          locationRequired: "Brazil",
-          companyId: companyPublicId,
-          tags: ["react"],
-          url: `URL`,
-          source: "stackoverflow"
-        });
-
-        const data = await getJobs(db, 20, 0, null, true);
+      it("should return all jobs", async () => {
+        const data = await searchJobs(db, 20, 0);
         expect(data.length).toEqual(10);
       });
     });
 
     describe("tag", () => {
       it("should work when only asking for react (10 were added)", async () => {
-        const data = await getJobs(db, 20, 0, "react");
+        const data = await searchJobs(db, 20, 0, "react");
         expect(data.length).toEqual(10);
       });
       it("should work when only asking for a tag with only 1 job", async () => {
@@ -352,24 +333,23 @@ describe("job-service", () => {
           title: `dev job`,
           description: "This is a job",
           publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
           companyId: companyPublicId,
           tags: ["angular"],
           url: `URL`,
           source: "stackoverflow"
         });
-        const data = await getJobs(db, 20, 0, "angular");
+        const data = await searchJobs(db, 20, 0, "angular");
         expect(data.length).toEqual(1);
       });
       it("should work when asking for a tag that does not exist", async () => {
-        const data = await getJobs(db, 20, 0, "react2");
+        const data = await searchJobs(db, 20, 0, "react2");
         expect(data.length).toEqual(0);
       });
     });
 
     describe("salary", () => {
       it("should work when salary is not specified", async () => {
-        const data = await getJobs(db, 20, 0);
+        const data = await searchJobs(db, 20, 0);
         expect(data.length).toEqual(10);
       });
       it("should work when exact salary is specified", async () => {
@@ -377,14 +357,13 @@ describe("job-service", () => {
           title: `dev job`,
           description: "This is a job",
           publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
           companyId: companyPublicId,
           tags: ["angular"],
           url: `URL`,
           source: "stackoverflow",
           salaryExact: 10000
         });
-        const data = await getJobs(db, 20, 0, null, null, null, true);
+        const data = await searchJobs(db, 20, 0, null, null, null, null, true);
         expect(data.length).toEqual(1);
       });
       it("should work when min salary is specified", async () => {
@@ -392,14 +371,13 @@ describe("job-service", () => {
           title: `dev job`,
           description: "This is a job",
           publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
           companyId: companyPublicId,
           tags: ["angular"],
           url: `URL`,
           source: "stackoverflow",
           salaryMin: 10000
         });
-        const data = await getJobs(db, 20, 0, null, null, null, true);
+        const data = await searchJobs(db, 20, 0, null, null, null, null, true);
         expect(data.length).toEqual(1);
       });
       it("should work when max salary is specified", async () => {
@@ -407,21 +385,20 @@ describe("job-service", () => {
           title: `dev job`,
           description: "This is a job",
           publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
           companyId: companyPublicId,
           tags: ["angular"],
           url: `URL`,
           source: "stackoverflow",
           salaryMax: 10000
         });
-        const data = await getJobs(db, 20, 0, null, null, null, true);
+        const data = await searchJobs(db, 20, 0, null, null, null, null, true);
         expect(data.length).toEqual(1);
       });
     });
 
     describe("sources", () => {
       it("should work with stackoverflow", async () => {
-        const data = await getJobs(db, 20, 0);
+        const data = await searchJobs(db, 20, 0);
         expect(data.length).toEqual(10);
       });
       it("should work with we-work-remotely", async () => {
@@ -429,14 +406,13 @@ describe("job-service", () => {
           title: `dev job`,
           description: "This is a job",
           publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
           companyId: companyPublicId,
           tags: ["angular"],
           url: `URL`,
           source: "we-work-remotely",
           salaryExact: 10000
         });
-        const data = await getJobs(db, 20, 0, null, null, null, null, [
+        const data = await searchJobs(db, 20, 0, null, null, null, null, null, [
           "we-work-remotely"
         ]);
         expect(data.length).toEqual(1);
@@ -446,7 +422,6 @@ describe("job-service", () => {
           title: `dev job`,
           description: "This is a job",
           publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
           companyId: companyPublicId,
           tags: ["angular"],
           url: `URL`,
@@ -457,14 +432,13 @@ describe("job-service", () => {
           title: `dev job`,
           description: "This is a job",
           publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
           companyId: companyPublicId,
           tags: ["angular"],
           url: `URL2`,
           source: "authentic-jobs",
           salaryExact: 10000
         });
-        const data = await getJobs(db, 20, 0, null, null, null, null, [
+        const data = await searchJobs(db, 20, 0, null, null, null, null, null, [
           "we-work-remotely",
           "authentic-jobs"
         ]);
@@ -474,10 +448,11 @@ describe("job-service", () => {
 
     describe("company", () => {
       it("should work when company is specified", async () => {
-        const data = await getJobs(
+        const data = await searchJobs(
           db,
           20,
           0,
+          undefined,
           undefined,
           undefined,
           undefined,
@@ -488,10 +463,11 @@ describe("job-service", () => {
         expect(data.length).toEqual(10);
       });
       it("should work when the company specified does not have any job or does not exist", async () => {
-        const data = await getJobs(
+        const data = await searchJobs(
           db,
           20,
           0,
+          undefined,
           undefined,
           undefined,
           undefined,
@@ -511,14 +487,13 @@ describe("job-service", () => {
           title: `dev job`,
           description: "This is a job",
           publishedAt: new Date().toISOString(),
-          locationTag: US_ONLY,
           companyId: dbCompany.public_id,
           tags: ["angular"],
           url: `URL`,
           source: "we-work-remotely",
           salaryExact: 10000
         });
-        const data = await getJobs(
+        const data = await searchJobs(
           db,
           20,
           0,
@@ -527,9 +502,206 @@ describe("job-service", () => {
           undefined,
           undefined,
           undefined,
+          undefined,
           dbCompany.public_id
         );
         expect(data.length).toEqual(1);
+      });
+    });
+  });
+  describe("updateLocationDetails", () => {
+    it("should work when there is no job details", async () => {
+      const company = await addCompany(db, {
+        displayName: "c-1"
+      });
+      if (!company) {
+        throw new Error("company not saved");
+      }
+      const job = await addJob(db, {
+        title: "developer",
+        description: "hello us only",
+        companyId: company.id,
+        publishedAt: new Date().toISOString(),
+        tags: ["react"],
+        url: "URL",
+        source: "stackoverflow"
+      });
+      if (!job) {
+        throw new Error("job not saved");
+      }
+      await updateLocationDetails(db, job.id, company.id, undefined);
+    });
+    it("should add a location description to both the job and the company", async () => {
+      const company = await addCompany(db, {
+        displayName: "c-1"
+      });
+      if (!company) {
+        throw new Error("company not saved");
+      }
+      const job = await addJob(db, {
+        title: "developer",
+        description: "hello us only",
+        companyId: company.id,
+        publishedAt: new Date().toISOString(),
+        tags: ["react"],
+        url: "URL",
+        source: "stackoverflow"
+      });
+      if (!job) {
+        throw new Error("job not saved");
+      }
+      await updateLocationDetails(db, job.id, company.id, {
+        acceptedRegions: ["North America"],
+        acceptedCountries: ["US"],
+        headquartersLocation: "New York",
+        description: "Super good job",
+        timeZoneMin: -8,
+        timeZoneMax: -3
+      });
+
+      const companyLocationDetails = await getLocationDetailsForCompany(
+        db,
+        company.id
+      );
+      expect(companyLocationDetails).toEqual({
+        acceptedCountries: ["US"],
+        acceptedRegions: ["North America"],
+        description: "Super good job",
+        headquartersLocation: "New York",
+        timeZoneMax: -3,
+        timeZoneMin: -8,
+        worldwideConfirmed: null
+      });
+
+      const jobLocationDetails = await getLocationDetailsForJob(db, job.id);
+      expect(jobLocationDetails).toEqual({
+        acceptedCountries: ["US"],
+        acceptedRegions: ["North America"],
+        description: "Super good job",
+        headquartersLocation: "New York",
+        timeZoneMax: -3,
+        timeZoneMin: -8,
+        worldwideConfirmed: null
+      });
+    });
+    it("should update the company location details when the new is different", async () => {
+      const company = await addCompany(db, {
+        displayName: "c-1"
+      });
+      if (!company) {
+        throw new Error("company not saved");
+      }
+      await addJob(db, {
+        title: "developer",
+        description: "hello us only",
+        companyId: company.id,
+        publishedAt: new Date().toISOString(),
+        tags: ["react"],
+        url: "URL",
+        source: "stackoverflow",
+        locationDetails: {
+          acceptedRegions: ["North America"],
+          acceptedCountries: ["US"],
+          headquartersLocation: "New York",
+          description: "Super good job",
+          timeZoneMin: -8,
+          timeZoneMax: -3
+        }
+      });
+
+      (await addJob(db, {
+        title: "developer",
+        description: "hello us only",
+        companyId: company.id,
+        publishedAt: new Date().toISOString(),
+        tags: ["react"],
+        url: "URL-2",
+        source: "stackoverflow",
+        locationDetails: {
+          acceptedRegions: ["North America"],
+          acceptedCountries: ["US", "BR"],
+          headquartersLocation: "New York",
+          description: "Super good job",
+          timeZoneMin: -8,
+          timeZoneMax: -3
+        }
+      })) as Job;
+
+      const companyLocationDetails = await getLocationDetailsForCompany(
+        db,
+        company.id
+      );
+      expect(companyLocationDetails).toEqual({
+        acceptedCountries: ["US", "BR"],
+        acceptedRegions: ["North America"],
+        description: "Super good job",
+        headquartersLocation: "New York",
+        timeZoneMax: -3,
+        timeZoneMin: -8,
+        worldwideConfirmed: null
+      });
+    });
+    it("The job should have the location details of the company if it the job does have location details but not complete", async () => {
+      const company = await addCompany(db, {
+        displayName: "c-1"
+      });
+      if (!company) {
+        throw new Error("company not saved");
+      }
+      await addJob(db, {
+        title: "developer",
+        description: "hello us only",
+        companyId: company.id,
+        publishedAt: new Date().toISOString(),
+        tags: ["react"],
+        url: "URL",
+        source: "stackoverflow",
+        locationDetails: {
+          acceptedRegions: ["North America"],
+          acceptedCountries: ["US"],
+          headquartersLocation: "New York",
+          description: "Super good job",
+          timeZoneMin: -8,
+          timeZoneMax: -3
+        }
+      });
+
+      const job2 = (await addJob(db, {
+        title: "developer",
+        description: "hello us only",
+        companyId: company.id,
+        publishedAt: new Date().toISOString(),
+        tags: ["react"],
+        url: "URL-2",
+        source: "stackoverflow",
+        locationDetails: {
+          acceptedRegions: ["Americas"]
+        }
+      })) as Job;
+
+      const companyLocationDetails = await getLocationDetailsForCompany(
+        db,
+        company.id
+      );
+      expect(companyLocationDetails).toEqual({
+        acceptedCountries: ["US"],
+        acceptedRegions: ["Americas"],
+        description: "Super good job",
+        headquartersLocation: "New York",
+        timeZoneMax: -3,
+        timeZoneMin: -8,
+        worldwideConfirmed: null
+      });
+
+      const job2LocationDetails = await getLocationDetailsForJob(db, job2.id);
+      expect(job2LocationDetails).toEqual({
+        acceptedCountries: ["US"],
+        acceptedRegions: ["Americas"],
+        description: "Super good job",
+        headquartersLocation: "New York",
+        timeZoneMax: -3,
+        timeZoneMin: -8,
+        worldwideConfirmed: null
       });
     });
   });

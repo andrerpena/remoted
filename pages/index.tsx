@@ -20,11 +20,6 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { IndexQuery } from "../lib/common/query-types";
 import {
-  EUROPE_ONLY,
-  NORTH_AMERICA_ONLY,
-  US_ONLY
-} from "../lib/common/location";
-import {
   AUTHENTIC_JOBS,
   STACKOVERFLOW,
   WE_WORK_REMOTELY
@@ -130,10 +125,10 @@ function getGetJobsQueryVariablesFromQuery(
     anywhere: query.anywhere || undefined,
     salary: query.salary || undefined,
     companyId: query.company || undefined,
-    excludeLocationTags: [
-      query.nonorthamericaonly ? NORTH_AMERICA_ONLY : "",
-      query.nousonly ? US_ONLY : "",
-      query.noeuropeonly ? EUROPE_ONLY : ""
+    excludeCountries: [query.nousonly ? "US" : ""].filter(i => !!i),
+    excludeRegions: [
+      query.nonorthamericaonly ? "North America" : "",
+      query.noeuropeonly ? "Europe" : ""
     ].filter(i => !!i),
     sources: [
       query.stackoverflow ? STACKOVERFLOW : "",

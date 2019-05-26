@@ -58,7 +58,8 @@ CREATE TABLE public.company (
     display_name character varying(50) NOT NULL,
     created_at timestamp with time zone DEFAULT now(),
     image_url character varying(300),
-    image_url_20_20 character varying(300)
+    image_url_20_20 character varying(300),
+    location_details_id integer
 );
 
 
@@ -196,15 +197,14 @@ ALTER SEQUENCE public.jobs_id_seq OWNED BY public.job.id;
 
 CREATE TABLE public.location_details (
     id integer NOT NULL,
-    worldwide_ok boolean,
-    preferred_continent_codes character varying(2)[],
-    preferred_country_codes character varying(2)[],
-    preferred_timezone_min integer,
-    preferred_timezone_max integer,
-    required_continent_codes character varying(2)[],
-    required_country_codes character varying(2)[],
-    required_timezone_min integer,
-    required_timezone_max integer
+    worldwide_confirmed boolean,
+    accepted_regions character varying(50)[],
+    accepted_countries character varying(2)[],
+    timezone_min integer,
+    timezone_max integer,
+    description text,
+    headquarters_location character varying(200),
+    enable_automatic_updates boolean
 );
 
 
@@ -364,6 +364,14 @@ CREATE UNIQUE INDEX tag_id_uindex ON public.tag USING btree (id);
 --
 
 CREATE UNIQUE INDEX tag_name_uindex ON public.tag USING btree (name);
+
+
+--
+-- Name: company company_location_details_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.company
+    ADD CONSTRAINT company_location_details_id_fk FOREIGN KEY (location_details_id) REFERENCES public.location_details(id);
 
 
 --

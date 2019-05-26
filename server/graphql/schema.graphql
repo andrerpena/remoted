@@ -10,7 +10,8 @@ type Query {
     tag: String
     salary: Boolean
     anywhere: Boolean
-    excludeLocationTags: [String!]
+    excludeRegions: [String!]
+    excludeCountries: [String!]
     sources: [String!]
     companyId: String
   ): [Job]
@@ -25,6 +26,16 @@ type Mutation {
   addCompany(input: CompanyInput!): Company
 }
 
+type LocationDetails {
+  description: String
+  worldwideConfirmed: Boolean
+  acceptedRegions: [String!]
+  acceptedCountries: [String!]
+  timeZoneMin: Int
+  timeZoneMax: Int
+  headquartersLocation: String
+}
+
 type Job {
   id: String!
   title: String!
@@ -34,12 +45,7 @@ type Job {
   company: Company
   createdAt: String!
   publishedAt: String!
-  locationRaw: String
-  locationRequired: String
-  locationPreferred: String
-  locationPreferredTimeZone: Int
-  locationPreferredTimeZoneTolerance: Int
-  locationTag: String
+  locationDetails: LocationDetails
   salaryRaw: String
   salaryExact: Int
   salaryMin: Int
@@ -71,6 +77,16 @@ type Company {
   displayName: String!
   imageUrl: String
   imageUrl20x20: String
+  locationDetails: LocationDetails
+}
+
+input LocationDetailsInput {
+  description: String
+  acceptedRegions: [String!]
+  acceptedCountries: [String!]
+  timeZoneMin: Int
+  timeZoneMax: Int
+  headquartersLocation: String
 }
 
 input JobInput {
@@ -79,12 +95,7 @@ input JobInput {
   tags: [String!]!
   publishedAt: String!
   companyId: String!
-  locationRaw: String
-  locationRequired: String
-  locationPreferred: String
-  locationPreferredTimezone: Int
-  locationPreferredTimezoneTolerance: Int
-  locationTag: String
+  locationDetails: LocationDetailsInput
   salaryRaw: String
   salaryExact: Int
   salaryMin: Int
