@@ -94,22 +94,13 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
             this.state.open ? "open" : ""
           }`}
         >
-          <JobApply
-            applyUrl={url}
-            jobId={id}
-            onClose={() => this.handleToggle()}
-          />
           <JobDescription
             html={descriptionHtml}
             className={
               isJobPostTooOld(new Date(publishedAt)) ? "irrelevant" : undefined
             }
           />
-          <JobApply
-            applyUrl={url}
-            jobId={id}
-            onClose={() => this.handleToggle()}
-          />
+          <JobApply applyUrl={url} jobId={id} />
         </div>
       </li>
     );

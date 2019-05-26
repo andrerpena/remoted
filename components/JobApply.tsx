@@ -7,24 +7,10 @@ export const JobApply: React.FunctionComponent<{
   applyUrl: string;
   jobId: string;
   hideSecondaryButtons?: boolean;
-  onClose?: () => void;
-}> = ({ applyUrl, jobId, hideSecondaryButtons, onClose }) => {
+}> = ({ applyUrl, jobId, hideSecondaryButtons }) => {
   return (
     <div className="job-apply">
       <div className="field has-addons">
-        {!hideSecondaryButtons && onClose && (
-          <p className="control">
-            <a
-              className={`button`}
-              onClick={e => {
-                e.preventDefault();
-                onClose();
-              }}
-            >
-              ❌
-            </a>
-          </p>
-        )}
         {!hideSecondaryButtons && (
           <p className="control">
             <Link href={linkToJob(jobId)} as={linkToJobCanonical(jobId)}>
