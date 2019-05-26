@@ -24,7 +24,7 @@ export const JobApply: React.FunctionComponent<{
             target="_blank"
             href={applyUrl}
           >
-            🎯 Apply for this job
+            ⚡ Apply for this job
           </a>
         </p>
       </div>

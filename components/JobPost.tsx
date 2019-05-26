@@ -87,7 +87,15 @@ export class JobPost extends React.Component<JobPostProps, JobListState> {
             </Link>
           </div>
           <JobDetails job={this.props.job} />
-          <JobTags tags={tags} />
+          <JobTags
+            tags={tags}
+            specialLinks={[
+              {
+                text: "⚡ Apply",
+                link: url
+              }
+            ]}
+          />
         </div>
         <div
           className={`job-post-extension box-white-content ${

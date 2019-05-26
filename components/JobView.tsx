@@ -44,7 +44,6 @@ export const JobView = ({ job }: JobViewProps) => {
         </div>
         <JobDetails job={job} />
         <JobTags tags={tags} />
-        <JobApply applyUrl={url} jobId={id} hideSecondaryButtons={true} />
       </div>
       <JobDescription html={descriptionHtml} />
       <JobApply applyUrl={url} jobId={id} hideSecondaryButtons={true} />
