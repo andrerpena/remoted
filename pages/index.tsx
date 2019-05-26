@@ -27,11 +27,6 @@ import {
 import { NotFoundList } from "../components/EmptyJobs";
 import { EssentialHead } from "../components/EssentialHead";
 import { HeadIndexPage } from "../components/HeadIndexPage";
-import {
-  EUROPE_ONLY,
-  NORTH_AMERICA_ONLY,
-  US_ONLY
-} from "../lib/common/location";
 
 function loadMoreJobs(
   query: IndexQuery,
@@ -130,10 +125,10 @@ function getGetJobsQueryVariablesFromQuery(
     anywhere: query.anywhere || undefined,
     salary: query.salary || undefined,
     companyId: query.company || undefined,
-    excludeCountries: [query.nousonly ? US_ONLY : ""].filter(i => !!i),
+    excludeCountries: [query.nousonly ? "US" : ""].filter(i => !!i),
     excludeRegions: [
-      query.nonorthamericaonly ? NORTH_AMERICA_ONLY : "",
-      query.noeuropeonly ? EUROPE_ONLY : ""
+      query.nonorthamericaonly ? "North America" : "",
+      query.noeuropeonly ? "Europe" : ""
     ].filter(i => !!i),
     sources: [
       query.stackoverflow ? STACKOVERFLOW : "",

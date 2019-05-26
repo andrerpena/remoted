@@ -46,7 +46,8 @@ export async function updateLocationDetails(
   db: RemotedDatabase,
   jobPublicId: string,
   companyPublicId: string,
-  input: Maybe<LocationDetailsInput>
+  input: Maybe<LocationDetailsInput>,
+  ignoreIfJobAlreadyHaveLocationDetails: boolean = false
 ): Promise<void> {
   // rules:
   // if there are no job location details and no company location details, update the company
@@ -62,6 +63,9 @@ export async function updateLocationDetails(
     );
   }
   if (dbJob.location_details_id) {
+    if (ignoreIfJobAlreadyHaveLocationDetails) {
+      return;
+    }
     throw new Error(
       `Cannot update location details. Job has already a location details object. Job public id: ${jobPublicId}`
     );
