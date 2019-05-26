@@ -33,6 +33,9 @@ export async function getLocationDetailsForJob(
   const dbLocationDetails = await db.location_details.findOne({
     id: dbJob.location_details_id
   } as Partial<DbLocationDetails>);
+  if (!dbLocationDetails) {
+    return null;
+  }
   return getLocationDetailsFromDbLocationDetails(dbLocationDetails);
 }
 
@@ -49,5 +52,8 @@ export async function getLocationDetailsForCompany(
   const dbLocationDetails = await db.location_details.findOne({
     id: dbCompany.location_details_id
   } as Partial<DbLocationDetails>);
+  if (!dbLocationDetails) {
+    return null;
+  }
   return getLocationDetailsFromDbLocationDetails(dbLocationDetails);
 }
