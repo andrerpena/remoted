@@ -31,7 +31,7 @@ export async function getPostOnSlackOptions(
     return null;
   }
   return {
-    text: `New job: https://remoted.io${linkToJobCanonical(job.url)}`,
+    text: `New job: https://remoted.io${linkToJobCanonical(job.id)}`,
     attachmentText: `${job.title} at ${
       company.displayName
     }. Tags: ${job.tags.join(", ")}`,
