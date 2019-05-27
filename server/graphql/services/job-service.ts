@@ -17,6 +17,7 @@ import { removeQueryString } from "../../../lib/common/url";
 import Maybe from "graphql/tsutils/Maybe";
 import { merge } from "../../../lib/common/object";
 import { insertDbRecord } from "../../db/services/db-helpers";
+import { getPostOnSlackOptions, postJobOnSlack } from "../../slack";
 
 export async function getJob(
   db: RemotedDatabase,
@@ -213,6 +214,15 @@ export async function addJob(
     dbCompany.public_id,
     jobInput.locationDetails
   );
+
+  try {
+    const slackOptions = await getPostOnSlackOptions(db, dbJob.public_id);
+    if (slackOptions) {
+      await postJobOnSlack(slackOptions);
+    }
+  } catch (ex) {
+    console.error(ex);
+  }
 
   return getJobFromDbJob(dbJob);
 }
