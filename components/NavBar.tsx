@@ -43,6 +43,15 @@ export const NavBar = ({ hideLogo }: NavBarProps) => {
             <a
               className="navbar-item"
               target="__blank"
+              href={
+                "https://join.slack.com/t/remoted/shared_invite/enQtNjMxOTQwMDk0MzI0LTk0YjhjY2U2NTI5Yzg0Zjg0Y2RlMWM1ZWI5OTExNWRlMjIyNzE1MmQyMjhmM2U1YmQ4OWEzYzhmMDJmN2U2YzM"
+              }
+            >
+              📧 Join Slack
+            </a>
+            <a
+              className="navbar-item"
+              target="__blank"
               href="https://github.com/remoted-io/remoted/issues"
             >
               🔥 Issues
