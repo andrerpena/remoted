@@ -21,6 +21,7 @@ import { Footer } from "../components/Footer";
 import { IndexQuery } from "../lib/common/query-types";
 import {
   AUTHENTIC_JOBS,
+  REMOTE_OK,
   STACKOVERFLOW,
   WE_WORK_REMOTELY
 } from "../lib/common/sources";
@@ -133,7 +134,8 @@ function getGetJobsQueryVariablesFromQuery(
     sources: [
       query.stackoverflow ? STACKOVERFLOW : "",
       query.weworkremotely ? WE_WORK_REMOTELY : "",
-      query.authenticjobs ? AUTHENTIC_JOBS : ""
+      query.authenticjobs ? AUTHENTIC_JOBS : "",
+      query.remoteok ? REMOTE_OK : ""
     ].filter(i => !!i)
   };
 }
@@ -155,6 +157,7 @@ IndexPage.getInitialProps = async ({ query }: Next.NextContext) => {
       stackoverflow: query.stackoverflow === "true",
       weworkremotely: query.weworkremotely === "true",
       authenticjobs: query.authenticjobs === "true",
+      remoteok: query.remoteok === "true",
       // company
       company: query.company
     } as IndexQuery

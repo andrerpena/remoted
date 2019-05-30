@@ -15,6 +15,7 @@ export interface FilterQuery {
   stackoverflow?: boolean;
   authenticjobs?: boolean;
   weworkremotely?: boolean;
+  remoteok?: boolean;
   // company
   company?: string;
 }

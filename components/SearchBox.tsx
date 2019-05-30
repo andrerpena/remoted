@@ -28,9 +28,11 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = ({
     nousonly,
     nonorthamericaonly,
     noeuropeonly,
+    // sources
     stackoverflow,
     authenticjobs,
     weworkremotely,
+    remoteok,
     tag
   } = query;
 
@@ -45,7 +47,8 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = ({
     noeuropeonly,
     stackoverflow,
     authenticjobs,
-    weworkremotely
+    weworkremotely,
+    remoteok
   };
 
   const handleFilterChange = (newFilterData: Partial<FilterQuery>) => {
@@ -107,7 +110,6 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = ({
               hidden={!filters}
               active={stackoverflow}
               onClick={() => {
-                // setStackoverflow(!stackoverflow);
                 handleFilterChange({ stackoverflow: !stackoverflow });
               }}
               text="🔖 StackOverflow"
@@ -116,7 +118,6 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = ({
               hidden={!filters}
               active={authenticjobs}
               onClick={() => {
-                // setAuthenticJobs(!authenticjobs);
                 handleFilterChange({ authenticjobs: !authenticjobs });
               }}
               text="🔖 Authentic Jobs"
@@ -125,10 +126,17 @@ export const SearchBox: React.FunctionComponent<SearchBoxProps> = ({
               hidden={!filters}
               active={weworkremotely}
               onClick={() => {
-                // setWeWorkRemotely(!weworkremotely);
                 handleFilterChange({ weworkremotely: !weworkremotely });
               }}
               text="🔖 We Work Remotely"
+            />
+            <SearchButton
+              hidden={!filters}
+              active={remoteok}
+              onClick={() => {
+                handleFilterChange({ remoteok: !remoteok });
+              }}
+              text="🔖 RemoteOK"
             />
             {/* Regions */}
             <SearchButton

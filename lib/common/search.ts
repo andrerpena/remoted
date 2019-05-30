@@ -2,6 +2,7 @@ import { IndexQuery } from "./query-types";
 import {
   AUTHENTIC_JOBS,
   getSourceDisplayName,
+  REMOTE_OK,
   STACKOVERFLOW,
   WE_WORK_REMOTELY
 } from "./sources";
@@ -24,6 +25,9 @@ export const getSearchTagLineFor = (query: Partial<IndexQuery>) => {
   // sources
   if (query.stackoverflow) {
     sourceDetails.push(getSourceDisplayName(STACKOVERFLOW));
+  }
+  if (query.remoteok) {
+    sourceDetails.push(getSourceDisplayName(REMOTE_OK));
   }
   if (query.weworkremotely) {
     sourceDetails.push(getSourceDisplayName(WE_WORK_REMOTELY));

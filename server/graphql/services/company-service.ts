@@ -40,6 +40,8 @@ export async function addCompany(
 
   const dbCompany = await (db.company.insert(company) as Promise<DbCompany>);
 
+  console.log("company image");
+  console.log(companyInput.imageUrl);
   if (companyInput.imageUrl) {
     try {
       await updateCompanyImageUrl(
@@ -48,7 +50,7 @@ export async function addCompany(
         companyInput.imageUrl
       );
     } catch (ex) {
-      // I will ignore for now
+      console.error(ex);
     }
   }
 
