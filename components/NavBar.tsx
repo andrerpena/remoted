@@ -47,49 +47,29 @@ export const NavBar = ({ hideLogo }: NavBarProps) => {
                 "https://join.slack.com/t/remoted/shared_invite/enQtNjMxOTQwMDk0MzI0LTk0YjhjY2U2NTI5Yzg0Zjg0Y2RlMWM1ZWI5OTExNWRlMjIyNzE1MmQyMjhmM2U1YmQ4OWEzYzhmMDJmN2U2YzM"
               }
             >
-              📧 Join Slack
+              <i className="fab fa-slack" /> Slack
             </a>
             <a
               className="navbar-item"
               target="__blank"
-              href="https://github.com/remoted-io/remoted/issues"
+              href="https://github.com/remoted-io/remoted"
             >
-              🔥 Issues
+              <i className="fab fa-github" /> GitHub
+            </a>
+            <a
+              className="navbar-item"
+              href="https://twitter.com/remoted_io"
+              target="_blank"
+            >
+              <i className="fab fa-twitter" /> Twitter
             </a>
             <a
               className="navbar-item"
               target="__blank"
               href="https://remoted.io/graphql"
             >
-              🤖 GraphQL API
+              <i className="fas fa-cloud" /> GraphQL API
             </a>
-            <div className="navbar-item has-dropdown is-hoverable">
-              <a className="navbar-link">More</a>
-
-              <div className="navbar-dropdown">
-                <a
-                  className="navbar-item"
-                  href="https://twitter.com/remoted_io"
-                  target="_blank"
-                >
-                  Twitter
-                </a>
-                <a
-                  className="navbar-item"
-                  href="https://www.indiehackers.com/product/remoted"
-                  target="_blank"
-                >
-                  Indie Hackers
-                </a>
-                <a
-                  className="navbar-item"
-                  href="https://www.producthunt.com/posts/remoted-io"
-                  target="_blank"
-                >
-                  Product Hunt
-                </a>
-              </div>
-            </div>
           </div>
         </div>
       </div>

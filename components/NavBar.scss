@@ -8,4 +8,22 @@
 
   /* Rules below not implemented in browsers yet */
   user-select: none;
+
+  .navbar-item {
+    i {
+      padding-right: $size-9;
+    }
+
+    .fa-twitter {
+      color: #1da1f3;
+    }
+
+    .fa-slack {
+      color: #db1c58;
+    }
+
+    .fa-cloud {
+      color: $primary;
+    }
+  }
 }

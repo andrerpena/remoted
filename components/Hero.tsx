@@ -25,9 +25,11 @@ export const Hero: React.FunctionComponent<{}> = () => {
           }}
         />
         <p>
-          Remoted is a remote job aggregator that constantly searches the
-          internet looking for remote jobs. Remote jobs are jobs you can work
-          from home, co-working spaces, coffee shops, you name it.
+          Remoted is an{" "}
+          <a href="https://github.com/remoted-io/remoted">open source</a> remote
+          job aggregator that constantly searches the internet looking for
+          remote jobs. Remote jobs are jobs you can work from home, co-working
+          spaces, coffee shops, you name it.
         </p>
         <p>
           Remoted is strong because of the search options. Remote jobs often
