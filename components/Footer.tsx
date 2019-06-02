@@ -4,8 +4,7 @@ export const Footer = () => {
       <div className="content has-text-centered">
         <p>
           Made with 💗 by{" "}
-          <a href="https://twitter.com/andrerpena">Andre Pena</a> in Berlin,
-          Germany.
+          <a href="https://twitter.com/andrerpena">Andre Pena</a>
         </p>
       </div>
     </footer>
