@@ -40,8 +40,6 @@ export async function addCompany(
 
   const dbCompany = await (db.company.insert(company) as Promise<DbCompany>);
 
-  console.log("company image");
-  console.log(companyInput.imageUrl);
   if (companyInput.imageUrl) {
     try {
       await updateCompanyImageUrl(
