@@ -229,6 +229,41 @@ ALTER SEQUENCE public.location_details_id_seq OWNED BY public.location_details.i
 
 
 --
+-- Name: newsletter_subscription; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.newsletter_subscription (
+    id integer NOT NULL,
+    email character varying(300) NOT NULL,
+    frequency character varying(20),
+    tags character varying[],
+    categories character varying[],
+    created_at timestamp without time zone NOT NULL,
+    last_sent_at timestamp without time zone
+);
+
+
+--
+-- Name: newsletter_subscription_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.newsletter_subscription_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: newsletter_subscription_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.newsletter_subscription_id_seq OWNED BY public.newsletter_subscription.id;
+
+
+--
 -- Name: stackoverflow_tags_cache_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -292,6 +327,13 @@ ALTER TABLE ONLY public.location_details ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
+-- Name: newsletter_subscription id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.newsletter_subscription ALTER COLUMN id SET DEFAULT nextval('public.newsletter_subscription_id_seq'::regclass);
+
+
+--
 -- Name: company companies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -324,6 +366,14 @@ ALTER TABLE ONLY public.location_details
 
 
 --
+-- Name: newsletter_subscription newsletter_subscription_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.newsletter_subscription
+    ADD CONSTRAINT newsletter_subscription_pk PRIMARY KEY (id);
+
+
+--
 -- Name: tag tag_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -350,6 +400,13 @@ CREATE UNIQUE INDEX company_public_id_uindex ON public.company USING btree (publ
 --
 
 CREATE UNIQUE INDEX job_public_id_uindex ON public.job USING btree (public_id);
+
+
+--
+-- Name: newsletter_subscription_id_uindex; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX newsletter_subscription_id_uindex ON public.newsletter_subscription USING btree (id);
 
 
 --
