@@ -46,6 +46,7 @@ export type DbCompanyInput = PartialBy<DbCompany, "id">;
 
 export interface DbJob {
   [key: string]: any;
+
   id: number;
   public_id: string;
   title: string;
@@ -91,4 +92,13 @@ export interface DbTag {
   id: number;
   name: string;
   relevance: number;
+}
+
+export interface DbNewsletterSubscription {
+  id: number;
+  email: string;
+  frequency: string;
+  tags: string[];
+  categories: string[];
+  last_sent_at: Date;
 }
