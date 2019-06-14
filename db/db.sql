@@ -93,7 +93,8 @@ CREATE TABLE public.email_subscription (
     frequency character varying(20),
     created_at timestamp without time zone NOT NULL,
     last_sent_at timestamp without time zone,
-    query_string character varying(500)
+    query_string character varying(500),
+    unsubscribe_key character varying(200) NOT NULL
 );
 
 

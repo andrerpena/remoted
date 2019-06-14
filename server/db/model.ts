@@ -94,11 +94,10 @@ export interface DbTag {
   relevance: number;
 }
 
-export interface DbNewsletterSubscription {
+export interface DbEmailSubscription {
   id: number;
   email: string;
   frequency: string;
-  tags: string[];
-  categories: string[];
+  created_at: Date;
   last_sent_at: Date;
 }
