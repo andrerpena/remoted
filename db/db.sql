@@ -84,6 +84,20 @@ ALTER SEQUENCE public.companies_id_seq OWNED BY public.company.id;
 
 
 --
+-- Name: email_subscription; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.email_subscription (
+    id integer NOT NULL,
+    email character varying(300) NOT NULL,
+    frequency character varying(20),
+    created_at timestamp without time zone NOT NULL,
+    last_sent_at timestamp without time zone,
+    query_string character varying(500)
+);
+
+
+--
 -- Name: google_places_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -229,21 +243,6 @@ ALTER SEQUENCE public.location_details_id_seq OWNED BY public.location_details.i
 
 
 --
--- Name: newsletter_subscription; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.newsletter_subscription (
-    id integer NOT NULL,
-    email character varying(300) NOT NULL,
-    frequency character varying(20),
-    tags character varying[],
-    categories character varying[],
-    created_at timestamp without time zone NOT NULL,
-    last_sent_at timestamp without time zone
-);
-
-
---
 -- Name: newsletter_subscription_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -260,7 +259,7 @@ CREATE SEQUENCE public.newsletter_subscription_id_seq
 -- Name: newsletter_subscription_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.newsletter_subscription_id_seq OWNED BY public.newsletter_subscription.id;
+ALTER SEQUENCE public.newsletter_subscription_id_seq OWNED BY public.email_subscription.id;
 
 
 --
@@ -306,6 +305,13 @@ ALTER TABLE ONLY public.company ALTER COLUMN id SET DEFAULT nextval('public.comp
 
 
 --
+-- Name: email_subscription id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_subscription ALTER COLUMN id SET DEFAULT nextval('public.newsletter_subscription_id_seq'::regclass);
+
+
+--
 -- Name: job id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -327,18 +333,19 @@ ALTER TABLE ONLY public.location_details ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
--- Name: newsletter_subscription id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.newsletter_subscription ALTER COLUMN id SET DEFAULT nextval('public.newsletter_subscription_id_seq'::regclass);
-
-
---
 -- Name: company companies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.company
     ADD CONSTRAINT companies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: email_subscription email_subscription_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_subscription
+    ADD CONSTRAINT email_subscription_pk PRIMARY KEY (id);
 
 
 --
@@ -366,14 +373,6 @@ ALTER TABLE ONLY public.location_details
 
 
 --
--- Name: newsletter_subscription newsletter_subscription_pk; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.newsletter_subscription
-    ADD CONSTRAINT newsletter_subscription_pk PRIMARY KEY (id);
-
-
---
 -- Name: tag tag_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -396,17 +395,17 @@ CREATE UNIQUE INDEX company_public_id_uindex ON public.company USING btree (publ
 
 
 --
+-- Name: email_subscription_id_uindex; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX email_subscription_id_uindex ON public.email_subscription USING btree (id);
+
+
+--
 -- Name: job_public_id_uindex; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX job_public_id_uindex ON public.job USING btree (public_id);
-
-
---
--- Name: newsletter_subscription_id_uindex; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX newsletter_subscription_id_uindex ON public.newsletter_subscription USING btree (id);
 
 
 --
