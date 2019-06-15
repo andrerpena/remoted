@@ -6,7 +6,6 @@ import { CompanyHeader } from "./CompanyHeader";
 import { JobTags } from "./JobTags";
 import { JobDescription } from "./JobDescription";
 import { JobApply } from "./JobApply";
-import { SingletonRouter } from "next/router";
 import Link from "next/link";
 import { getSourceDisplayName } from "../lib/common/sources";
 import * as classNames from "classnames";
@@ -20,8 +19,7 @@ interface JobListState {
 
 interface JobPostProps {
   job: Job;
-  router?: SingletonRouter;
-  query: IndexQuery;
+  query: Partial<IndexQuery>;
 }
 
 export class JobPost extends React.Component<JobPostProps, JobListState> {

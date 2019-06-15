@@ -9,12 +9,11 @@ import { getSearchTagLineFor } from "../lib/common/search";
 
 export interface JobListProps {
   jobs: Job[];
-  router?: SingletonRouter;
   title: string;
-  query: IndexQuery;
+  query: Partial<IndexQuery>;
 }
 
-export const JobList = ({ jobs, router, title, query }: JobListProps) => (
+export const JobList = ({ jobs, title, query }: JobListProps) => (
   <div className="job-list">
     <div className="box-white">
       <div className="box-white-header">
@@ -25,7 +24,7 @@ export const JobList = ({ jobs, router, title, query }: JobListProps) => (
       </div>
       <ul>
         {jobs.map(j => (
-          <JobPost key={j.id} job={j} router={router} query={query} />
+          <JobPost key={j.id} job={j} query={query} />
         ))}
       </ul>
     </div>
@@ -38,12 +37,11 @@ export type JobListCollectionProps = {
   onLoadMore: () => void;
   loading: boolean;
   showLoadMore: boolean;
-  query: IndexQuery;
+  query: Partial<IndexQuery>;
 };
 
 export const JobListCollection = ({
   jobs,
-  router,
   onLoadMore,
   loading,
   showLoadMore,
@@ -55,13 +53,7 @@ export const JobListCollection = ({
   return (
     <>
       {buckets.map(b => (
-        <JobList
-          key={b.title}
-          jobs={b.data}
-          title={b.title}
-          router={router}
-          query={query}
-        />
+        <JobList key={b.title} jobs={b.data} title={b.title} query={query} />
       ))}
       {showLoadMore && (
         <a className="button is-primary is-fullwidth" onClick={onClick}>
