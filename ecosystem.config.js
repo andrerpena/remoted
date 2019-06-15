@@ -5,16 +5,9 @@ module.exports = {
       script: ".production-server/server/index.js",
 
       // Options reference: https://pm2.io/doc/en/runtime/reference/ecosystem-file/
-      instances: "max",
+      instances: 1,
       autorestart: true,
-      watch: false,
-      max_memory_restart: "1G",
-      env: {
-        NODE_ENV: "development"
-      },
-      env_production: {
-        NODE_ENV: "production"
-      }
+      watch: true
     }
   ]
 };
