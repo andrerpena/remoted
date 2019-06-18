@@ -13,5 +13,5 @@ export function navigateToFilter(filters: FilterQuery) {
   } else if (filters.tag) {
     canonical = linkToTagCanonical(filters);
   }
-  Router.push(linkToFilters(filters), canonical);
+  return Router.push(linkToFilters(filters), canonical);
 }

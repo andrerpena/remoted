@@ -1,3 +1,28 @@
-* {
-  color: red;
+body {
+  background-color: #f0f3f5;
+}
+
+.logo img {
+  padding-top: 10px;
+  margin: 0 auto;
+  display: block;
+}
+
+table {
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: white;
+}
+
+table td {
+  padding: 20px 0 0 20px;
+}
+
+table img {
+  height: 50px;
+  width: 50px;
+}
+
+.title {
+  font-size: 1.4em;
 }

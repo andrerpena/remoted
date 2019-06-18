@@ -3,12 +3,16 @@ import { buildDb } from "./server/db/build-db";
 import { searchJobs } from "./server/graphql/services/job-service";
 import * as path from "path";
 import * as Email from "email-templates";
+import { getCompanyByJobPublicId } from "./server/graphql/services/company-service";
 
 config();
 
 buildDb().then(async db => {
   const jobs = await searchJobs(db, 10, 0);
-  console.log(jobs);
+  for (const job of jobs) {
+    job.company = await getCompanyByJobPublicId(db, job.id);
+    console.log(job.company ? job.company.imageUrl : "nevermind");
+  }
 
   const email = new Email({
     message: {
@@ -28,7 +32,6 @@ buildDb().then(async db => {
       }
     }
   });
-
   const emailResult = await email.send({
     template: "newsletter",
     message: {
@@ -36,7 +39,7 @@ buildDb().then(async db => {
     },
     locals: {
       name: "Elon",
-      jobs: [1, 2, 3, 4, 5]
+      jobs: jobs
     }
   });
 
