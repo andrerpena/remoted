@@ -1,3 +1,5 @@
+> Remoted is not live anymore ⚠️
+
 # Remoted.io
 
 🔥 This is the source code and issue board for https://remoted.io/. Remoted is an aggregator for remote jobs for IT professionals (software engineering, database, cloud, security...).
