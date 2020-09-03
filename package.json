@@ -83,7 +83,7 @@
     "@types/sharp": "^0.22.1",
     "@types/showdown": "^1.9.2",
     "cross-env": "^5.2.0",
-    "graphql-code-generator": "^0.16.1",
+    "graphql-code-generator": "^0.18.2",
     "graphql-codegen-introspection": "^0.16.1",
     "graphql-codegen-typescript-client": "^0.16.1",
     "graphql-codegen-typescript-common": "^0.16.1",
