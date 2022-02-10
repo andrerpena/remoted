@@ -30,7 +30,7 @@
     "mime-types": "^2.1.22",
     "next": "latest",
     "next-seo": "^1.11.2",
-    "node-sass": "^4.10.0",
+    "node-sass": "^7.0.0",
     "pug": "^2.0.3",
     "react": "^16.8.6",
     "react-apollo": "^2.4.1",
