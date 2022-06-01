@@ -37,7 +37,7 @@
     "react-autosuggest": "^9.4.3",
     "react-dom": "^16.8.6",
     "recharts": "^1.6.2",
-    "sharp": "^0.22.0",
+    "sharp": "^0.30.5",
     "showdown": "^1.9.0",
     "sitemap": "^2.1.0",
     "slack": "^11.0.2",
